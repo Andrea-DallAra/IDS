@@ -1,15 +1,17 @@
 package com.ids.progettoids.models;
 
+import java.util.ArrayList;
+
 public class POI {
     
     private String nome;
     private Coordinate coordinate;
     private String descrizione;
-    private String media;
+    private Content media;
      /**
      * Factory Method: Builder
      */
-    public POI(String _nome, Coordinate _coordinate, String _descrizione,String _media)
+    public POI(String _nome, Coordinate _coordinate, String _descrizione,Content _media)
     {
         setNome(_nome);
         setCoordinate(_coordinate);
@@ -27,15 +29,18 @@ public class POI {
     void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
-    public void setMedia(String media) {
+    public void setMedia(Content media) {
         this.media = media;
     }
-    public static void VediPOI()
+    public static void VediPOI(int id) 
     {
-    
+        if(id == -1) //ritorno tutti i poi
+        {
+            
+        }
     }
 
-    public static void VediItinerario()
+    public static void VediItinerario( ArrayList<POI> POI)
     {
     
     }
