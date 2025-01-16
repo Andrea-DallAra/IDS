@@ -3,7 +3,6 @@ package com.ids.progettoids.models;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -176,11 +175,35 @@ public class Utente implements UtenteInterfaccia {
        
     }
 
-    public boolean Registrazione(String nome, String cognome, String email, String password, String username)
-    {
-        
+    public boolean Registrazione(String nome, String cognome, String email, String password, String username) {
+        // Hash della password
         password = hashPassword(password, "chiave");
-        return true;
+
+        // Query di inserimento
+        String sql = "INSERT INTO Utenti (username, email, nome, cognome, password) VALUES (?, ?, ?, ?, ?)";
+
+        // Connessione e inserimento
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, email);
+            pstmt.setString(3, nome);
+            pstmt.setString(4, cognome);
+            pstmt.setString(5, password);
+
+            int rowsInserted = pstmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                System.out.println("Registrazione completata per l'utente: " + username);
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante la registrazione: " + e.getMessage());
+        }
+
+        return false;
     }
 
     

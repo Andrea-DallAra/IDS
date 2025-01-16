@@ -54,7 +54,7 @@ public class Gestore extends Utente {
         return richiesteRuoli;
     }
     //da collegare con l'hud
-    public void AccettaCambiaRuolo(String username, String _ruolo) 
+    public void EditaRuolo(String username, String _ruolo) 
     {
         Utente nuovoUtente = new Utente(username, null, null, null, null);
         nuovoUtente.AggiungiRuolo(Ruolo.valueOf(_ruolo));
