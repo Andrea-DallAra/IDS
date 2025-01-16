@@ -3,6 +3,7 @@ package com.ids.progettoids.models;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +16,7 @@ import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.Interfacce.UtenteInterfaccia;
 
 
-public abstract class Utente implements UtenteInterfaccia {
+public class Utente implements UtenteInterfaccia {
     String username = "";
     String password = "";
     String email = "";
@@ -23,7 +24,7 @@ public abstract class Utente implements UtenteInterfaccia {
     String cognome = "";
     List<Ruolo> ruoli = new ArrayList<>();
 
-    public Utente(String _nome, String _cognome , String _email, String _password, String _username) 
+    public Utente( String _username,String _nome, String _cognome , String _email, String _password) 
     {
        email = _email;
        password = _password;
@@ -32,7 +33,30 @@ public abstract class Utente implements UtenteInterfaccia {
        username = _username;
        
     }
- 
+    public void CambiaRuolo(String username, String _ruolo) {
+        String sql = "INSERT INTO RichiediRuolo (username, ruolo) VALUES (?, ?)";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            
+            pstmt.setString(1, username);
+            pstmt.setString(2, _ruolo);
+
+          
+            int rowsInserted = pstmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                System.out.println("Inserimento riuscito: ruolo richiesto per " + username);
+            } else {
+                System.out.println("Nessun dato inserito.");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'inserimento: " + e.getMessage());
+        }
+    }
+
     public void SalvaRuoliDB(String username) {
         Connection con = ConnettiDB.getConnection();
     
@@ -174,6 +198,12 @@ public abstract class Utente implements UtenteInterfaccia {
             throw new RuntimeException("Qualcosa e' andato storto", e);
         }
     }
-
+    @Override
+    public void AggiungiRuolo() {
+       
+    }
+    public void AggiungiRuolo(Ruolo _ruolo) {
+       ruoli.add(_ruolo);
+    }
 
 }
