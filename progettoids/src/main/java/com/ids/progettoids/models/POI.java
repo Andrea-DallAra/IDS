@@ -1,23 +1,23 @@
 package com.ids.progettoids.models;
-
 import java.util.ArrayList;
+import com.ids.progettoids.utils.POIutils;
 
 public class POI {
-    
+
     private String nome;
     private Coordinate coordinate;
     private String descrizione;
     private Content media;
-     /**
-     * Factory Method: Builder
-     */
-    public POI(String _nome, Coordinate _coordinate, String _descrizione,Content _media)
-    {
+
+    // Costruttore
+    public POI(String _nome, Coordinate _coordinate, String _descrizione, Content _media) {
         setNome(_nome);
         setCoordinate(_coordinate);
         setDescrizione(_descrizione);
         setMedia(_media);
     }
+
+    // Setter
     void setNome(String nome) {
         this.nome = nome;
     }
@@ -29,20 +29,31 @@ public class POI {
     void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
     public void setMedia(Content media) {
         this.media = media;
     }
-    public static void VediPOI(int id) 
-    {
-        if(id == -1) //ritorno tutti i poi
-        {
-            
-        }
+
+  
+    public String getNome() {
+        return nome;
+    }
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+    public String getDescrizione() {
+        return descrizione;
+    }
+    public Content getMedia() {
+        return media;
+    }
+ 
+    public static ArrayList<POI> VediPOI(String nome) {
+      
+            return POIutils.getPOI(nome);
+        
     }
 
-    public static void VediItinerario( ArrayList<POI> POI)
-    {
+  
     
-    }
 }
-

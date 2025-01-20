@@ -1,6 +1,5 @@
 package com.ids.progettoids.Interfacce;
 
-import com.ids.progettoids.Ruolo;
 
 public interface UtenteInterfaccia {
 
