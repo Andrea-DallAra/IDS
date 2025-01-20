@@ -47,7 +47,7 @@ public class POIutils {
                 POI poi = new POI(nomePOI, coordinate, descrizione, media);
                 listaPOI.add(poi);
             }
-            conn.close();
+
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
         }
@@ -75,7 +75,7 @@ public class POIutils {
 
                 content = new Content(mediaUrl, _data, autore, descrizione);
             }
-            conn.close();
+
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero del Content: " + e.getMessage());
         }
