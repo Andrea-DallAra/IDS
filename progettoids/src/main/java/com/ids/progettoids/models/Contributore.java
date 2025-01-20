@@ -1,6 +1,7 @@
 package com.ids.progettoids.models;
 
 import com.ids.progettoids.Ruolo;
+
 public class Contributore extends Utente {
 
     private boolean autenticato;
@@ -24,5 +25,6 @@ public class Contributore extends Utente {
        AggiungiRuolo();
     }
     
+
 
 }

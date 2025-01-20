@@ -1,13 +1,7 @@
 package com.ids.progettoids.models;
 
 import com.ids.progettoids.utils.ItinerarioUtils;
-import com.ids.progettoids.utils.POIutils;
-import com.ids.progettoids.ConnettiDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Itinerario {

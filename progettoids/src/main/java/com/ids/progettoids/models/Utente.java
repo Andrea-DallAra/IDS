@@ -228,5 +228,20 @@ public class Utente implements UtenteInterfaccia {
     public void AggiungiRuolo(Ruolo _ruolo) {
        ruoli.add(_ruolo);
     }
-
+    public void Report(String chiave, String tipo, String descrizione) {
+        String sql = "INSERT INTO Report (Chiave, Tipo, Descrizione) VALUES (?, ?, ?)";
+    
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    
+            pstmt.setString(1, chiave);
+            pstmt.setString(2, tipo);
+            pstmt.setString(3, descrizione);
+    
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'inserimento del report: " + e.getMessage());
+        }
+    }
 }

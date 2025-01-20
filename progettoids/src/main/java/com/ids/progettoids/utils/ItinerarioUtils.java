@@ -87,4 +87,19 @@ public class ItinerarioUtils {
             System.err.println("Errore durante la creazione dell'itinerario: " + e.getMessage());
         }
     }
+   
+
+    public static void EliminaItinerario(int idItinerario) {
+        String sql = "DELETE FROM Itinerario WHERE idItinerario = ?";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idItinerario);
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'eliminazione dell'itinerario: " + e.getMessage());
+        }
     }
+}

@@ -110,4 +110,19 @@ public class POIutils {
         }
     }
 
+    public static void EliminaPOI(String poi) {
+     
+        String sql = "DELETE FROM POI WHERE Nome = ?";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, poi);
+
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'eliminazione del POI: " + e.getMessage());
+        }
+    }
 }
