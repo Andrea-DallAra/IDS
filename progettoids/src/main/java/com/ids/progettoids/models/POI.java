@@ -54,6 +54,10 @@ public class POI {
         
     }
 
+
+    public static void CreaPOI(POI poi, boolean daApprovare) {
+        POIutils.creaPOI(poi.nome, poi.coordinate, poi.descrizione, poi.media, daApprovare);
+    }
   
     
 }

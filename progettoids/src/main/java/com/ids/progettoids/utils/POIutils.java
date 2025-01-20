@@ -47,7 +47,7 @@ public class POIutils {
                 POI poi = new POI(nomePOI, coordinate, descrizione, media);
                 listaPOI.add(poi);
             }
-
+            conn.close();
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
         }
@@ -75,11 +75,39 @@ public class POIutils {
 
                 content = new Content(mediaUrl, _data, autore, descrizione);
             }
-
+            conn.close();
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero del Content: " + e.getMessage());
         }
 
         return content;
     }
+
+    public static void creaPOI(String nome, Coordinate coordinate, String descrizione, Content media, boolean daApprovare) {
+        String sql= "";
+        if(!daApprovare){
+             sql = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";  
+
+        }
+        else
+        {
+             sql = "INSERT INTO POI_DaApprovare (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";  
+
+        }
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {        
+
+            pstmt.setString(1, nome);
+            pstmt.setString(2, coordinate.toString());
+            pstmt.setString(3, descrizione);
+            pstmt.setInt(4, media.getIdContent());
+
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante la creazione del POI: " + e.getMessage());
+        }
+    }
+
 }

@@ -2,6 +2,8 @@ package com.ids.progettoids.models;
 
 import java.util.Date;
 
+import com.ids.progettoids.utils.ContentUtils;
+
 public class Content {
     private String media;
     private Date data;
@@ -29,5 +31,25 @@ public class Content {
     public void setMedia(String media) {
         this.media = media;
     }
-    
+    public int getIdContent() {
+    return ContentUtils.getIdContent(this.media, this.data, this.autore, this.descrizione);
+}
+
+public String getMedia() {
+    return media;
+}
+public Date getData() {
+    return data;
+}
+public String getAutore() {
+    return autore;
+}
+public String getDescrizione() {
+    return descrizione;
+}
+    public static void CreaContent(Content content, boolean daApprovare)
+    {
+        ContentUtils.creaContent(content.media, content.data, content.autore, content.descrizione, daApprovare);
+    }
+
 }
