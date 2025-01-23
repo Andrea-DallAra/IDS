@@ -1,5 +1,6 @@
 package com.ids.progettoids.models;
 import java.util.ArrayList;
+
 import com.ids.progettoids.utils.POIutils;
 
 public class POI {
