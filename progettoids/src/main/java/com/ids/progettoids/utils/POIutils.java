@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class POIutils {
@@ -71,9 +70,9 @@ public class POIutils {
                 String data = rs.getString("Data");
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
-                Date _data = new Date(Long.parseLong(data));
+                
 
-                content = new Content(mediaUrl, _data, autore, descrizione);
+                content = new Content(mediaUrl, data, autore, descrizione);
             }
             conn.close();
         } catch (SQLException e) {

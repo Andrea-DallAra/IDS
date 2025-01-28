@@ -1,19 +1,18 @@
 package com.ids.progettoids.models;
 
-import java.util.Date;
 
 import com.ids.progettoids.utils.ContentUtils;
 
 public class Content {
     private String media;
-    private Date data;
+    private String data;
     private String autore;
     private String descrizione;
 
     /**
      * Factory Method: Builder
      */
-    public Content(String media, Date data, String autore, String descrizione) {
+    public Content(String media, String data, String autore, String descrizione) {
         setMedia(media);
         setAutore(autore);
         setData(data);
@@ -22,7 +21,7 @@ public class Content {
     public void setAutore(String autore) {
         this.autore = autore;
     }
-    public void setData(Date data) {
+    public void setData(String data) {
         this.data = data;
     }
     public void setDescrizione(String descrizione) {
@@ -38,7 +37,7 @@ public class Content {
 public String getMedia() {
     return media;
 }
-public Date getData() {
+public String getData() {
     return data;
 }
 public String getAutore() {

@@ -4,22 +4,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.models.Content;
 
 public class ContentUtils {
     
-    public static int getIdContent(String media, Date data, String autore, String descrizione) {
+    public static int getIdContent(String media, String data, String autore, String descrizione) {
     { int idContent = -1;
-    String sql = "SELECT idContent FROM Content WHERE media = ? AND data = ? AND autore = ? AND descrizione = ?";
+    String sql = "SELECT idContent FROM Content WHERE mediaUrl = ? AND data = ? AND autore = ? AND descrizione = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
         pstmt.setString(1, media);
-        pstmt.setString(2, data.toString());
+        pstmt.setString(2, data);
         pstmt.setString(3, autore);
         pstmt.setString(4, descrizione);
 
@@ -36,7 +35,7 @@ public class ContentUtils {
     return idContent;}
     }
 
-    public static void creaContent(String media, Date data, String autore, String descrizione, boolean daApprovare) {
+    public static void creaContent(String media, String data, String autore, String descrizione, boolean daApprovare) {
         String sql = "";
         if(!daApprovare){
          sql = "INSERT INTO Content (MediaUrl, Data, Autore, Descrizione) VALUES (?, ?, ?, ?)"; 
@@ -75,7 +74,7 @@ public class ContentUtils {
             if (rs.next()) {
                 content = new Content(null,null,null,null);                
                 content.setMedia(rs.getString("MediaUrl"));
-                content.setData(rs.getDate("Data"));
+                content.setData(rs.getString("Data"));
                 content.setAutore(rs.getString("Autore"));
                 content.setDescrizione(rs.getString("Descrizione"));
             }
