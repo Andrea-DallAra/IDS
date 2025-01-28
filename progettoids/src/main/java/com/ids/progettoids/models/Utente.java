@@ -90,17 +90,14 @@ public class Utente implements UtenteInterfaccia {
     }
     
     public void CaricaRuoli(String username) {
-       
         Connection con = ConnettiDB.getConnection();
-
         String query = "SELECT Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato FROM Ruoli WHERE idUtente = ?";
-
+    
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
     
             if (rs.next()) {
-                
                 if (rs.getInt("Gestore") == 1) {
                     ruoli.add(Ruolo.Gestore);
                 }
@@ -117,19 +114,18 @@ public class Utente implements UtenteInterfaccia {
                     ruoli.add(Ruolo.Turista);
                 }
                 if (rs.getInt("ContributoreAutenticato") == 1) {
-                    if (this instanceof Contributore) {
+                    // Se l'oggetto è del tipo Contributore, puoi gestirlo senza instanceof
+                    if (ruoli.contains(Ruolo.Contributore)) {
+                        // Esegui l'operazione per il contributore autenticato
                         ((Contributore) this).setAutenticato(true);
                     }
                 }
     
-              
-    
-            System.out.println("Ruoli caricati correttamente per l'utente: " + username);
-           
-
+                System.out.println("Ruoli caricati correttamente per l'utente: " + username);
             } else {
                 System.out.println("Nessun ruolo trovato per l'utente: " + username);
             }
+    
             con.close();
         } catch (SQLException e) {
             System.out.println("Errore durante il caricamento dei ruoli: " + e.getMessage());

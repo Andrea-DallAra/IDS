@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.utils.ContentUtils;
@@ -79,7 +78,7 @@ public void ApprovaItinerari(Itinerario itinerario) {
 
 public void ApprovaContent(Content content) {
     String sqlElimina = "DELETE FROM Content_DaApprovare WHERE idContent = ?";
-    String sqlInserisci = "INSERT INTO Content (idContent, Media, Data, Autore, Descrizione) VALUES (?, ?)";
+    String sqlInserisci = "INSERT INTO Content (idContent, Media, Data, Autore, Descrizione) VALUES (?, ?, ?, ?, ?)";
 
     try (Connection conn = ConnettiDB.getConnection();        
          PreparedStatement pstmtElimina = conn.prepareStatement(sqlElimina);
