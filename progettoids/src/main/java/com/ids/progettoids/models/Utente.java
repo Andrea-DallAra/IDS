@@ -32,6 +32,9 @@ public class Utente implements UtenteInterfaccia {
        username = _username;
        
     }
+    public Utente() {
+        //TODO Auto-generated constructor stub
+    }
     public void CambiaRuolo(String username, String _ruolo) {
         String sql = "INSERT INTO RichiediRuolo (username, ruolo) VALUES (?, ?)";
 
@@ -132,7 +135,7 @@ public class Utente implements UtenteInterfaccia {
         }
     }
     
-    public boolean Login(String username, String password) {
+    public  boolean Login(String username, String password) {
         Connection con = ConnettiDB.getConnection();
       
     
@@ -147,10 +150,11 @@ public class Utente implements UtenteInterfaccia {
                 String storedHash = rs.getString("password");
                 
                 
-                String inputHash = hashPassword(password, "chiave");
+               // String inputHash = hashPassword(password, "chiave");
+               String inputHash = password;
                 con.close();
                 if (inputHash.equals(storedHash)) {
-                    System.out.println("Login riuscito.");
+                    System.out.println("Login riuscito."); 
                     CaricaRuoli(username);
                     return true;
                 } else {
@@ -173,7 +177,7 @@ public class Utente implements UtenteInterfaccia {
 
     public boolean Registrazione(String nome, String cognome, String email, String password, String username) {
         // Hash della password
-        password = hashPassword(password, "chiave");
+      //  password = hashPassword(password, "chiave");
 
         // Query di inserimento
         String sql = "INSERT INTO Utenti (username, email, nome, cognome, password) VALUES (?, ?, ?, ?, ?)";
@@ -192,6 +196,9 @@ public class Utente implements UtenteInterfaccia {
 
             if (rowsInserted > 0) {
                 System.out.println("Registrazione completata per l'utente: " + username);
+                Utente pass = new Utente(username, email, nome, cognome, password);
+                pass.AggiungiRuolo(Ruolo.Turista);
+                pass.SalvaRuoliDB(pass.username);
                 return true;
             }
 
@@ -223,6 +230,9 @@ public class Utente implements UtenteInterfaccia {
     }
     public void AggiungiRuolo(Ruolo _ruolo) {
        ruoli.add(_ruolo);
+    }
+    public List<Ruolo> getRuolo() {
+        return ruoli;
     }
     public void Report(String chiave, String tipo, String descrizione) {
         String sql = "INSERT INTO Report (Chiave, Tipo, Descrizione) VALUES (?, ?, ?)";
