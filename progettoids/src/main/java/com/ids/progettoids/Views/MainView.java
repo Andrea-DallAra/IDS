@@ -54,14 +54,36 @@ public class MainView extends VerticalLayout {
             getUI().ifPresent(ui -> ui.navigate("/admin"));});
             add(navigateToPageButton);
     }
+    boolean bottoneInserito = false;
     public void BottoniContributore()
     {
-        Button navigateToPageButton = new Button("Vai alla pagina Inserisci POI", e -> {
+        if(!bottoneInserito) 
+        {
+            Button inserisciPoi = new Button("Vai alla pagina Inserisci POI", e -> {
             getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
-            add(navigateToPageButton);
+
+            Button itinerario = new Button("Vai alla pagina Aggiungi Itinerario", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/aggiungiItinerario"));});
+            add(inserisciPoi,itinerario);
+
+            bottoneInserito = true;
+        }
     }
     public void BottoniAnimatore(){}
-    public void BottoniCuratore(){}
+    public void BottoniCuratore()
+    {
+        if(!bottoneInserito) 
+        {
+            Button inserisciPoi = new Button("Vai alla pagina Inserisci POI", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
+
+            Button itinerario = new Button("Vai alla pagina  Aggiungi Itinerario", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/aggiungiItinerario"));});
+            add(inserisciPoi,itinerario);
+
+            bottoneInserito = true;
+        }
+    }
     public void BottoniTurista(){}
     
 }

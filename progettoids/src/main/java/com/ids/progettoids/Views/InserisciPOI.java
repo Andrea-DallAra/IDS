@@ -15,7 +15,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
-import javassist.expr.Instanceof;
 
 @Route("/InserisciPOI") 
 public class InserisciPOI extends VerticalLayout {
@@ -53,7 +52,7 @@ public class InserisciPOI extends VerticalLayout {
             POI poi = new POI(name, new Coordinate(latitude, longitude), description, nullo);
 
             boolean daApprovare = false;
-            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore))
+            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
             {
                 Contributore contributorepass = (Contributore) SessioneUtente.utente;
                 if(!contributorepass.isAutenticato())

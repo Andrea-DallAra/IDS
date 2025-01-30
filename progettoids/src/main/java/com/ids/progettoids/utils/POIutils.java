@@ -36,7 +36,7 @@ public class POIutils {
 
                 Content media = getContent(idContent);
 
-                // Converto le coordinate
+               
                 String[] coordinateSplit = coordinateStr.split(",");
                 Coordinate coordinate = new Coordinate(
                         Double.parseDouble(coordinateSplit[0].trim()),

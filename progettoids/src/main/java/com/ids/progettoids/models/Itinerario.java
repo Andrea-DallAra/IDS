@@ -31,6 +31,6 @@ public class Itinerario {
     }
 
     public static void CreaItinerario(Itinerario itinerario, boolean daApprovare) {
-        ItinerarioUtils.creaItinerario(itinerario.idItinerario, itinerario.listaPOI, daApprovare);
+        ItinerarioUtils.creaItinerario( itinerario.listaPOI, daApprovare);
     }
 }

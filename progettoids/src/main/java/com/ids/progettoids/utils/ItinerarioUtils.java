@@ -56,18 +56,18 @@ public class ItinerarioUtils {
         return listaPOI;
     }
 
-    public static void creaItinerario(int idItinerario, ArrayList<POI> listaPOI, boolean daApprovare) {
+    public static void creaItinerario(ArrayList<POI> listaPOI, boolean daApprovare) {
          String sql = "";
         if(!daApprovare)
         {
-         sql = "INSERT INTO Itinerario (idItinerario, ListaPOI) VALUES (?, ?)";
+         sql = "INSERT INTO Itinerario (ListaPOI) VALUES (?)";
         }
-        else{ sql = "INSERT INTO Itinerario_DaApprovare (idItinerario, ListaPOI) VALUES (?, ?)";}
+        else{ sql = "INSERT INTO Itinerario_DaApprovare ( ListaPOI) VALUES (?)";}
 
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, idItinerario);
+            
 
             StringBuilder sb = new StringBuilder();
 
@@ -79,7 +79,7 @@ public class ItinerarioUtils {
                 sb.deleteCharAt(sb.length() - 1);
             }
 
-            pstmt.setString(2, sb.toString());
+            pstmt.setString(1, sb.toString());
 
             pstmt.executeUpdate();
             conn.close();
