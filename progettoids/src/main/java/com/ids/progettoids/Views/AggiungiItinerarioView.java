@@ -1,19 +1,18 @@
 package com.ids.progettoids.Views;
 
-import com.ids.progettoids.utils.ItinerarioUtils;
-import com.ids.progettoids.utils.POIutils;
-import com.ids.progettoids.utils.SessioneUtente;
+import java.util.ArrayList;
+
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.POI;
+import com.ids.progettoids.utils.ItinerarioUtils;
+import com.ids.progettoids.utils.POIutils;
+import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-
-import java.util.ArrayList;
-
 
 @Route("aggiungiItinerario")
 public class AggiungiItinerarioView extends VerticalLayout {
@@ -33,12 +32,10 @@ public class AggiungiItinerarioView extends VerticalLayout {
 
             boolean daApprovare = false;
             ArrayList<POI> parsedPOIList = parsePOIList(listaPOI);
-             if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
-            {
-                Contributore contributorepass = (Contributore) SessioneUtente.utente;
-                if(!contributorepass.isAutenticato())
-                {
-                    
+            if (SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore)) {
+                Contributore contributorepass = new Contributore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(), SessioneUtente.utente.getEmail(), SessioneUtente.utente.getPassword(), SessioneUtente.utente.getUsername());
+                if (!contributorepass.isAutenticato()) {
+
                     daApprovare = true;
                 }
             }
@@ -48,6 +45,7 @@ public class AggiungiItinerarioView extends VerticalLayout {
 
         add(itinerarioField, poiField, submitButton);
     }
+
     private static ArrayList<POI> parsePOIList(String listaPOIStr) {
         ArrayList<POI> listaPOI = new ArrayList<>();
 

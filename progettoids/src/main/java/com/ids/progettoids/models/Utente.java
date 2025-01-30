@@ -32,9 +32,8 @@ public class Utente implements UtenteInterfaccia {
        username = _username;
        
     }
-    public Utente() {
-        //TODO Auto-generated constructor stub
-    }
+    public Utente() {}
+    @Override
     public void CambiaRuolo(String username, String _ruolo) {
         String sql = "INSERT INTO RichiediRuolo (username, ruolo) VALUES (?, ?)";
 
@@ -117,10 +116,9 @@ public class Utente implements UtenteInterfaccia {
                     ruoli.add(Ruolo.Turista);
                 }
                 if (rs.getInt("ContributoreAutenticato") == 1) {
-                    // Se l'oggetto è del tipo Contributore, puoi gestirlo senza instanceof
                     if (ruoli.contains(Ruolo.Contributore)) {
-                        // Esegui l'operazione per il contributore autenticato
-                        ((Contributore) this).setAutenticato(true);
+                        Contributore contributore = new Contributore(this.nome, this.cognome, this.email, this.password, this.username);
+                        contributore.setAutenticato(true);   
                     }
                 }
     
@@ -249,5 +247,25 @@ public class Utente implements UtenteInterfaccia {
         } catch (SQLException e) {
             System.err.println("Errore durante l'inserimento del report: " + e.getMessage());
         }
+    }
+
+    public String getNome(){
+        return nome;
+    }
+    
+    public String getCognome(){
+        return cognome;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public String getUsername(){
+        return username;
     }
 }
