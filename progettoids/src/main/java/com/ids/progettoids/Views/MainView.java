@@ -2,10 +2,13 @@ package com.ids.progettoids.Views;
 
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.utils.SessioneUtente;
+import com.ids.progettoids.Ruolo;
+import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+@Route("")
 @Route("")
 public class MainView extends VerticalLayout {
 

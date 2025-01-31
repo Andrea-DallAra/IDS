@@ -3,10 +3,13 @@ package com.ids.progettoids.Views;
 import java.time.LocalDate;
 
 import com.ids.progettoids.Ruolo;
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Content;
+import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.Coordinate;
 import com.ids.progettoids.models.POI;
+import com.ids.progettoids.utils.SessioneUtente;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -14,6 +17,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+
 
 
 @Route("/InserisciPOI") 
@@ -51,6 +55,17 @@ public class InserisciPOIView extends VerticalLayout {
             Content nullo = new Content(null, pass, null, null);
             POI poi = new POI(name, new Coordinate(latitude, longitude), description, nullo);
 
+            boolean daApprovare = false;
+            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
+            {
+                Contributore contributorepass = (Contributore) SessioneUtente.utente;
+                if(!contributorepass.isAutenticato())
+                {
+                    
+                    daApprovare = true;
+                }
+            }
+            POI.CreaPOI(poi, daApprovare);
             boolean daApprovare = false;
             if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
             {

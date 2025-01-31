@@ -16,4 +16,8 @@ public class Coordinate {
     public double getLongitudine() {
         return longitudine;
     }
+    @Override
+    public String toString() {
+        return latitudine + "," + longitudine;
+    }
 }

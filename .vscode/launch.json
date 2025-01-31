@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProgettoidsApplication<progettoids>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.ids.progettoids.ProgettoidsApplication",
+            "projectName": "progettoids",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
