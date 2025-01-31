@@ -36,7 +36,7 @@ public class POIutils {
 
                 Content media = getContent(idContent);
 
-                // Converto le coordinate
+               
                 String[] coordinateSplit = coordinateStr.split(",");
                 Coordinate coordinate = new Coordinate(
                         Double.parseDouble(coordinateSplit[0].trim()),
@@ -55,6 +55,7 @@ public class POIutils {
     }
 
   
+
     public static Content getContent(int idContent) {
         Content content = null;
         String sql = "SELECT * FROM Content WHERE idContent = ?";
@@ -122,6 +123,30 @@ public class POIutils {
             conn.close();
         } catch (SQLException e) {
             System.err.println("Errore durante l'eliminazione del POI: " + e.getMessage());
+        }
+    }
+
+    public static void collegaContent(Content content , String poi, boolean daApprovare) {
+        int idContent = ContentUtils.getIdContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
+        String sqlPOI = "";
+        if(!daApprovare){
+            sqlPOI = "UPDATE POI SET idContent = ? WHERE Nome = ?";
+        }
+        else 
+        {sqlPOI = "UPDATE POI_DaApprovare SET idContent = ? WHERE Nome = ?";}
+        
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmtPOI = conn.prepareStatement(sqlPOI))
+              {
+            
+            pstmtPOI.setInt(1, idContent);
+            pstmtPOI.setString(2, poi);
+            pstmtPOI.executeUpdate();
+            
+            
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'aggiornamento dell'idContent nei POI: " + e.getMessage());
         }
     }
 }
