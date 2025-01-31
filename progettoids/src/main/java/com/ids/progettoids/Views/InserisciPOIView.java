@@ -3,13 +3,10 @@ package com.ids.progettoids.Views;
 import java.time.LocalDate;
 
 import com.ids.progettoids.Ruolo;
-import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Content;
-import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.Coordinate;
 import com.ids.progettoids.models.POI;
-import com.ids.progettoids.utils.SessioneUtente;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -66,7 +63,7 @@ public class InserisciPOIView extends VerticalLayout {
                 }
             }
             POI.CreaPOI(poi, daApprovare);
-            boolean daApprovare = false;
+       
             if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
             {
                 Contributore contributorepass = (Contributore) SessioneUtente.utente;
