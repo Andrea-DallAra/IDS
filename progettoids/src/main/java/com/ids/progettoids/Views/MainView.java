@@ -91,6 +91,14 @@ public class MainView extends VerticalLayout {
             bottoneInserito = true;
         }
     }
-    public void BottoniTurista(){}
+    public void BottoniTurista()
+    {
+        
+            Button report = new Button("Vai alla pagina Report", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/Report"));});
+            add(report);
+            
+        
+    }
     
 }

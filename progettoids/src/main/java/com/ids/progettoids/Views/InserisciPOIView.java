@@ -17,7 +17,7 @@ import com.vaadin.flow.router.Route;
 
 
 
-@Route("/InserisciPOI") 
+@Route("InserisciPOI") 
 public class InserisciPOIView extends VerticalLayout {
 
     public InserisciPOIView() {

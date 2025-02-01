@@ -66,7 +66,7 @@ public class Utente implements UtenteInterfaccia {
             return;
         }
     
-        // aggiorna ruoli
+      
         String query = "UPDATE Ruoli SET Gestore = ?, Contributore = ?, Curatore = ?, Animatore = ?, Turista = ?,  ContributoreAutenticato = ? WHERE idUtente = ?";
     
         try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -179,7 +179,7 @@ public class Utente implements UtenteInterfaccia {
 
         // Query di inserimento
         String sql = "INSERT INTO Utenti (username, email, nome, cognome, password) VALUES (?, ?, ?, ?, ?)";
-
+        
         // Connessione e inserimento
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
