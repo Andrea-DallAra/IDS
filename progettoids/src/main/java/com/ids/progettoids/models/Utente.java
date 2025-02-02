@@ -177,6 +177,11 @@ public class Utente implements UtenteInterfaccia {
     }
 
     public boolean Registrazione(String nome, String cognome, String email, String password, String username) {
+
+        if (utenteEsiste(username, email)) {
+            System.out.println("L'utente con username: " + username + " o email: " + email + " è già registrato.");
+            return false;
+        }
         // Hash della password
       //  password = hashPassword(password, "chiave");
 
@@ -197,9 +202,8 @@ public class Utente implements UtenteInterfaccia {
 
             if (rowsInserted > 0) {
                 System.out.println("Registrazione completata per l'utente: " + username);
-                Utente pass = new Utente(username, email, nome, cognome, password);
-                pass.AggiungiRuolo(Ruolo.Turista);
-                pass.SalvaRuoliDB(pass.username);
+               
+                AggiungiTurista(username);
                 return true;
             }
 
@@ -209,7 +213,71 @@ public class Utente implements UtenteInterfaccia {
 
         return false;
     }
-
+    private boolean utenteEsiste(String username, String email) {
+        String checkQuery = "SELECT COUNT(*) FROM Utenti WHERE username = ? OR email = ?";
+    
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+    
+            checkStmt.setString(1, username);
+            checkStmt.setString(2, email);
+            ResultSet rs = checkStmt.executeQuery();
+    
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;  // L'utente esiste già
+            }
+    
+        } catch (SQLException e) {
+            System.err.println("Errore nel controllo esistenza utente: " + e.getMessage());
+        }
+    
+        return false; // L'utente non esiste
+    }
+    
+    public void AggiungiTurista(String username) {
+        Connection con = ConnettiDB.getConnection();
+    
+        if (con == null) {
+            System.out.println("Connessione al database fallita.");
+            return;
+        }
+    
+        // Prima verifica se l'utente esiste già nella tabella Ruoli
+        String checkQuery = "SELECT COUNT(*) FROM Ruoli WHERE idUtente = ?";
+        String insertQuery = "INSERT INTO Ruoli (idUtente, Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+        try (PreparedStatement checkStmt = con.prepareStatement(checkQuery)) {
+            checkStmt.setString(1, username);
+            ResultSet rs = checkStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+    
+            if (count == 0) { 
+                try (PreparedStatement insertStmt = con.prepareStatement(insertQuery)) {
+                    insertStmt.setString(1, username);
+                    insertStmt.setInt(2,0);
+                    insertStmt.setInt(3,  0);
+                    insertStmt.setInt(4, 0);
+                    insertStmt.setInt(5,0);
+                    insertStmt.setInt(6, 1 );
+                    insertStmt.setInt(7, 0);
+    
+                    int rowsInserted = insertStmt.executeUpdate();
+                    if (rowsInserted > 0) {
+                        System.out.println("Ruoli inseriti correttamente per l'utente: " + username);
+                    } else {
+                        System.out.println("Errore durante l'inserimento dei ruoli.");
+                    }
+                }
+            } else {
+                System.out.println("L'utente " + username + " ha già un record nella tabella Ruoli.");
+            }
+    
+        } catch (SQLException e) {
+            System.out.println("Errore durante il salvataggio dei ruoli: " + e.getMessage());
+        }
+    }
     
 
     // SHA-256

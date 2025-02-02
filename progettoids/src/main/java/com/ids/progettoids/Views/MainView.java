@@ -120,10 +120,14 @@ public class MainView extends VerticalLayout {
         {
             Button report = new Button("Vai alla pagina Report", e -> {
             getUI().ifPresent(ui -> ui.navigate("/Report"));});
-            add(report);
 
-            bottoneInseritoTurista = true;
-        }
+            Button visPOI = new Button("Visuallizza POI", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/poiList"));});
+
+                Button visItinerario = new Button("Visuallizza Itinierari", e -> {
+                    getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
+            add(report, visPOI, visItinerario);
+            
         
     }
     

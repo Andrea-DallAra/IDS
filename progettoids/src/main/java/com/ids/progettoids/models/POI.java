@@ -10,7 +10,7 @@ public class POI {
     private String descrizione;
     private Content media;
 
-    // Costruttore
+ 
     public POI(String _nome, Coordinate _coordinate, String _descrizione, Content _media) {
         setNome(_nome);
         setCoordinate(_coordinate);
@@ -18,7 +18,7 @@ public class POI {
         setMedia(_media);
     }
 
-    // Setter
+   
     void setNome(String nome) {
         this.nome = nome;
     }
