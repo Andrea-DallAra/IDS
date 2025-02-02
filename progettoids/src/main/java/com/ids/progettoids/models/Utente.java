@@ -66,17 +66,20 @@ public class Utente implements UtenteInterfaccia {
             return;
         }
     
-      
+        Utente utente=new Utente(username, null, null, null, null);
+        utente.CaricaRuoli(username);
+        List<Ruolo> ruoliUtente = utente.getRuolo();
         String query = "UPDATE Ruoli SET Gestore = ?, Contributore = ?, Curatore = ?, Animatore = ?, Turista = ?,  ContributoreAutenticato = ? WHERE idUtente = ?";
     
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             // Imposta 1 se il ruolo e' presente, 0 se non lo e'
-            stmt.setInt(1, ruoli.contains(Ruolo.Gestore) ? 1 : 0);
-            stmt.setInt(2, ruoli.contains(Ruolo.Contributore) ? 1 : 0);
-            stmt.setInt(3, ruoli.contains(Ruolo.Curatore) ? 1 : 0);
-            stmt.setInt(4, ruoli.contains(Ruolo.Animatore) ? 1 : 0);
-            stmt.setInt(5, ruoli.contains(Ruolo.Turista) ? 1 : 0);
-            stmt.setString(6, username);
+            stmt.setInt(1, ruoliUtente.contains(Ruolo.Gestore) ? 1 : 0);
+            stmt.setInt(2, ruoliUtente.contains(Ruolo.Contributore) ? 1 : 0);
+            stmt.setInt(3, ruoliUtente.contains(Ruolo.Curatore) ? 1 : 0);
+            stmt.setInt(4, ruoliUtente.contains(Ruolo.Animatore) ? 1 : 0);
+            stmt.setInt(5, ruoliUtente.contains(Ruolo.Turista) ? 1 : 0);
+            stmt.setInt(6, ruoliUtente.contains(Ruolo.ContributoreAutenticato) ? 1 : 0);
+            stmt.setString(7, username);
     
             int rowsAffected = stmt.executeUpdate();
     

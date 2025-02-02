@@ -146,6 +146,27 @@ public void VisualizzaReport()
 
     }
 }
+
+public Report getReportFromChiave(String chiave){
+    String sql = "SELECT * FROM Report WHERE chiave = ?";
+    Report report = new Report(chiave, "", "");
+   
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            pstmt.setString(1, chiave);
+            while (rs.next()) {
+                String descrizione = rs.getString("Descrizione");
+                String tipo = rs.getString("Tipo");
+                report = new Report(chiave, tipo,descrizione);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante la ricerca dei report: " + e.getMessage());
+        }
+        return report;
+}
+
 public void EliminaReport(Report r)
 {
     switch (r.getTipo()) {
@@ -169,7 +190,7 @@ public void EliminaReport(Report r)
             break;
     }
 }
-public void EliminaSegnalazione(String chiave)
+private void EliminaSegnalazione(String chiave)
 {
     String sql = "DELETE FROM Report WHERE chiave = ?";
 
@@ -184,7 +205,7 @@ public void EliminaSegnalazione(String chiave)
         System.err.println("Errore durante l'eliminazione della segnalazione: " + e.getMessage());
     }
 }
-private ArrayList<Report> GetReports()
+public ArrayList<Report> GetReports()
 {
   //prendi i valori della tabella report e li metti in una lista
   String sql = "SELECT * FROM Report";

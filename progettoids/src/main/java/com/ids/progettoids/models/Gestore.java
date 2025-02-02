@@ -60,6 +60,18 @@ public class Gestore extends Utente {
         nuovoUtente.AggiungiRuolo(Ruolo.valueOf(_ruolo));
         nuovoUtente.SalvaRuoliDB(username);
     }
+
+    public void removeRuoloFromDatabase(String username) {
+        String sql = "DELETE FROM RichiediRuolo WHERE username = ?";
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'eliminazione del Content: " + e.getMessage());
+        }
+    }
     
 
 }

@@ -2,7 +2,6 @@ package com.ids.progettoids.Views;
 
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.utils.SessioneUtente;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -50,16 +49,27 @@ public class MainView extends VerticalLayout {
                 
 
     }
+    boolean bottoneInseritoGestore = false;
+    boolean bottoneInseritoContributore = false;
+    boolean bottoneInseritoAnimatore = false;
+    boolean bottoneInseritoTurista = false;
+    boolean bottoneInseritoCuratore = false;
     public void BottoniGestore() 
     {
-        Button navigateToPageButton = new Button("Vai alla pagina Admin", e -> {
-            getUI().ifPresent(ui -> ui.navigate("/admin"));});
-            add(navigateToPageButton);
+        if(!bottoneInseritoGestore) 
+        {
+        Button cambiareRuoli = new Button("Vai alla pagina delle richieste di cambi ruolo", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/RichiesteCambioRuoloView"));});
+        Button richiesteCambioRuolo = new Button("Vai alla pagina per i cambi ruolo", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/CambioRuoloView"));});
+            add(cambiareRuoli,richiesteCambioRuolo);
+            bottoneInseritoGestore=true;
+        }
     }
-    boolean bottoneInserito = false;
+    
     public void BottoniContributore()
     {
-        if(!bottoneInserito) 
+        if(!bottoneInseritoContributore) 
         {
             Button inserisciPoi = new Button("Vai alla pagina Inserisci POI", e -> {
             getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
@@ -72,13 +82,23 @@ public class MainView extends VerticalLayout {
                 add(inserisciPoi,itinerario, contenuto);
 
 
-            bottoneInserito = true;
+                bottoneInseritoContributore = true;
         }
     }
-    public void BottoniAnimatore(){}
+    public void BottoniAnimatore(){
+        if(!bottoneInseritoAnimatore) 
+        {
+            Button creaContest = new Button("Vai alla pagina Crea Contest", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/CreaContest"));});
+            Button gestisciContest = new Button("Vai alla pagina Gestisci Contest", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/GestisciContest"));});
+            add(creaContest,gestisciContest);
+            bottoneInseritoAnimatore=true;
+        }
+    }
     public void BottoniCuratore()
     {
-        if(!bottoneInserito) 
+        if(!bottoneInseritoCuratore) 
         {
             Button inserisciPoi = new Button("Vai alla pagina Inserisci POI", e -> {
             getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
@@ -88,16 +108,22 @@ public class MainView extends VerticalLayout {
                 Button contenuto = new Button("Vai alla pagina Crea Contenuto", e -> {
                     getUI().ifPresent(ui -> ui.navigate("/CreaContenuto"));});
                 add(inserisciPoi,itinerario, contenuto);
-            bottoneInserito = true;
+                Button gestisciReport = new Button("Vai alla pagina Gestisci Report", e -> {
+                    getUI().ifPresent(ui -> ui.navigate("/GestisciReport"));});
+                add(inserisciPoi,itinerario, contenuto,gestisciReport);
+                bottoneInseritoCuratore = true;
         }
     }
     public void BottoniTurista()
     {
-        
+        if(!bottoneInseritoTurista) 
+        {
             Button report = new Button("Vai alla pagina Report", e -> {
             getUI().ifPresent(ui -> ui.navigate("/Report"));});
             add(report);
-            
+
+            bottoneInseritoTurista = true;
+        }
         
     }
     
