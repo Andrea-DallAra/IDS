@@ -55,7 +55,7 @@ public static void EditaContent(Content base, Content editato) {
 }
 
 public static void EditaItinerario(Itinerario base, Itinerario editato) {
-    String sql = "UPDATE Itinerari SET listaPOI = ? where idItinerario = ?";
+    String sql = "UPDATE Itinerario SET listaPOI = ? where idItinerario = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {

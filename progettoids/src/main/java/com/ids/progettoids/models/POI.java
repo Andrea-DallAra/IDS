@@ -59,6 +59,16 @@ public class POI {
     public static void CreaPOI(POI poi, boolean daApprovare) {
         POIutils.creaPOI(poi.nome, poi.coordinate, poi.descrizione, poi.media, daApprovare);
     }
+
+    @Override
+    public String toString() {
+        return "POI{" +
+                "nome='" + nome + '\'' +
+                ", coordinate=" + coordinate +
+                ", descrizione='" + descrizione + '\'' +
+                ", media=" + media +
+                '}';
+    }
   
     
 }

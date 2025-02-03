@@ -23,7 +23,7 @@ public class EditaPOIView extends VerticalLayout{
         poiGrid.setItems(listaPOI);
         TextField poiNameField = new TextField("Nome del POI da modificare");
         poiNameField.setPlaceholder("Inserisci il nome del POI da modificare");
-        POI poidaEditare=POIutils.getPOI(poiNameField.getValue()).get(0);
+        POI[] poidaEditareArray = new POI[1];
         
         TextField poiNameFieldEditato = new TextField("Nome del POI");
         poiNameFieldEditato.setPlaceholder("Inserisci il nome del POI da modificare");
@@ -47,13 +47,14 @@ public class EditaPOIView extends VerticalLayout{
             }
 
             try {
+                poidaEditareArray[0] = POIutils.getPOI(poiNameField.getValue()).get(0);
                 String pass = datePickerEditato.toString();
                 double latitude = Double.parseDouble(latitudeFieldEditato.getValue());
                 double longitude = Double.parseDouble(longitudeFieldEditato.getValue());
-                Content oldContent= poidaEditare.getMedia();
+                Content oldContent= poidaEditareArray[0].getMedia();
                 Content newContent = new Content(oldContent.getMedia(), pass, oldContent.getAutore(), oldContent.getDescrizione());
                 POI nuovoPOI= new POI(poiNameFieldEditato.getValue(), new Coordinate(latitude, longitude), poiDescrizioneEditato.getValue(), newContent);
-                EditaUtils.EditaPOI(poidaEditare, nuovoPOI);
+                EditaUtils.EditaPOI(poidaEditareArray[0], nuovoPOI);
                 Notification.show("POI editato con successo", 3000, Notification.Position.MIDDLE);
             } catch (NumberFormatException err) {
                 Notification.show("Errore di formato", 3000, Notification.Position.MIDDLE);

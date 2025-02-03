@@ -51,4 +51,14 @@ public String getDescrizione() {
         ContentUtils.creaContent(content.media, content.data, content.autore, content.descrizione, daApprovare);
     }
 
+    @Override
+    public String toString() {
+        return "Content{" +
+                "media='" + media + '\'' +
+                ", data='" + data + '\'' +
+                ", autore='" + autore + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                '}';
+    }
+
 }

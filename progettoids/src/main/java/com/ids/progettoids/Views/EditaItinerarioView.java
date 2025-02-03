@@ -21,10 +21,10 @@ public class EditaItinerarioView extends VerticalLayout{
         List<Itinerario> listaItinerari=ItinerarioUtils.getItinerario(-1);
         contentGrid.setItems(listaItinerari);
         TextField idItinerarioField = new TextField("Id dell'itinerario da modificare");
-        idItinerarioField.setPlaceholder("Inserisci l'id del content da da modificare");
+        idItinerarioField.setPlaceholder("Inserisci l'id dell'itinerario da da modificare");
         TextField nomiPOIFieldEditato = new TextField("Nomi dei POI da inserire nell'itinerario intervallati da ,");
-        nomiPOIFieldEditato.setPlaceholder("Inserisci i noi dei POI da inserire nell'itinerario intervallati da ,");
-        Button submitButton = new Button("EditaContent", e -> {
+        nomiPOIFieldEditato.setPlaceholder("Inserisci i nomi dei POI da inserire nell'itinerario intervallati da ,");
+        Button submitButton = new Button("EditaItinerario", e -> {
             if (idItinerarioField.isEmpty() || nomiPOIFieldEditato.isEmpty() ) {
                 Notification.show("Tutti i campi devono essere compilati", 3000, Notification.Position.MIDDLE);
                 return;

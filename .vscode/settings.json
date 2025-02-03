@@ -1,3 +1,6 @@
 {
-  "dataworkspace.excludedProjects": ["CamerinoMapsDB/CamerinoMapsDB.sqlproj"]
+  "dataworkspace.excludedProjects": [
+    "CamerinoMapsDB/CamerinoMapsDB.sqlproj"
+  ],
+  "java.compile.nullAnalysis.mode": "disabled"
 }
