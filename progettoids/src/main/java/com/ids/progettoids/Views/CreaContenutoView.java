@@ -1,8 +1,9 @@
 package com.ids.progettoids.Views;
 
+import java.time.LocalDate;
+
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Content;
-import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.utils.ContentUtils;
 import com.ids.progettoids.utils.POIutils;
 import com.ids.progettoids.utils.SessioneUtente;
@@ -32,7 +33,6 @@ public class CreaContenutoView extends VerticalLayout implements HasUrlParameter
                 daApprovare = true;
             }
         }
-
         TextField postField = new TextField("Post");
         TextArea descriptionField = new TextArea("Descrizione");
 

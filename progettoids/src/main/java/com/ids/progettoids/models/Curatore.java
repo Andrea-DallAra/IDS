@@ -87,7 +87,7 @@ public void ApprovaContent(Content content) {
         pstmtElimina.setInt(1, content.getIdContent());
         pstmtInserisci.setInt(1, content.getIdContent());
         pstmtInserisci.setString(2, content.getMedia());
-        pstmtInserisci.setString(3, content.getData().toString());
+        pstmtInserisci.setString(3, content.getData());
         pstmtInserisci.setString(4, content.getAutore());
         pstmtInserisci.setString(5, content.getDescrizione());
         
@@ -98,14 +98,14 @@ public void ApprovaContent(Content content) {
         System.err.println("Errore durante l'approvazione del contenuto: " + e.getMessage());
     }
 }
-public void EditaElemento(POI base, POI editato) {
-    EditaUtils.EditaElemento(base, editato);
+public void EditaPOI(POI base, POI editato) {
+    EditaUtils.EditaPOI(base, editato);
 }
-public void EditaElemento(Content base, Content editato) {
-    EditaUtils.EditaElemento(base, editato);
+public void EditaContent(Content base, Content editato) {
+    EditaUtils.EditaContent(base, editato);
 }
-public void EditaElemento(Itinerario base, Itinerario editato) {
-    EditaUtils.EditaElemento(base, editato);
+public void EditaItinerario(Itinerario base, Itinerario editato) {
+    EditaUtils.EditaItinerario(base, editato);
 }
 
 ArrayList<POI> reportPOI = new ArrayList<>();
@@ -146,6 +146,27 @@ public void VisualizzaReport()
 
     }
 }
+
+public Report getReportFromChiave(String chiave){
+    String sql = "SELECT * FROM Report WHERE chiave = ?";
+    Report report = new Report(chiave, "", "");
+   
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            pstmt.setString(1, chiave);
+            while (rs.next()) {
+                String descrizione = rs.getString("Descrizione");
+                String tipo = rs.getString("Tipo");
+                report = new Report(chiave, tipo,descrizione);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante la ricerca dei report: " + e.getMessage());
+        }
+        return report;
+}
+
 public void EliminaReport(Report r)
 {
     switch (r.getTipo()) {
@@ -169,7 +190,7 @@ public void EliminaReport(Report r)
             break;
     }
 }
-public void EliminaSegnalazione(String chiave)
+private void EliminaSegnalazione(String chiave)
 {
     String sql = "DELETE FROM Report WHERE chiave = ?";
 
@@ -184,9 +205,8 @@ public void EliminaSegnalazione(String chiave)
         System.err.println("Errore durante l'eliminazione della segnalazione: " + e.getMessage());
     }
 }
-private ArrayList<Report> GetReports()
+public ArrayList<Report> GetReports()
 {
-  //prendi i valori della tabella report e li metti in una lista
   String sql = "SELECT * FROM Report";
   ArrayList<Report> reports = new ArrayList<>();
   try (Connection conn = ConnettiDB.getConnection();

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
@@ -62,8 +61,8 @@ public class Animatore extends Utente {
     }
 
     
-    public int dichiaraVincitore(List<Content> contents){
-        return contents.get(new Random().nextInt(contents.size())).getIdContent();
+    public void dichiaraVincitore(String usernameVincitore , String contestNome){
+        System.out.println("Il vincitore del contest "+contestNome+" &egrave "+usernameVincitore);
     }
 
     

@@ -2,7 +2,6 @@ package com.ids.progettoids.Views;
 
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.utils.SessioneUtente;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -17,6 +16,11 @@ public class MainView extends VerticalLayout {
         Button loginButton = new Button("Vai al login", e -> {
             getUI().ifPresent(ui -> ui.navigate("/login"));});
             add(loginButton);
+        Button visPOI = new Button("Visualizza POI", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/poiList"));});
+        Button visItinerario = new Button("Visualizza Itinierari", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
+        add(visPOI, visItinerario);
 
          
     
@@ -40,7 +44,7 @@ public class MainView extends VerticalLayout {
             {
                 BottoniAnimatore();
             }
-            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Turista))
+            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Turista) || SessioneUtente.utente.getRuolo().contains(Ruolo.TuristaAutenticato))
             {
                 BottoniTurista();
             }
@@ -50,16 +54,27 @@ public class MainView extends VerticalLayout {
                 
 
     }
+    boolean bottoneInseritoGestore = false;
+    boolean bottoneInseritoContributore = false;
+    boolean bottoneInseritoAnimatore = false;
+    boolean bottoneInseritoTurista = false;
+    boolean bottoneInseritoCuratore = false;
     public void BottoniGestore() 
     {
-        Button navigateToPageButton = new Button("Vai alla pagina Admin", e -> {
-            getUI().ifPresent(ui -> ui.navigate("/admin"));});
-            add(navigateToPageButton);
+        if(!bottoneInseritoGestore) 
+        {
+        Button cambiareRuoli = new Button("Vai alla pagina delle richieste di cambi ruolo", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/RichiesteCambioRuoloView"));});
+        Button richiesteCambioRuolo = new Button("Vai alla pagina per i cambi ruolo", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/CambioRuoloView"));});
+            add(cambiareRuoli,richiesteCambioRuolo);
+            bottoneInseritoGestore=true;
+        }
     }
-    boolean bottoneInserito = false;
+    
     public void BottoniContributore()
     {
-        if(!bottoneInserito) 
+        if(!bottoneInseritoContributore) 
         {
             Button inserisciPoi = new Button("Vai alla pagina Inserisci POI", e -> {
             getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
@@ -72,39 +87,57 @@ public class MainView extends VerticalLayout {
                 add(inserisciPoi,itinerario, contenuto);
 
 
-            bottoneInserito = true;
+                bottoneInseritoContributore = true;
         }
     }
-    public void BottoniAnimatore(){}
+    public void BottoniAnimatore(){
+        if(!bottoneInseritoAnimatore) 
+        {
+            Button creaContest = new Button("Vai alla pagina Crea Contest", e -> {
+            getUI().ifPresent(ui -> ui.navigate("/CreaContest"));});
+            Button gestisciContest = new Button("Vai alla pagina Gestisci Contest", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/GestisciContest"));});
+            add(creaContest,gestisciContest);
+            bottoneInseritoAnimatore=true;
+        }
+    }
     public void BottoniCuratore()
     {
-        if(!bottoneInserito) 
+        if(!bottoneInseritoCuratore) 
         {
             Button inserisciPoi = new Button("Vai alla pagina Inserisci POI", e -> {
             getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
-
             Button itinerario = new Button("Vai alla pagina  Aggiungi Itinerario", e -> {
                 getUI().ifPresent(ui -> ui.navigate("/aggiungiItinerario"));});
-                Button contenuto = new Button("Vai alla pagina Crea Contenuto", e -> {
-                    getUI().ifPresent(ui -> ui.navigate("/CreaContenuto"));});
-                add(inserisciPoi,itinerario, contenuto);
-            bottoneInserito = true;
+            Button contenuto = new Button("Vai alla pagina Crea Contenuto", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/CreaContenuto"));});
+            Button approvaPoi = new Button("Vai alla pagina Approva POI", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/ApprovaPOI"));});
+            Button approvaItinerario = new Button("Vai alla pagina  Approva Itinerario", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/ApprovaItinerario"));});
+            Button approvaContenuto = new Button("Vai alla pagina Approva Contenuto", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/ApprovaContenuto"));});
+            Button gestisciReport = new Button("Vai alla pagina Gestisci Report", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/GestisciReport"));});
+            Button editaElemento = new Button("Vai alla pagina per editare un elemento", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/EditaElemento"));});
+                
+                add(inserisciPoi,itinerario, contenuto,approvaPoi,approvaItinerario,approvaContenuto, gestisciReport,editaElemento);
+                bottoneInseritoCuratore = true;
         }
     }
     public void BottoniTurista()
     {
-        
+        if(!bottoneInseritoTurista) 
+        {
             Button report = new Button("Vai alla pagina Report", e -> {
             getUI().ifPresent(ui -> ui.navigate("/Report"));});
-
-            Button visPOI = new Button("Visuallizza POI", e -> {
+            Button visPOI = new Button("Visualizza POI", e -> {
                 getUI().ifPresent(ui -> ui.navigate("/poiList"));});
-
-                Button visItinerario = new Button("Visuallizza Itinierari", e -> {
-                    getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
+            Button visItinerario = new Button("Visualizza Itinierari", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
             add(report, visPOI, visItinerario);
-            
-        
-    }
+        }
     
+    }
 }
