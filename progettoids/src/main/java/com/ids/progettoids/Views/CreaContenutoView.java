@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Content;
+import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.utils.ContentUtils;
 import com.ids.progettoids.utils.POIutils;
 import com.ids.progettoids.utils.SessioneUtente;
@@ -14,7 +15,6 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
 
-import java.time.LocalDate;
 
 @Route("CreaContenuto")
 public class CreaContenutoView extends VerticalLayout implements HasUrlParameter<String> {
@@ -28,7 +28,8 @@ public class CreaContenutoView extends VerticalLayout implements HasUrlParameter
        
         if (SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) &&
             !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore)) {
-            Contributore contributorePass = (Contributore) SessioneUtente.utente;
+            Contributore contributorePass = new Contributore();
+            contributorePass.SetUsername(SessioneUtente.utente.getUsername());
             if (!contributorePass.isAutenticato()) {
                 daApprovare = true;
             }

@@ -27,6 +27,7 @@ public class Contributore extends Utente {
         
     }
 
+    public Contributore() {}
     public Contributore(String _nome, String _cognome , String _email, String _password, String _username) 
     {
        super(_nome, _cognome, _email, _password, _username);
