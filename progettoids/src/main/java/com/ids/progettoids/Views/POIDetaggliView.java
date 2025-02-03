@@ -45,12 +45,17 @@ public class POIDetaggliView extends VerticalLayout implements HasUrlParameter<S
         );
         add(backButton);
 
-        Button aggiungiContenutoButton = new Button("Aggiungi Contenuto", event2 ->
-        getUI().ifPresent(ui -> ui.navigate("CreaContenuto/" + poi.getNome())));
-         add(aggiungiContenutoButton);
-
-            Button salvaPOIButton = new Button("Salva POI", event2 -> salvaPOI(poi.getNome()));
-            add(salvaPOIButton);
+        if(SessioneUtente.utente != null)
+         {
+            //ha fatto il login quindi è un turista autenticato
+            Button aggiungiContenutoButton = new Button("Aggiungi Contenuto", event2 ->
+            getUI().ifPresent(ui -> ui.navigate("CreaContenuto/" + poi.getNome())));
+             add(aggiungiContenutoButton);
+    
+                Button salvaPOIButton = new Button("Salva POI", event2 -> salvaPOI(poi.getNome()));
+                add(salvaPOIButton);
+        }
+      
         
     }
 

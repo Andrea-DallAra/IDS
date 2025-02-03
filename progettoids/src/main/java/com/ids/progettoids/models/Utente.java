@@ -66,10 +66,11 @@ public class Utente implements UtenteInterfaccia {
             return;
         }
     
-        Utente utente=new Utente(username, null, null, null, null);
-        utente.CaricaRuoli(username);
-        List<Ruolo> ruoliUtente = utente.getRuolo();
-        String query = "UPDATE Ruoli SET Gestore = ?, Contributore = ?, Curatore = ?, Animatore = ?, Turista = ?,  ContributoreAutenticato = ?, TuristaAutenticato = ?, WHERE idUtente = ?";
+        this.CaricaRuoli(username);
+        List<Ruolo> ruoliUtente = this.getRuolo();
+        
+        String query = "UPDATE Ruoli SET Gestore = ?, Contributore = ?, Curatore = ?, Animatore = ?, " +
+                       "Turista = ?, ContributoreAutenticato = ?, TuristaAutenticato = ? WHERE idUtente = ?";
     
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             // Imposta 1 se il ruolo e' presente, 0 se non lo e'
@@ -87,11 +88,27 @@ public class Utente implements UtenteInterfaccia {
             if (rowsAffected > 0) {
                 System.out.println("Ruoli aggiornati correttamente per l'utente: " + username);
             } else {
-                System.out.println("Nessuna riga aggiornata. L'utente potrebbe non esistere.");
+               insertRuoli(this.username, ruoliUtente);
             }
             con.close();
         } catch (SQLException e) {
             System.out.println("Errore durante il salvataggio dei ruoli: " + e.getMessage());
+        }
+    }
+    public void insertRuoli(String username, List<Ruolo> ruoliUtente) {
+        String query = "INSERT INTO Ruoli (idUtente, Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato, TuristaAutenticato) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = ConnettiDB.getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, username);
+            for (int i = 0; i < Ruolo.values().length; i++) {
+                stmt.setInt(i + 2, ruoliUtente.contains(Ruolo.values()[i]) ? 1 : 0);
+            }
+            stmt.executeUpdate();
+            System.out.println("Ruoli inseriti correttamente per l'utente: " + username);
+        } catch (SQLException e) {
+            System.out.println("Errore durante l'inserimento dei ruoli: " + e.getMessage());
         }
     }
     
@@ -116,9 +133,7 @@ public class Utente implements UtenteInterfaccia {
                 if (rs.getInt("Animatore") == 1) {
                     ruoli.add(Ruolo.Animatore);
                 }
-                if (rs.getInt("Turista") == 1) {
-                    ruoli.add(Ruolo.Turista);
-                }
+               
                 if (rs.getInt("ContributoreAutenticato") == 1) {
                     if (!ruoli.contains(Ruolo.Contributore)) {
                         ruoli.add(Ruolo.Contributore);
@@ -126,13 +141,11 @@ public class Utente implements UtenteInterfaccia {
                     Contributore contributore = new Contributore(this.nome, this.cognome, this.email, this.password, this.username);
                     contributore.setAutenticato(true);
                 }
-                if(rs.getInt("TuristaAutenticato") == 1){
-                    if (!ruoli.contains(Ruolo.Turista)) {
-                        ruoli.add(Ruolo.Turista);
-                    }
-                    Turista turista = new Turista(this.nome, this.cognome, this.email, this.password, this.username);
-                    turista.setAutenticato(true);
-                }
+                
+                    ruoli.add(Ruolo.Turista);
+                    //fatto il login e' sempre autenticato
+                    ruoli.add(Ruolo.TuristaAutenticato);
+             
                 System.out.println("Ruoli caricati correttamente per l'utente: " + username);
             } else {
                 System.out.println("Nessun ruolo trovato per l'utente: " + username);

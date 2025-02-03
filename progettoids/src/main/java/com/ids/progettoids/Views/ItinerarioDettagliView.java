@@ -1,6 +1,5 @@
 package com.ids.progettoids.Views;
 
-import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Itinerario;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.models.Turista;
@@ -57,7 +56,7 @@ public class ItinerarioDettagliView extends VerticalLayout implements HasUrlPara
         add(backButton);
 
     
-        if (SessioneUtente.utente != null && SessioneUtente.utente.getRuolo().contains(Ruolo.Turista)) {
+        if (SessioneUtente.utente != null) {
             Button salvaItinerarioButton = new Button("Salva Itinerario", clickEvent -> addItinerariDaSalvare(itinerario.getIdItinerario()));
             add(salvaItinerarioButton);
 

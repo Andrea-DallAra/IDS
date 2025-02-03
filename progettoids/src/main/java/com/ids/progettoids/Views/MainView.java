@@ -103,14 +103,21 @@ public class MainView extends VerticalLayout {
     }
     public void BottoniCuratore()
     {
-        if(!bottoneInseritoCuratore) 
+        if(!bottoneInseritoContributore) 
         {
             Button inserisciPoi = new Button("Vai alla pagina Inserisci POI", e -> {
-            getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
-            Button itinerario = new Button("Vai alla pagina  Aggiungi Itinerario", e -> {
-                getUI().ifPresent(ui -> ui.navigate("/aggiungiItinerario"));});
-            Button contenuto = new Button("Vai alla pagina Crea Contenuto", e -> {
-                getUI().ifPresent(ui -> ui.navigate("/CreaContenuto"));});
+                getUI().ifPresent(ui -> ui.navigate("/InserisciPOI"));});
+                Button itinerario = new Button("Vai alla pagina  Aggiungi Itinerario", e -> {
+                    getUI().ifPresent(ui -> ui.navigate("/aggiungiItinerario"));});
+                Button contenuto = new Button("Vai alla pagina Crea Contenuto", e -> {
+                    getUI().ifPresent(ui -> ui.navigate("/CreaContenuto"));});
+                add(inserisciPoi,itinerario, contenuto);
+            
+                bottoneInseritoContributore = true;
+            }
+        if(!bottoneInseritoCuratore) 
+        {
+           
             Button approvaPoi = new Button("Vai alla pagina Approva POI", e -> {
                 getUI().ifPresent(ui -> ui.navigate("/ApprovaPOI"));});
             Button approvaItinerario = new Button("Vai alla pagina  Approva Itinerario", e -> {
@@ -122,7 +129,7 @@ public class MainView extends VerticalLayout {
             Button editaElemento = new Button("Vai alla pagina per editare un elemento", e -> {
                 getUI().ifPresent(ui -> ui.navigate("/EditaElemento"));});
                 
-                add(inserisciPoi,itinerario, contenuto,approvaPoi,approvaItinerario,approvaContenuto, gestisciReport,editaElemento);
+                add(approvaPoi,approvaItinerario,approvaContenuto, gestisciReport,editaElemento);
                 bottoneInseritoCuratore = true;
         }
     }
@@ -132,11 +139,12 @@ public class MainView extends VerticalLayout {
         {
             Button report = new Button("Vai alla pagina Report", e -> {
             getUI().ifPresent(ui -> ui.navigate("/Report"));});
-            Button visPOI = new Button("Visualizza POI", e -> {
+          /*  Button visPOI = new Button("Visualizza POI", e -> {
                 getUI().ifPresent(ui -> ui.navigate("/poiList"));});
             Button visItinerario = new Button("Visualizza Itinierari", e -> {
                 getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
-            add(report, visPOI, visItinerario);
+            add(report, visPOI, visItinerario); */
+            add(report);
         }
     
     }

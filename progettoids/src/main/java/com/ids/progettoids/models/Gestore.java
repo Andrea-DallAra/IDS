@@ -18,7 +18,10 @@ public class Gestore extends Utente {
         ruoli.add(Ruolo.Gestore);
         
     }
+    public Gestore() 
+    {
 
+    }
     public Gestore(String _nome, String _cognome , String _email, String _password, String _username) 
     {
        super(_nome, _cognome, _email, _password, _username);
@@ -56,7 +59,8 @@ public class Gestore extends Utente {
     //da collegare con l'hud
     public void EditaRuolo(String username, String _ruolo) 
     {
-        Utente nuovoUtente = new Utente(username, null, null, null, null);
+        Utente nuovoUtente = new Utente();
+        nuovoUtente.SetUsername(username);
         nuovoUtente.AggiungiRuolo(Ruolo.valueOf(_ruolo));
         nuovoUtente.SalvaRuoliDB(username);
     }
