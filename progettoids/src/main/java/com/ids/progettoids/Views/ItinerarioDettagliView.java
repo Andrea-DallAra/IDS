@@ -1,11 +1,15 @@
 package com.ids.progettoids.Views;
 
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Itinerario;
 import com.ids.progettoids.models.POI;
+import com.ids.progettoids.models.Turista;
 import com.ids.progettoids.utils.ItinerarioUtils;
+import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 
@@ -38,21 +42,38 @@ public class ItinerarioDettagliView extends VerticalLayout implements HasUrlPara
 
         Itinerario itinerario = itinerari.get(0);
 
-       
         add(new Paragraph("ID Itinerario: " + itinerario.getIdItinerario()));
 
-       
         poiGrid.setItems(itinerario.getListaPOI());
         poiGrid.removeAllColumns();
         poiGrid.addColumn(POI::getNome).setHeader("Nome POI");
 
         add(poiGrid);
 
-      
+       
         Button backButton = new Button("Torna alla lista", clickEvent ->
-            getUI().ifPresent(ui -> ui.navigate("itinerarioList"))
+                getUI().ifPresent(ui -> ui.navigate("itinerarioList"))
         );
-
         add(backButton);
+
+    
+        if (SessioneUtente.utente != null && SessioneUtente.utente.getRuolo().contains(Ruolo.Turista)) {
+            Button salvaItinerarioButton = new Button("Salva Itinerario", clickEvent -> addItinerariDaSalvare(itinerario.getIdItinerario()));
+            add(salvaItinerarioButton);
+
+            
+        }
     }
+    
+   
+    private void addItinerariDaSalvare(int itinerario) {
+        
+        Turista pass = new Turista();
+        pass.SetUsername(SessioneUtente.utente.getUsername());
+        pass.setAutenticato(true);
+        pass.salvaItinerario(itinerario);
+        Notification.show("Itinerario salvato", 3000, Notification.Position.MIDDLE);
+
+    }
+ 
 }

@@ -2,7 +2,9 @@ package com.ids.progettoids.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
@@ -28,40 +30,114 @@ public class Turista extends Utente {
 
     }
 
+    public Turista() {}
     public Turista(String _nome, String _cognome, String _email, String _password, String _username) {
         super(_nome, _cognome, _email, _password, _username);
         AggiungiRuolo();
     }
 
-    public void salvaItinerari(List<Integer> idItinerari) {
+    public void salvaItinerario(int idItinerario) {
         if (this.isAutenticato()) {
-            String sql = "INSERT INTO ItinerariSalvati (username, idItinerario) VALUES (?, ?)";
-            try (Connection conn = ConnettiDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, this.username);
-                pstmt.setString(2, idItinerari.toString());
-                pstmt.executeUpdate();
+            String selectSql = "SELECT idItinerari FROM ItinerariSalvati WHERE username = ?";
+            String updateSql = "UPDATE ItinerariSalvati SET idItinerari = ? WHERE username = ?";
+            String insertSql = "INSERT INTO ItinerariSalvati (username, idItinerari) VALUES (?, ?)";
+    
+            try (Connection conn = ConnettiDB.getConnection();
+                 PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+                 PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+                 PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+    
+                selectStmt.setString(1, this.username);
+                ResultSet rs = selectStmt.executeQuery();
+    
+                List<Integer> idItinerariList = new ArrayList<>();
+    
+                if (rs.next()) {
+                    // Se esiste già un record, recuperiamo gli itinerari salvati
+                    String existingIds = rs.getString("idItinerari");
+                    if (existingIds != null && !existingIds.isEmpty()) {
+                        String[] idArray = existingIds.replace("[", "").replace("]", "").split(",");
+                        for (String id : idArray) {
+                            idItinerariList.add(Integer.parseInt(id.trim()));
+                        }
+                    }
+    
+                    // Aggiungiamo il nuovo itinerario solo se non esiste già
+                    if (!idItinerariList.contains(idItinerario)) {
+                        idItinerariList.add(idItinerario);
+                        String newIdList = idItinerariList.toString();
+                        
+                        updateStmt.setString(1, newIdList);
+                        updateStmt.setString(2, this.username);
+                        int rowsUpdated = updateStmt.executeUpdate();
+                        System.out.println("Rows updated: " + rowsUpdated);
+                    }
+                } else {
+                    // Se non c'è un record per l'utente, inseriamo un nuovo itinerario
+                    insertStmt.setString(1, this.username);
+                    insertStmt.setString(2, "[" + idItinerario + "]");
+                    int rowsInserted = insertStmt.executeUpdate();
+                    System.out.println("Rows inserted: " + rowsInserted);
+                }
+    
                 conn.close();
             } catch (SQLException e) {
                 System.err.println("Errore durante il salvataggio dell'itinerario: " + e.getMessage());
             }
         }
     }
+    
 
-    public void salvaPOI(List<Integer> idPOI) {
-        if (this.isAutenticato()) {
-            String sql = "INSERT INTO POI_Salvati (username, ListaPOI) VALUES (?, ?)";
-            try (Connection conn = ConnettiDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, this.username);
-                pstmt.setString(2, idPOI.toString());
-                pstmt.executeUpdate();
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println("Errore durante il salvataggio del POI: " + e.getMessage());
-            }
-        }
-    }
 
     public void aggiungiContenuto(Content content) {
         ContentUtils.creaContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione(), true);
+    }
+    public void salvaPOI( String poiName) {
+        String selectSql = "SELECT listaPOI FROM poi_salvati WHERE username = ?";
+        String updateSql = "UPDATE poi_salvati SET listaPOI = ? WHERE username = ?";
+        String insertSql = "INSERT INTO poi_salvati (username, listaPOI) VALUES (?, ?)";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+             PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+
+            selectStmt.setString(1, this.username);
+            ResultSet rs = selectStmt.executeQuery();
+
+            List<String> poiList = new ArrayList<>();
+
+            if (rs.next()) {
+                
+                String existingPOIs = rs.getString("listaPOI");
+                if (existingPOIs != null && !existingPOIs.isEmpty()) {
+                    String[] poiArray = existingPOIs.replace("[", "").replace("]", "").split(",");
+                    for (String poi : poiArray) {
+                        poiList.add(poi.trim());
+                    }
+                }
+
+                
+                if (!poiList.contains(poiName)) {
+                    poiList.add(poiName);
+                    String newPoiList = poiList.toString();
+                    
+                    updateStmt.setString(1, newPoiList);
+                    updateStmt.setString(2, this.username);
+                    int rowsUpdated = updateStmt.executeUpdate();
+                    System.out.println("Rows updated: " + rowsUpdated);
+                }
+            } else {
+                
+                insertStmt.setString(1, this.username);
+                insertStmt.setString(2, "[" + poiName + "]");
+                int rowsInserted = insertStmt.executeUpdate();
+                System.out.println("Rows inserted: " + rowsInserted);
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il salvataggio del POI: " + e.getMessage());
+        }
     }
 }

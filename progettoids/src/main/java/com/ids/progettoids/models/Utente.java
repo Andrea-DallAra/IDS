@@ -336,4 +336,7 @@ public class Utente implements UtenteInterfaccia {
     public String getUsername(){
         return username;
     }
+    public void SetUsername(String _username){
+        username = _username;
+    }
 }

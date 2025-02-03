@@ -1,5 +1,4 @@
 package com.ids.progettoids.Views;
-
 import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
@@ -31,6 +30,7 @@ public class LoginView extends VerticalLayout {
        if( pass.Login(username, password))
        {
           SessioneUtente.utente = pass;
+          SessioneUtente.utente.SetUsername(username); 
           getUI().ifPresent(ui -> ui.navigate(""));
        }
     }
