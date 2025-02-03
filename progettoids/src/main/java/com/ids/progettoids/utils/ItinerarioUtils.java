@@ -43,7 +43,7 @@ public class ItinerarioUtils {
     }
 
    
-    private static ArrayList<POI> parsePOIList(String listaPOIStr) {
+    public static ArrayList<POI> parsePOIList(String listaPOIStr) {
         ArrayList<POI> listaPOI = new ArrayList<>();
 
         if (listaPOIStr != null && !listaPOIStr.isEmpty()) {
@@ -101,5 +101,46 @@ public class ItinerarioUtils {
         } catch (SQLException e) {
             System.err.println("Errore durante l'eliminazione dell'itinerario: " + e.getMessage());
         }
+    }
+
+    public static ArrayList<Itinerario> getAllItineraridaApprovare() {
+        ArrayList<Itinerario> listaItinerario = new ArrayList<>();
+        String sql = "SELECT * FROM Itinerari_DaApprovare";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int idItinerario=rs.getInt("idItinerario");
+                String listaPOIStringa = rs.getString("ListaPOI");
+                ArrayList<POI> listaPOI=parsePOIList(listaPOIStringa);
+                Itinerario itinerario = new Itinerario(idItinerario,listaPOI);
+                listaItinerario.add(itinerario);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero dell'Itinerario: " + e.getMessage());
+        }
+
+        return listaItinerario;
+    }
+
+    public static Itinerario getItinerariodaApprovare(int idItinerario) {
+        String sql = "SELECT * FROM Itinerari_DaApprovare WHERE idItinerario = ?";
+        ArrayList<POI> listaPOI=new ArrayList<>();
+        Itinerario itinerario = new Itinerario(idItinerario,listaPOI);
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String listaPOIStringa = rs.getString("ListaPOI");
+                listaPOI=parsePOIList(listaPOIStringa);
+                itinerario = new Itinerario(idItinerario, listaPOI);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero dell'Itinerario: " + e.getMessage());
+        }
+        return itinerario;
     }
 }

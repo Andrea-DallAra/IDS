@@ -3,7 +3,6 @@ package com.ids.progettoids.Views;
 import java.util.ArrayList;
 
 import com.ids.progettoids.Ruolo;
-import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.utils.ItinerarioUtils;
 import com.ids.progettoids.utils.POIutils;
@@ -32,10 +31,11 @@ public class AggiungiItinerarioView extends VerticalLayout {
 
             boolean daApprovare = false;
             ArrayList<POI> parsedPOIList = parsePOIList(listaPOI);
-            if (SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore)) {
-                Contributore contributorepass = new Contributore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(), SessioneUtente.utente.getEmail(), SessioneUtente.utente.getPassword(), SessioneUtente.utente.getUsername());
-                if (!contributorepass.isAutenticato()) {
-
+            SessioneUtente.utente.CaricaRuoli(SessioneUtente.utente.getUsername());
+            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
+            {
+                if(!SessioneUtente.utente.getRuolo().contains(Ruolo.ContributoreAutenticato))
+                {
                     daApprovare = true;
                 }
             }

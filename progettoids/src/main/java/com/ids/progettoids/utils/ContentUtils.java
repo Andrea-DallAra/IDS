@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.models.Content;
@@ -49,7 +51,7 @@ public class ContentUtils {
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
         pstmt.setString(1, media);
-        pstmt.setString(2, data.toString());
+        pstmt.setString(2, data);
         pstmt.setString(3, autore);
         pstmt.setString(4, descrizione);
 
@@ -99,6 +101,81 @@ public class ContentUtils {
         } catch (SQLException e) {
             System.err.println("Errore durante l'eliminazione del Content: " + e.getMessage());
         }
+    }
+
+    public static ArrayList<HashMap<Integer,Content>> getAllContent() {
+        ArrayList<HashMap<Integer,Content>> listaContent = new ArrayList<>();
+        String sql = "SELECT * FROM Content";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                
+                String media = rs.getString("Media");
+                String data = rs.getString("Data");
+                String autore = rs.getString("Autore");
+                String descrizione = rs.getString("Descrizione");
+                int idContent = rs.getInt("idContent");
+                Content content = new Content(media, data, autore, descrizione);
+                HashMap<Integer, Content> map = new HashMap<>();
+                map.put(idContent, content);
+                listaContent.add(map);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero del Content: " + e.getMessage());
+        }
+        return listaContent;
+    }
+
+    public static ArrayList<HashMap<Integer,Content>> getAllContentdaApprovare() {
+        ArrayList<HashMap<Integer,Content>> listaContent = new ArrayList<>();
+        String sql = "SELECT * FROM Content_DaApprovare";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                
+                String media = rs.getString("Media");
+                String data = rs.getString("Data");
+                String autore = rs.getString("Autore");
+                String descrizione = rs.getString("Descrizione");
+                int idContent = rs.getInt("idContent");
+                Content content = new Content(media, data, autore, descrizione);
+                HashMap<Integer, Content> map = new HashMap<>();
+                map.put(idContent, content);
+                listaContent.add(map);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero del Content: " + e.getMessage());
+        }
+        return listaContent;
+    }
+
+    public static Content getContentdaApprovare(int idContent) {
+        String sql = "SELECT * FROM Content_DaApprovare WHERE idContent = ?";
+        Content content = new Content("", "", "", "");
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String media = rs.getString("Media");
+                String data = rs.getString("Data");
+                String autore = rs.getString("Autore");
+                String descrizione = rs.getString("Descrizione");
+                content = new Content(media, data, autore, descrizione);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero del Content: " + e.getMessage());
+        }
+        return content;
     }
 }
 

@@ -2,5 +2,5 @@ package com.ids.progettoids;
 
 public enum Ruolo {
     
-Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato
+Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato,TuristaAutenticato
 }

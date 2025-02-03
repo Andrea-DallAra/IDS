@@ -1,16 +1,16 @@
 package com.ids.progettoids.utils;
 
 
-import com.ids.progettoids.models.Content;
-import com.ids.progettoids.models.Coordinate;
-import com.ids.progettoids.models.POI;
-import com.ids.progettoids.ConnettiDB;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.ids.progettoids.ConnettiDB;
+import com.ids.progettoids.models.Content;
+import com.ids.progettoids.models.Coordinate;
+import com.ids.progettoids.models.POI;
 
 public class POIutils {
 
@@ -52,6 +52,70 @@ public class POIutils {
         }
 
         return listaPOI;
+    }
+
+    public static ArrayList<POI> getAllPOIdaApprovare() {
+        ArrayList<POI> listaPOI = new ArrayList<>();
+        String sql = "SELECT * FROM POI_DaApprovare";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String nomePOI = rs.getString("Nome");
+                String coordinateStr = rs.getString("Coordinate");
+                String descrizione = rs.getString("Descrizione");
+                int idContent = rs.getInt("idContent");
+
+                Content media = getContent(idContent);
+
+               
+                String[] coordinateSplit = coordinateStr.split(",");
+                Coordinate coordinate = new Coordinate(
+                        Double.parseDouble(coordinateSplit[0].trim()),
+                        Double.parseDouble(coordinateSplit[1].trim())
+                );
+
+                POI poi = new POI(nomePOI, coordinate, descrizione, media);
+                listaPOI.add(poi);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
+        }
+
+        return listaPOI;
+    }
+
+    public static POI getPOIdaApprovare(String nome) {
+        String sql = "SELECT * FROM POI_DaApprovare WHERE Nome = ?";
+        POI poi = new POI(nome, null, null, null);
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String nomePOI = rs.getString("Nome");
+                String coordinateStr = rs.getString("Coordinate");
+                String descrizione = rs.getString("Descrizione");
+                int idContent = rs.getInt("idContent");
+
+                Content media = getContent(idContent);
+
+               
+                String[] coordinateSplit = coordinateStr.split(",");
+                Coordinate coordinate = new Coordinate(
+                        Double.parseDouble(coordinateSplit[0].trim()),
+                        Double.parseDouble(coordinateSplit[1].trim())
+                );
+                poi = new POI(nomePOI, coordinate, descrizione, media);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
+        }
+        return poi;
     }
 
   

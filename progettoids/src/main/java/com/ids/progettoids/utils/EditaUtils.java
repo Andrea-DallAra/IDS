@@ -11,7 +11,7 @@ import com.ids.progettoids.models.POI;
 
 public class EditaUtils {
     
-   public static void EditaElemento(POI base, POI editato) {
+   public static void EditaPOI(POI base, POI editato) {
     String sql = "UPDATE POI SET Nome = ?, Coordinate = ?, Descrizione = ?, idContent = ? WHERE Nome = ? AND Coordinate = ? AND Descrizione = ? AND idContent = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
@@ -34,14 +34,14 @@ public class EditaUtils {
     }
 }
 
-public static void EditaElemento(Content base, Content editato) {
+public static void EditaContent(Content base, Content editato) {
     String sql = "UPDATE Content SET media = ?, data = ?, autore = ?, descrizione = ? WHERE idContent = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
         pstmt.setString(1, editato.getMedia());
-        pstmt.setString(2, editato.getData().toString());
+        pstmt.setString(2, editato.getData());
         pstmt.setString(3, editato.getAutore());
         pstmt.setString(4, editato.getDescrizione());
 
@@ -54,15 +54,14 @@ public static void EditaElemento(Content base, Content editato) {
     }
 }
 
-public static void EditaElemento(Itinerario base, Itinerario editato) {
-    String sql = "UPDATE Itinerari SET idItinerario = ?, listaPOI = ? where idItinerario = ?";
+public static void EditaItinerario(Itinerario base, Itinerario editato) {
+    String sql = "UPDATE Itinerari SET listaPOI = ? where idItinerario = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-        pstmt.setInt(1, editato.getIdItinerario());
-        pstmt.setString(2, editato.getListaPOI().toString());
-        pstmt.setInt(3, base.getIdItinerario());
+            
+        pstmt.setString(1, editato.getListaPOI().toString());
+        pstmt.setInt(2, base.getIdItinerario());
        
         pstmt.executeUpdate();
         conn.close();

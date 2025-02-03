@@ -62,6 +62,6 @@ public class Turista extends Utente {
     }
 
     public void aggiungiContenuto(Content content) {
-        ContentUtils.creaContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione(), true);
+        ContentUtils.creaContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione(), this.autenticato);
     }
 }

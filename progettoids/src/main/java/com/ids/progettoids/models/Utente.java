@@ -69,7 +69,7 @@ public class Utente implements UtenteInterfaccia {
         Utente utente=new Utente(username, null, null, null, null);
         utente.CaricaRuoli(username);
         List<Ruolo> ruoliUtente = utente.getRuolo();
-        String query = "UPDATE Ruoli SET Gestore = ?, Contributore = ?, Curatore = ?, Animatore = ?, Turista = ?,  ContributoreAutenticato = ? WHERE idUtente = ?";
+        String query = "UPDATE Ruoli SET Gestore = ?, Contributore = ?, Curatore = ?, Animatore = ?, Turista = ?,  ContributoreAutenticato = ?, TuristaAutenticato = ?, WHERE idUtente = ?";
     
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             // Imposta 1 se il ruolo e' presente, 0 se non lo e'
@@ -79,7 +79,8 @@ public class Utente implements UtenteInterfaccia {
             stmt.setInt(4, ruoliUtente.contains(Ruolo.Animatore) ? 1 : 0);
             stmt.setInt(5, ruoliUtente.contains(Ruolo.Turista) ? 1 : 0);
             stmt.setInt(6, ruoliUtente.contains(Ruolo.ContributoreAutenticato) ? 1 : 0);
-            stmt.setString(7, username);
+            stmt.setInt(7, ruoliUtente.contains(Ruolo.TuristaAutenticato) ? 1 : 0);
+            stmt.setString(8, username);
     
             int rowsAffected = stmt.executeUpdate();
     
@@ -119,12 +120,19 @@ public class Utente implements UtenteInterfaccia {
                     ruoli.add(Ruolo.Turista);
                 }
                 if (rs.getInt("ContributoreAutenticato") == 1) {
-                    if (ruoli.contains(Ruolo.Contributore)) {
-                        Contributore contributore = new Contributore(this.nome, this.cognome, this.email, this.password, this.username);
-                        contributore.setAutenticato(true);   
+                    if (!ruoli.contains(Ruolo.Contributore)) {
+                        ruoli.add(Ruolo.Contributore);
                     }
+                    Contributore contributore = new Contributore(this.nome, this.cognome, this.email, this.password, this.username);
+                    contributore.setAutenticato(true);
                 }
-    
+                if(rs.getInt("TuristaAutenticato") == 1){
+                    if (!ruoli.contains(Ruolo.Turista)) {
+                        ruoli.add(Ruolo.Turista);
+                    }
+                    Turista turista = new Turista(this.nome, this.cognome, this.email, this.password, this.username);
+                    turista.setAutenticato(true);
+                }
                 System.out.println("Ruoli caricati correttamente per l'utente: " + username);
             } else {
                 System.out.println("Nessun ruolo trovato per l'utente: " + username);

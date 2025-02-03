@@ -87,7 +87,7 @@ public void ApprovaContent(Content content) {
         pstmtElimina.setInt(1, content.getIdContent());
         pstmtInserisci.setInt(1, content.getIdContent());
         pstmtInserisci.setString(2, content.getMedia());
-        pstmtInserisci.setString(3, content.getData().toString());
+        pstmtInserisci.setString(3, content.getData());
         pstmtInserisci.setString(4, content.getAutore());
         pstmtInserisci.setString(5, content.getDescrizione());
         
@@ -98,14 +98,14 @@ public void ApprovaContent(Content content) {
         System.err.println("Errore durante l'approvazione del contenuto: " + e.getMessage());
     }
 }
-public void EditaElemento(POI base, POI editato) {
-    EditaUtils.EditaElemento(base, editato);
+public void EditaPOI(POI base, POI editato) {
+    EditaUtils.EditaPOI(base, editato);
 }
-public void EditaElemento(Content base, Content editato) {
-    EditaUtils.EditaElemento(base, editato);
+public void EditaContent(Content base, Content editato) {
+    EditaUtils.EditaContent(base, editato);
 }
-public void EditaElemento(Itinerario base, Itinerario editato) {
-    EditaUtils.EditaElemento(base, editato);
+public void EditaItinerario(Itinerario base, Itinerario editato) {
+    EditaUtils.EditaItinerario(base, editato);
 }
 
 ArrayList<POI> reportPOI = new ArrayList<>();
@@ -207,7 +207,6 @@ private void EliminaSegnalazione(String chiave)
 }
 public ArrayList<Report> GetReports()
 {
-  //prendi i valori della tabella report e li metti in una lista
   String sql = "SELECT * FROM Report";
   ArrayList<Report> reports = new ArrayList<>();
   try (Connection conn = ConnettiDB.getConnection();

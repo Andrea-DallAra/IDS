@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Content;
-import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.Coordinate;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.utils.SessioneUtente;
@@ -51,30 +50,15 @@ public class InserisciPOIView extends VerticalLayout {
             String pass = date.toString();
             Content nullo = new Content(null, pass, null, null);
             POI poi = new POI(name, new Coordinate(latitude, longitude), description, nullo);
-
             boolean daApprovare = false;
             if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
             {
-                Contributore contributorepass = (Contributore) SessioneUtente.utente;
-                if(!contributorepass.isAutenticato())
+                if(!SessioneUtente.utente.getRuolo().contains(Ruolo.ContributoreAutenticato))
                 {
-                    
                     daApprovare = true;
                 }
             }
             POI.CreaPOI(poi, daApprovare);
-       
-            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
-            {
-                Contributore contributorepass = (Contributore) SessioneUtente.utente;
-                if(!contributorepass.isAutenticato())
-                {
-                    
-                    daApprovare = true;
-                }
-            }
-            POI.CreaPOI(poi, daApprovare);
-
             Notification.show("POI creato con successo", 3000, Notification.Position.MIDDLE);
         });
 
