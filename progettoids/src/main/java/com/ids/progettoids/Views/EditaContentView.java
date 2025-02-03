@@ -20,8 +20,8 @@ import com.vaadin.flow.router.Route;
 public class EditaContentView extends VerticalLayout{
     public EditaContentView() {
     Grid<ContentWithId> contentGrid = new Grid<>(ContentWithId.class);
-        List<HashMap<Integer, Content>> listaContentDaApprovare = ContentUtils.getAllContentdaApprovare();
-        List<ContentWithId> listaContentWithID = listaContentDaApprovare.stream()
+        List<HashMap<Integer, Content>> listaContent = ContentUtils.getAllContent();
+        List<ContentWithId> listaContentWithID = listaContent.stream()
                 .map(map -> {
                     Integer id = map.keySet().iterator().next();
                     Content content = map.values().iterator().next();

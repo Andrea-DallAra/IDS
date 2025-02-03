@@ -113,7 +113,7 @@ public class ContentUtils {
             
             while (rs.next()) {
                 
-                String media = rs.getString("Media");
+                String media = rs.getString("MediaUrl");
                 String data = rs.getString("Data");
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
