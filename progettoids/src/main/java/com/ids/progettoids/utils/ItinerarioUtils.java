@@ -126,7 +126,7 @@ public class ItinerarioUtils {
     }
 
     public static Itinerario getItinerariodaApprovare(int idItinerario) {
-        String sql = "SELECT * FROM Itinerari_DaApprovare WHERE idItinerario = ?";
+        String sql = "SELECT * FROM itinerario_daapprovare WHERE idItinerario = ?";
         ArrayList<POI> listaPOI=new ArrayList<>();
         Itinerario itinerario = new Itinerario(idItinerario,listaPOI);
         try (Connection conn = ConnettiDB.getConnection();

@@ -27,9 +27,10 @@ public class ApprovaPOIView extends VerticalLayout{
                 Notification.show("Devi compilare il campo nome", 3000, Notification.Position.MIDDLE);
                 return;
             }
-            POI poiApprovato=POIutils.getPOIdaApprovare(nomePOIDaApprovare.getValue());
-            Curatore curatore=new Curatore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(), SessioneUtente.utente.getEmail(), SessioneUtente.utente.getPassword(), SessioneUtente.utente.getUsername());
-            curatore.ApprovaPOI(poiApprovato);
+            POI poiDaApprovare=POIutils.getPOIdaApprovare(nomePOIDaApprovare.getValue());
+            Curatore curatore=new Curatore();
+            curatore.SetUsername(SessioneUtente.utente.getUsername());
+            curatore.ApprovaPOI(poiDaApprovare);
             Notification.show("POI approvato con successo", 3000, Notification.Position.MIDDLE);
         });
         add(poiGrid,nomePOIDaApprovare,submitButton);

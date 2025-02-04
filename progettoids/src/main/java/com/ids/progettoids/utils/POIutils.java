@@ -92,7 +92,9 @@ public class POIutils {
         String sql = "SELECT * FROM POI_DaApprovare WHERE Nome = ?";
         POI poi = new POI(nome, null, null, null);
         try (Connection conn = ConnettiDB.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql))           
+             {
+            pstmt.setString(1, nome);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {

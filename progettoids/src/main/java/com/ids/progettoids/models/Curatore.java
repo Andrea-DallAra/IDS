@@ -29,7 +29,7 @@ public class Curatore extends Utente {
     }
 
   public void ApprovaPOI(POI poi) {
-    String sqlElimina = "DELETE FROM POI_DaApprovare WHERE Nome = ? AND Coordinate = ? AND Descrizione = ? AND idContent = ?";
+    String sqlElimina = "DELETE FROM POI_DaApprovare WHERE Nome = ?";
     String sqlInserisci = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";
 
     try (Connection conn = ConnettiDB.getConnection();
@@ -37,15 +37,15 @@ public class Curatore extends Utente {
          PreparedStatement pstmtInserisci = conn.prepareStatement(sqlInserisci)) {
 
         pstmtElimina.setString(1, poi.getNome());
-        pstmtElimina.setString(2, poi.getCoordinate().toString());
-        pstmtElimina.setString(3, poi.getDescrizione());
-        pstmtElimina.setInt(4, poi.getMedia().getIdContent());
+      
 
         pstmtInserisci.setString(1, poi.getNome());
         pstmtInserisci.setString(2, poi.getCoordinate().toString());
         pstmtInserisci.setString(3, poi.getDescrizione());
+        if(poi.getMedia() != null)
         pstmtInserisci.setInt(4, poi.getMedia().getIdContent());
-
+        else 
+        pstmtInserisci.setInt(4, -1);
         pstmtElimina.executeUpdate();
         pstmtInserisci.executeUpdate();
         conn.close();
