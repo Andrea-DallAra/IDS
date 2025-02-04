@@ -43,8 +43,8 @@ public class CreaContenutoView extends VerticalLayout implements HasUrlParameter
             String poiName = poiField.getValue();
             String todayDate = LocalDate.now().toString();
             
-            ContentUtils.creaContent(postText, todayDate, descriptionText, todayDate, daApprovare);
-            POIutils.collegaContent(new Content(postText, todayDate, descriptionText, todayDate), poiName, daApprovare);
+            ContentUtils.creaContent(postText, todayDate, SessioneUtente.utente.getUsername(), descriptionText,   daApprovare);
+            POIutils.collegaContent(new Content(postText, todayDate,  SessioneUtente.utente.getUsername(), descriptionText), poiName, daApprovare);
             
             Notification.show("Post creato con successo", 3000, Notification.Position.MIDDLE);
         });

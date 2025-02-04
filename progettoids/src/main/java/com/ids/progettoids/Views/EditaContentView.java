@@ -49,7 +49,7 @@ public class EditaContentView extends VerticalLayout{
             }
             try {
                 Content oldcontent= ContentUtils.getContent(Integer.parseInt(idContentField.getValue()));
-                String pass = datePickerEditato.toString();
+                String pass = datePickerEditato.getValue().toString();
                 Content newContent = new Content(mediaFieldEditato.getValue(), pass, autoreFieldEditato.getValue(), contentDescrizioneEditato.getValue());
                 EditaUtils.EditaContent(oldcontent, newContent);
                 Notification.show("Content editato con successo", 3000, Notification.Position.MIDDLE);

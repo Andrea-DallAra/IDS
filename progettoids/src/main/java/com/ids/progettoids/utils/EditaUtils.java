@@ -35,7 +35,7 @@ public class EditaUtils {
 }
 
 public static void EditaContent(Content base, Content editato) {
-    String sql = "UPDATE Content SET media = ?, data = ?, autore = ?, descrizione = ? WHERE idContent = ?";
+    String sql = "UPDATE Content SET MediaUrl = ?, data = ?, autore = ?, descrizione = ? WHERE idContent = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {

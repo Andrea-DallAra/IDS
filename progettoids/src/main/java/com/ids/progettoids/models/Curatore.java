@@ -21,7 +21,7 @@ public class Curatore extends Utente {
         ruoli.add(Ruolo.Curatore);
         
     }
-
+    public Curatore() {}
     public Curatore(String _nome, String _cognome , String _email, String _password, String _username) 
     {
        super(_nome, _cognome, _email, _password, _username);
@@ -119,7 +119,7 @@ public void VisualizzaReport()
     reportItinerario.clear();
     reports.clear();
     reports = GetReports();
-    //da collegare all'hud
+  
  
     for (Report r : reports) 
     {
@@ -147,24 +147,28 @@ public void VisualizzaReport()
     }
 }
 
-public Report getReportFromChiave(String chiave){
+public Report getReportFromChiave(String chiave) {
     String sql = "SELECT * FROM Report WHERE chiave = ?";
     Report report = new Report(chiave, "", "");
-   
-        try (Connection conn = ConnettiDB.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            pstmt.setString(1, chiave);
-            while (rs.next()) {
-                String descrizione = rs.getString("Descrizione");
-                String tipo = rs.getString("Tipo");
-                report = new Report(chiave, tipo,descrizione);
-            }
-            conn.close();
-        } catch (SQLException e) {
-            System.err.println("Errore durante la ricerca dei report: " + e.getMessage());
+
+    try (Connection conn = ConnettiDB.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, chiave); 
+        ResultSet rs = pstmt.executeQuery(); 
+
+        while (rs.next()) {
+            String descrizione = rs.getString("Descrizione");
+            String tipo = rs.getString("Tipo");
+            report = new Report(chiave, tipo, descrizione);
         }
-        return report;
+
+        conn.close();
+    } catch (SQLException e) {
+        System.err.println("Errore durante la ricerca dei report: " + e.getMessage());
+    }
+
+    return report;
 }
 
 public void EliminaReport(Report r)
@@ -190,7 +194,7 @@ public void EliminaReport(Report r)
             break;
     }
 }
-private void EliminaSegnalazione(String chiave)
+public void EliminaSegnalazione(String chiave)
 {
     String sql = "DELETE FROM Report WHERE chiave = ?";
 

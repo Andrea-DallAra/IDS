@@ -19,6 +19,7 @@ public class Animatore extends Utente {
         ruoli.add(Ruolo.Animatore);
         
     }
+    public Animatore() {}
 
     public Animatore(String _nome, String _cognome , String _email, String _password, String _username) 
     {
@@ -27,11 +28,14 @@ public class Animatore extends Utente {
     }
 
     public void creaContest(Contest contest){
-        String sql = "INSERT INTO Contest (nome,descrizione) VALUES (?,?)";
+        String sql = "INSERT INTO contest (nome, descrizione, listaContent) VALUES (?, ?, ?)";
+        
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, contest.getNome());
             pstmt.setString(2, contest.getDescrizione());
+            pstmt.setString(3, null); 
+            pstmt.executeUpdate();
             conn.close();
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero del Contest: " + e.getMessage());

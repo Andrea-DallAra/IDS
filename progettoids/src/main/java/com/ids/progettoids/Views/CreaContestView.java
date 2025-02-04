@@ -23,7 +23,8 @@ public class CreaContestView extends VerticalLayout{
                 Notification.show("Devi compilare il campo nome", 3000, Notification.Position.MIDDLE);
                 return;
             }
-            Animatore animatore= new Animatore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(),SessioneUtente.utente.getEmail(),SessioneUtente.utente.getPassword(),SessioneUtente.utente.getUsername());
+            Animatore animatore= new Animatore();
+            animatore.SetUsername(SessioneUtente.utente.getUsername());
             animatore.creaContest(new Contest(contestNome.getValue(), descrizione.getValue()));
             Notification.show("Contest creato con successo", 3000, Notification.Position.MIDDLE);
         });
