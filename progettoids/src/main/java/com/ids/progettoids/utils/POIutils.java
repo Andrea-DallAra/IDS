@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.models.Content;
@@ -32,10 +35,15 @@ public class POIutils {
                 String nomePOI = rs.getString("Nome");
                 String coordinateStr = rs.getString("Coordinate");
                 String descrizione = rs.getString("Descrizione");
-                int idContent = rs.getInt("idContent");
-
-                Content media = getContent(idContent);
-
+                String idContent = rs.getString("idContent");
+                List<Integer> idContentList = new ArrayList<>();
+                List<Content> media = new ArrayList<>();
+                idContentList = parseStringList(idContent);
+                if(!idContentList.isEmpty() ) {
+                    for (Integer idInteger : idContentList) {
+                        media.add(getContent(idInteger));
+                    }
+                }
                
                 String[] coordinateSplit = coordinateStr.split(",");
                 Coordinate coordinate = new Coordinate(
@@ -53,6 +61,18 @@ public class POIutils {
 
         return listaPOI;
     }
+   private static List<Integer> parseStringList(String stringList) {
+    if (stringList == null || stringList.trim().isEmpty()) {
+        return new ArrayList<>(); 
+    }
+
+    return Arrays.stream(stringList.split(","))
+                 .map(String::trim)             
+                 .filter(s -> !s.isEmpty())   
+                 .map(Integer::parseInt)        
+                 .collect(Collectors.toList());
+
+    }
 
     public static ArrayList<POI> getAllPOIdaApprovare() {
         ArrayList<POI> listaPOI = new ArrayList<>();
@@ -61,14 +81,22 @@ public class POIutils {
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery();
-
+            
             while (rs.next()) {
                 String nomePOI = rs.getString("Nome");
                 String coordinateStr = rs.getString("Coordinate");
                 String descrizione = rs.getString("Descrizione");
-                int idContent = rs.getInt("idContent");
-
-                Content media = getContent(idContent);
+                String idContent = rs.getString("idContent");
+                List<Integer> idContentList = new ArrayList<>();
+                List<Content> media = new ArrayList<>();
+                idContentList = parseStringList(idContent);
+                if(!idContentList.isEmpty() ) {
+                    for (Integer idInteger : idContentList) {
+                        media.add(getContent(idInteger));
+                    }
+                }
+                
+              
 
                
                 String[] coordinateSplit = coordinateStr.split(",");
@@ -89,8 +117,8 @@ public class POIutils {
     }
 
     public static POI getPOIdaApprovare(String nome) {
-        String sql = "SELECT * FROM POI_DaApprovare WHERE Nome = ?";
-        POI poi = new POI(nome, null, null, null);
+        String sql = "SELECT * FROM POI_DaApprovare WHERE Nome =?";
+        POI poi = new POI(nome, null, null,new ArrayList<>());
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql))           
              {
@@ -101,9 +129,8 @@ public class POIutils {
                 String nomePOI = rs.getString("Nome");
                 String coordinateStr = rs.getString("Coordinate");
                 String descrizione = rs.getString("Descrizione");
-                int idContent = rs.getInt("idContent");
 
-                Content media = getContent(idContent);
+                
 
                
                 String[] coordinateSplit = coordinateStr.split(",");
@@ -111,7 +138,8 @@ public class POIutils {
                         Double.parseDouble(coordinateSplit[0].trim()),
                         Double.parseDouble(coordinateSplit[1].trim())
                 );
-                poi = new POI(nomePOI, coordinate, descrizione, media);
+               
+                poi = new POI(nomePOI, coordinate, descrizione, new ArrayList<>());
             }
             conn.close();
         } catch (SQLException e) {
@@ -149,32 +177,29 @@ public class POIutils {
         return content;
     }
 
-    public static void creaPOI(String nome, Coordinate coordinate, String descrizione, Content media, boolean daApprovare) {
-        String sql= "";
-        if(!daApprovare){
-             sql = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";  
-
-        }
-        else
-        {
-             sql = "INSERT INTO POI_DaApprovare (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";  
-
-        }
-
-        try (Connection conn = ConnettiDB.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {        
-
-            pstmt.setString(1, nome);
-            pstmt.setString(2, coordinate.toString());
-            pstmt.setString(3, descrizione);
-            pstmt.setInt(4, media.getIdContent());
-
-            pstmt.executeUpdate();
-            conn.close();
-        } catch (SQLException e) {
-            System.err.println("Errore durante la creazione del POI: " + e.getMessage());
-        }
+   public static void creaPOI(String nome, Coordinate coordinate, String descrizione, List<Content> media, boolean daApprovare) {
+    String sql;
+    if (!daApprovare) {
+        sql = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";
+    } else {
+        sql = "INSERT INTO POI_DaApprovare (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";
     }
+
+    try (Connection conn = ConnettiDB.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, nome);
+        pstmt.setString(2, coordinate.toString());
+        pstmt.setString(3, descrizione);
+        pstmt.setString(4, "0");  
+        
+
+        pstmt.executeUpdate();
+    } catch (SQLException e) {
+        System.err.println("Errore durante la creazione del POI: " + e.getMessage());
+    }
+}
+
 
     public static void EliminaPOI(String poi) {
      

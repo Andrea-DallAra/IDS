@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.utils.ContentUtils;
@@ -28,7 +29,7 @@ public class Curatore extends Utente {
        AggiungiRuolo();
     }
 
-  public void ApprovaPOI(POI poi) {
+ public void ApprovaPOI(POI poi) {
     String sqlElimina = "DELETE FROM POI_DaApprovare WHERE Nome = ?";
     String sqlInserisci = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";
 
@@ -36,23 +37,29 @@ public class Curatore extends Utente {
          PreparedStatement pstmtElimina = conn.prepareStatement(sqlElimina);
          PreparedStatement pstmtInserisci = conn.prepareStatement(sqlInserisci)) {
 
-        pstmtElimina.setString(1, poi.getNome());
-      
 
+    
+       
+   
+
+       
         pstmtInserisci.setString(1, poi.getNome());
         pstmtInserisci.setString(2, poi.getCoordinate().toString());
         pstmtInserisci.setString(3, poi.getDescrizione());
-        if(poi.getMedia() != null)
-        pstmtInserisci.setInt(4, poi.getMedia().getIdContent());
-        else 
-        pstmtInserisci.setInt(4, -1);
-        pstmtElimina.executeUpdate();
-        pstmtInserisci.executeUpdate();
+        pstmtInserisci.setString(4, "0");
+
+        pstmtInserisci.executeUpdate(); 
+
+        pstmtElimina.setString(1, poi.getNome());
+        pstmtElimina.executeUpdate(); 
+
         conn.close();
+
     } catch (SQLException e) {
         System.err.println("Errore durante l'approvazione del POI: " + e.getMessage());
     }
 }
+
     
 public void ApprovaItinerari(Itinerario itinerario) {
     String sqlElimina = "DELETE FROM Itinerario_DaApprovare WHERE idItinerario = ?";

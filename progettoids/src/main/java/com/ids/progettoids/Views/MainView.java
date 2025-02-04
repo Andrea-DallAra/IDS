@@ -138,13 +138,15 @@ public class MainView extends VerticalLayout {
         if(!bottoneInseritoTurista) 
         {
             Button report = new Button("Vai alla pagina Report", e -> {
-            getUI().ifPresent(ui -> ui.navigate("/Report"));});
-          /*  Button visPOI = new Button("Visualizza POI", e -> {
-                getUI().ifPresent(ui -> ui.navigate("/poiList"));});
-            Button visItinerario = new Button("Visualizza Itinierari", e -> {
-                getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
-            add(report, visPOI, visItinerario); */
-            add(report);
+                getUI().ifPresent(ui -> ui.navigate("/Report"));});
+                Button richiediRuolo = new Button("Vai alla pagina per la richiesta di nuovo ruolo", e -> {
+                    getUI().ifPresent(ui-> ui.navigate("/NewRuoloView"));});
+              /*  Button visPOI = new Button("Visualizza POI", e -> {
+                    getUI().ifPresent(ui -> ui.navigate("/poiList"));});
+                Button visItinerario = new Button("Visualizza Itinierari", e -> {
+                    getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
+                add(report, visPOI, visItinerario); */
+                add(report,richiediRuolo);
         }
     
     }

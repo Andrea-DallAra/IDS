@@ -31,6 +31,7 @@ public class Content {
         this.media = media;
     }
     public int getIdContent() {
+    if(this.media == null) return 0;
     return ContentUtils.getIdContent(this.media, this.data, this.autore, this.descrizione);
 }
 

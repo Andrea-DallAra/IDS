@@ -1,14 +1,13 @@
 package com.ids.progettoids.Views;
 
-import java.time.LocalDate;
+
+import java.util.ArrayList;
 
 import com.ids.progettoids.Ruolo;
-import com.ids.progettoids.models.Content;
 import com.ids.progettoids.models.Coordinate;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -33,11 +32,10 @@ public class InserisciPOIView extends VerticalLayout {
         TextField poiDescrizione = new TextField("Descrizione del POI");
         poiDescrizione.setPlaceholder("Inserisci la descrizione del POI");
 
-        DatePicker datePicker = new DatePicker("Data");
-        datePicker.setPlaceholder("Seleziona la data");
+
 
         Button submitButton = new Button("Crea POI", e -> {
-            if (poiNameField.isEmpty() || latitudeField.isEmpty() || longitudeField.isEmpty() || datePicker.isEmpty() || poiDescrizione.isEmpty()) {
+            if (poiNameField.isEmpty() || latitudeField.isEmpty() || longitudeField.isEmpty()  || poiDescrizione.isEmpty()) {
                 Notification.show("Tutti i campi devono essere compilati", 3000, Notification.Position.MIDDLE);
                 return;
             }
@@ -46,10 +44,9 @@ public class InserisciPOIView extends VerticalLayout {
             double latitude = Double.parseDouble(latitudeField.getValue());
             double longitude = Double.parseDouble(longitudeField.getValue());
             String description = poiDescrizione.getValue();
-            LocalDate date = datePicker.getValue();
-            String pass = date.toString();
-            Content nullo = new Content(null, pass, null, null);
-            POI poi = new POI(name, new Coordinate(latitude, longitude), description, nullo);
+
+        
+            POI poi = new POI(name, new Coordinate(latitude, longitude), description, new ArrayList<>());
             boolean daApprovare = false;
             if(SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore))
             {
@@ -62,6 +59,6 @@ public class InserisciPOIView extends VerticalLayout {
             Notification.show("POI creato con successo", 3000, Notification.Position.MIDDLE);
         });
 
-        add(poiNameField, latitudeField, longitudeField, poiDescrizione, datePicker, submitButton);
+        add(poiNameField, latitudeField, longitudeField, poiDescrizione, submitButton);
     }
 }

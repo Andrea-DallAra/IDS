@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.models.Content;
 import com.ids.progettoids.models.Itinerario;
@@ -11,28 +12,33 @@ import com.ids.progettoids.models.POI;
 
 public class EditaUtils {
     
-   public static void EditaPOI(POI base, POI editato) {
-    String sql = "UPDATE POI SET Nome = ?, Coordinate = ?, Descrizione = ?, idContent = ? WHERE Nome = ? AND Coordinate = ? AND Descrizione = ? AND idContent = ?";
+  public static void EditaPOI(POI base, POI editato) {
+    String sql = "UPDATE POI SET Nome = ?, Coordinate = ?, Descrizione = ? WHERE Nome = ? AND Coordinate = ? AND Descrizione = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+        
+      
+      
         pstmt.setString(1, editato.getNome());
         pstmt.setString(2, editato.getCoordinate().toString());
         pstmt.setString(3, editato.getDescrizione());
-        pstmt.setInt(4, editato.getMedia().getIdContent());
+  
 
-        pstmt.setString(5, base.getNome());
-        pstmt.setString(6, base.getCoordinate().toString());
-        pstmt.setString(7, base.getDescrizione());
-        pstmt.setInt(8, base.getMedia().getIdContent());
+       
+        pstmt.setString(4, base.getNome());
+        pstmt.setString(5, base.getCoordinate().toString());
+        pstmt.setString(6, base.getDescrizione());
+     
 
         pstmt.executeUpdate();
-        conn.close();
     } catch (SQLException e) {
         System.err.println("Errore durante la modifica del POI: " + e.getMessage());
     }
 }
+
+
 
 public static void EditaContent(Content base, Content editato) {
     String sql = "UPDATE Content SET MediaUrl = ?, data = ?, autore = ?, descrizione = ? WHERE idContent = ?";
