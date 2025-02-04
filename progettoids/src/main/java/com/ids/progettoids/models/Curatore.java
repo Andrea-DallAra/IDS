@@ -63,7 +63,7 @@ public class Curatore extends Utente {
     
 public void ApprovaItinerari(Itinerario itinerario) {
     String sqlElimina = "DELETE FROM Itinerario_DaApprovare WHERE idItinerario = ?";
-    String sqlInserisci = "INSERT INTO Itinerario (idItinerario, ListaPOI) VALUES (?, ?)";
+    String sqlInserisci = "INSERT INTO Itinerario (ListaPOI) VALUES (?)";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmtElimina = conn.prepareStatement(sqlElimina);
@@ -71,12 +71,13 @@ public void ApprovaItinerari(Itinerario itinerario) {
 
         pstmtElimina.setInt(1, itinerario.getIdItinerario());
 
-        pstmtInserisci.setInt(1, itinerario.getIdItinerario());
+   
 
-        pstmtInserisci.setString(2, itinerario.getListaPOI().toString());
+        pstmtInserisci.setString(1, itinerario.getListaPOI().toString());
 
-        pstmtElimina.executeUpdate();
         pstmtInserisci.executeUpdate();
+        
+        pstmtElimina.executeUpdate();
         conn.close();
     } catch (SQLException e) {
         System.err.println("Errore durante l'approvazione dell'itinerario: " + e.getMessage());

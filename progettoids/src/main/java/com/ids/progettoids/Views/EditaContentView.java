@@ -17,9 +17,16 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 @Route("EditaContent") 
-public class EditaContentView extends VerticalLayout{
+public class EditaContentView extends VerticalLayout {
+    private Grid<ContentWithId> contentGrid = new Grid<>(ContentWithId.class);
+    private TextField idContentField = new TextField("ID del Content");
+    private TextField mediaFieldEditato = new TextField("Media del Content");
+    private TextField autoreFieldEditato = new TextField("Autore del Content");
+    private TextField contentDescrizioneEditato = new TextField("Descrizione del Content");
+    private DatePicker datePickerEditato = new DatePicker("Data");
+    private Content selectedContent;
+
     public EditaContentView() {
-    Grid<ContentWithId> contentGrid = new Grid<>(ContentWithId.class);
         List<HashMap<Integer, Content>> listaContent = ContentUtils.getAllContent();
         List<ContentWithId> listaContentWithID = listaContent.stream()
                 .map(map -> {
@@ -29,29 +36,47 @@ public class EditaContentView extends VerticalLayout{
                 })
                 .collect(Collectors.toList());
         contentGrid.setItems(listaContentWithID);
-        
+        contentGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        TextField idContentField = new TextField("Id del content da modificare");
-        idContentField.setPlaceholder("Inserisci l'id del content da da modificare");
-        
-        TextField mediaFieldEditato = new TextField("Media del content");
+        idContentField.setReadOnly(true);
+        idContentField.setPlaceholder("Seleziona un content dalla lista");
         mediaFieldEditato.setPlaceholder("Inserisci il media del content");
-        TextField autoreFieldEditato = new TextField("Autore del content");
-        autoreFieldEditato.setPlaceholder("Inserisci autore del content");
-        TextField contentDescrizioneEditato = new TextField("Descrizione del content");
+        autoreFieldEditato.setPlaceholder("Inserisci l'autore del content");
         contentDescrizioneEditato.setPlaceholder("Inserisci la descrizione del content");
-        DatePicker datePickerEditato = new DatePicker("Data");
         datePickerEditato.setPlaceholder("Seleziona la data");
-        Button submitButton = new Button("EditaContent", e -> {
-            if (idContentField.isEmpty() || mediaFieldEditato.isEmpty() || autoreFieldEditato.isEmpty() || contentDescrizioneEditato.isEmpty() || datePickerEditato.isEmpty()) {
+
+        contentGrid.asSingleSelect().addValueChangeListener(event -> {
+            ContentWithId selected = event.getValue();
+            if (selected != null) {
+                selectedContent = selected.getContent();
+                idContentField.setValue(String.valueOf(selected.getId()));
+                mediaFieldEditato.setValue(selectedContent.getMedia());
+                autoreFieldEditato.setValue(selectedContent.getAutore());
+                contentDescrizioneEditato.setValue(selectedContent.getDescrizione());
+                datePickerEditato.setValue(java.time.LocalDate.parse(selectedContent.getData()));
+            }
+        });
+
+        Button submitButton = new Button("Edita Content", e -> {
+            if (selectedContent == null) {
+                Notification.show("Seleziona un content dalla lista", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            if (mediaFieldEditato.isEmpty() || autoreFieldEditato.isEmpty() || contentDescrizioneEditato.isEmpty() || datePickerEditato.isEmpty()) {
                 Notification.show("Tutti i campi devono essere compilati", 3000, Notification.Position.MIDDLE);
                 return;
             }
+
             try {
-                Content oldcontent= ContentUtils.getContent(Integer.parseInt(idContentField.getValue()));
-                String pass = datePickerEditato.getValue().toString();
-                Content newContent = new Content(mediaFieldEditato.getValue(), pass, autoreFieldEditato.getValue(), contentDescrizioneEditato.getValue());
-                EditaUtils.EditaContent(oldcontent, newContent);
+                Content newContent = new Content(
+                    mediaFieldEditato.getValue(),
+                    datePickerEditato.getValue().toString(),
+                    autoreFieldEditato.getValue(),
+                    contentDescrizioneEditato.getValue()
+                );
+
+                EditaUtils.EditaContent(selectedContent, newContent);
                 Notification.show("Content editato con successo", 3000, Notification.Position.MIDDLE);
             } catch (NumberFormatException err) {
                 Notification.show("Errore di formato", 3000, Notification.Position.MIDDLE);
@@ -59,6 +84,7 @@ public class EditaContentView extends VerticalLayout{
                 Notification.show("Errore generico", 3000, Notification.Position.MIDDLE);
             }
         });
-        add(contentGrid,idContentField,mediaFieldEditato,autoreFieldEditato,contentDescrizioneEditato,datePickerEditato,submitButton);
+
+        add(contentGrid, idContentField, mediaFieldEditato, autoreFieldEditato, contentDescrizioneEditato, datePickerEditato, submitButton);
     }
 }

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.models.Content;
@@ -202,6 +203,30 @@ public class ContentUtils {
             System.err.println("Errore durante il recupero del Content: " + e.getMessage());
         }
         return content;
+    }
+    public static List<Content> getUserContents(String username) {
+        List<Content> contents = new ArrayList<>();
+        String sql = "SELECT * FROM Content WHERE Autore = ?";
+
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String media = rs.getString("MediaUrl");
+                String data = rs.getString("Data");
+                String autore = rs.getString("Autore");
+                String descrizione = rs.getString("Descrizione");
+                Content content = new Content(media, data, autore, descrizione);
+                contents.add(content);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero del Content: " + e.getMessage());
+        }
+
+        return contents;
     }
 }
 

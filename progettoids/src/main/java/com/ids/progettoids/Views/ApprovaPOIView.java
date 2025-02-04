@@ -1,7 +1,6 @@
 package com.ids.progettoids.Views;
 
 import java.util.List;
-
 import com.ids.progettoids.models.Curatore;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.utils.POIutils;
@@ -14,26 +13,49 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 @Route("ApprovaPOI") 
-public class ApprovaPOIView extends VerticalLayout{
+public class ApprovaPOIView extends VerticalLayout {
     private Grid<POI> poiGrid = new Grid<>(POI.class);
-    
+    private TextField selectedPOIField = new TextField("POI Selezionato");
+
     public ApprovaPOIView() {
-        List<POI> listaPOIDaApprovare=POIutils.getAllPOIdaApprovare();
+        List<POI> listaPOIDaApprovare = POIutils.getAllPOIdaApprovare();
         poiGrid.setItems(listaPOIDaApprovare);
-        TextField nomePOIDaApprovare = new TextField("Nome del POI da approvare");
-        nomePOIDaApprovare.setPlaceholder("Inserisci il nome del POI");
+        poiGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
+
+        
+        selectedPOIField.setReadOnly(true);
+        selectedPOIField.setPlaceholder("Seleziona un POI dalla lista");
+
+    
+        poiGrid.asSingleSelect().addValueChangeListener(event -> {
+            POI selectedPOI = event.getValue();
+            if (selectedPOI != null) {
+                selectedPOIField.setValue(selectedPOI.getNome());
+            } else {
+                selectedPOIField.clear();
+            }
+        });
+
+      
         Button submitButton = new Button("Approva POI", e -> {
-            if (nomePOIDaApprovare.isEmpty()) {
-                Notification.show("Devi compilare il campo nome", 3000, Notification.Position.MIDDLE);
+            if (selectedPOIField.isEmpty()) {
+                Notification.show("Seleziona un POI dalla lista", 3000, Notification.Position.MIDDLE);
                 return;
             }
-            POI poiDaApprovare=POIutils.getPOIdaApprovare(nomePOIDaApprovare.getValue());
-            Curatore curatore=new Curatore();
+
+            POI poiDaApprovare = POIutils.getPOIdaApprovare(selectedPOIField.getValue());
+            if (poiDaApprovare == null) {
+                Notification.show("Errore: POI non trovato", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            Curatore curatore = new Curatore();
             curatore.SetUsername(SessioneUtente.utente.getUsername());
             curatore.ApprovaPOI(poiDaApprovare);
+
             Notification.show("POI approvato con successo", 3000, Notification.Position.MIDDLE);
         });
-        add(poiGrid,nomePOIDaApprovare,submitButton);
+
+        add(poiGrid, selectedPOIField, submitButton);
     }
-    
 }

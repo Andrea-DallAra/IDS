@@ -15,15 +15,15 @@ public class Contest{
         contents = new ArrayList<>();
     }
 
-    String getNome() {
+    public String getNome() {
         return nome;
     }
 
-    String getDescrizione() {
+    public String getDescrizione() {
         return descrizione;
     }
 
-    List<Content> getContents() {
+    public List<Content> getContents() {
         return contents;
     }    
     

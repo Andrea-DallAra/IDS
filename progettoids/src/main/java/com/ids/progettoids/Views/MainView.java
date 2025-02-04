@@ -146,7 +146,10 @@ public class MainView extends VerticalLayout {
                 Button visItinerario = new Button("Visualizza Itinierari", e -> {
                     getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
                 add(report, visPOI, visItinerario); */
-                add(report,richiediRuolo);
+                Button partecipaContest = new Button("Vai alla pagina per partecipare a un contest", e -> {
+                    getUI().ifPresent(ui-> ui.navigate("/PartecipaContest"));});
+                add(report,richiediRuolo,partecipaContest);
+                bottoneInseritoTurista=true;
         }
     
     }

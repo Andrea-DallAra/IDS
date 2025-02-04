@@ -19,9 +19,11 @@ import com.vaadin.flow.router.Route;
 @Route("ApprovaContenuto")
 public class ApprovaContenutoView extends VerticalLayout {
     private Grid<ContentWithId> contentGrid;
+    private TextField selectedContentField = new TextField("Contenuto Selezionato");
 
     public ApprovaContenutoView() {
         contentGrid = new Grid<>(ContentWithId.class);
+        contentGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         List<HashMap<Integer, Content>> listaContentDaApprovare = ContentUtils.getAllContentdaApprovare();
         List<ContentWithId> listaContentWithID = listaContentDaApprovare.stream()
@@ -33,20 +35,42 @@ public class ApprovaContenutoView extends VerticalLayout {
                 .collect(Collectors.toList());
         contentGrid.setItems(listaContentWithID);
 
-        TextField idContentDaApprovare = new TextField("id del content da approvare");
-        idContentDaApprovare.setPlaceholder("Inserisci l'id del content da approvare");
+       
+        selectedContentField.setReadOnly(true);
+        selectedContentField.setPlaceholder("Seleziona un contenuto dalla lista");
 
+       
+        contentGrid.asSingleSelect().addValueChangeListener(event -> {
+            ContentWithId selectedContent = event.getValue();
+            if (selectedContent != null) {
+                selectedContentField.setValue(String.valueOf(selectedContent.getId())); // Display ID
+            } else {
+                selectedContentField.clear();
+            }
+        });
+
+       
         Button submitButton = new Button("Approva Content", e -> {
-            if (idContentDaApprovare.isEmpty()) {
-                Notification.show("Devi compilare il campo id", 3000, Notification.Position.MIDDLE);
+            if (selectedContentField.isEmpty()) {
+                Notification.show("Seleziona un contenuto dalla lista", 3000, Notification.Position.MIDDLE);
                 return;
             }
 
             try {
-                int id = Integer.parseInt(idContentDaApprovare.getValue());
+                int id = Integer.parseInt(selectedContentField.getValue());
                 Content contentApprovato = ContentUtils.getContentdaApprovare(id);
 
-                Curatore curatore = new Curatore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(), SessioneUtente.utente.getEmail(), SessioneUtente.utente.getPassword(), SessioneUtente.utente.getUsername());
+                if (contentApprovato == null) {
+                    Notification.show("Errore: Contenuto non trovato", 3000, Notification.Position.MIDDLE);
+                    return;
+                }
+
+                Curatore curatore = new Curatore(SessioneUtente.utente.getNome(), 
+                                                 SessioneUtente.utente.getCognome(), 
+                                                 SessioneUtente.utente.getEmail(), 
+                                                 SessioneUtente.utente.getPassword(), 
+                                                 SessioneUtente.utente.getUsername());
+                
                 curatore.ApprovaContent(contentApprovato, id);
 
                 Notification.show("Content approvato con successo", 3000, Notification.Position.MIDDLE);
@@ -57,8 +81,6 @@ public class ApprovaContenutoView extends VerticalLayout {
             }
         });
 
-        add(contentGrid, idContentDaApprovare, submitButton);
+        add(contentGrid, selectedContentField, submitButton);
     }
 }
-
-

@@ -71,6 +71,8 @@ public class ItinerarioUtils {
 
             StringBuilder sb = new StringBuilder();
 
+            if(listaPOI.size() >1)
+            {
             for (POI poi : listaPOI) {
                 sb.append(poi.getNome()).append(",");
             }
@@ -78,6 +80,8 @@ public class ItinerarioUtils {
             if (sb.length() > 0) {
                 sb.deleteCharAt(sb.length() - 1);
             }
+            }
+            else sb.append(listaPOI.get(0).getNome());
 
             pstmt.setString(1, sb.toString());
 

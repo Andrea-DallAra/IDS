@@ -43,7 +43,7 @@ public class GestisciContestView extends VerticalLayout{
                 Notification.show("Devi compilare il campo nome del vincitore o il vincitore deve essere presente nella griglia", 3000, Notification.Position.MIDDLE);
                 return;
             }
-            animatore.dichiaraVincitore(vincitore.getValue(), contestNome.getValue());
+            Notification.show(animatore.dichiaraVincitore(vincitore.getValue(), contestNome.getValue()), 3000, Notification.Position.MIDDLE);
         });
         add(contestNome,apriListaContent,grid,vincitore,dichiaraVincitore);
     }

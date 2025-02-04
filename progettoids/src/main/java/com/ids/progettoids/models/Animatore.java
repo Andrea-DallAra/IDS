@@ -52,8 +52,10 @@ public class Animatore extends Utente {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 String content=rs.getString("listaContent");
+                content = content.replaceAll("[\\[\\]]", "").trim();
                 String[] contentSplit = content.split(",");
                 for (String s : contentSplit) {
+                    s = s.trim();
                     contents.add(ContentUtils.getContent(Integer.parseInt(s)));
                 }
             }
@@ -65,8 +67,9 @@ public class Animatore extends Utente {
     }
 
     
-    public void dichiaraVincitore(String usernameVincitore , String contestNome){
-        System.out.println("Il vincitore del contest "+contestNome+" &egrave "+usernameVincitore);
+    public String dichiaraVincitore(String usernameVincitore , String contestNome){
+        
+        return "Il vincitore del contest "+contestNome+"  e' "+ usernameVincitore;
     }
 
     
