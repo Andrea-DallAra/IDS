@@ -193,13 +193,17 @@ public class POIutils {
     }
 
     public static void collegaContent(Content content , String poi, boolean daApprovare) {
-        int idContent = ContentUtils.getIdContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
-        String sqlPOI = "";
+      int idContent = 0;
         if(!daApprovare){
-            sqlPOI = "UPDATE POI SET idContent = ? WHERE Nome = ?";
-        }
-        else 
-        {sqlPOI = "UPDATE POI_DaApprovare SET idContent = ? WHERE Nome = ?";}
+         idContent = ContentUtils.getIdContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
+          }
+          else
+          {
+            idContent =-ContentUtils.getIdContentDaApprovare(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
+
+          }
+        String  sqlPOI = "UPDATE POI SET idContent = ? WHERE Nome = ?";
+      
         
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmtPOI = conn.prepareStatement(sqlPOI))

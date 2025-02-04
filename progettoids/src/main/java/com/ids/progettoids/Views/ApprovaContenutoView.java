@@ -47,7 +47,7 @@ public class ApprovaContenutoView extends VerticalLayout {
                 Content contentApprovato = ContentUtils.getContentdaApprovare(id);
 
                 Curatore curatore = new Curatore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(), SessioneUtente.utente.getEmail(), SessioneUtente.utente.getPassword(), SessioneUtente.utente.getUsername());
-                curatore.ApprovaContent(contentApprovato);
+                curatore.ApprovaContent(contentApprovato, id);
 
                 Notification.show("Content approvato con successo", 3000, Notification.Position.MIDDLE);
             } catch (NumberFormatException err) {

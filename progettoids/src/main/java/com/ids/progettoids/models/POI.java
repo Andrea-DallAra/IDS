@@ -8,7 +8,7 @@ public class POI {
     private String nome;
     private Coordinate coordinate;
     private String descrizione;
-    private Content media;
+    private  Content media;
 
  
     public POI(String _nome, Coordinate _coordinate, String _descrizione, Content _media) {

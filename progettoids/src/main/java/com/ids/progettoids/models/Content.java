@@ -8,7 +8,7 @@ public class Content {
     private String data;
     private String autore;
     private String descrizione;
-
+    
     /**
      * Factory Method: Builder
      */

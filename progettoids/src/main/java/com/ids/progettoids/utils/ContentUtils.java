@@ -36,7 +36,30 @@ public class ContentUtils {
 
     return idContent;}
     }
-
+    public static int getIdContentDaApprovare(String media, String data, String autore, String descrizione) {
+        { int idContent = -1;
+        String sql = "SELECT idContent FROM Content_DaApprovare WHERE mediaUrl = ? AND data = ? AND autore = ? AND descrizione = ?";
+    
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    
+            pstmt.setString(1, media);
+            pstmt.setString(2, data);
+            pstmt.setString(3, autore);
+            pstmt.setString(4, descrizione);
+    
+            ResultSet rs = pstmt.executeQuery();
+    
+            if (rs.next()) {
+                idContent = rs.getInt("idContent");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero dell'idContent: " + e.getMessage());
+        }
+    
+        return idContent;}
+        }
     public static void creaContent(String media, String data, String autore, String descrizione, boolean daApprovare) {
         String sql = "";
         if(!daApprovare){
@@ -136,11 +159,12 @@ public class ContentUtils {
 
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
                 
-                String media = rs.getString("Media");
+                String media = rs.getString("MediaUrl");
                 String data = rs.getString("Data");
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
@@ -162,10 +186,12 @@ public class ContentUtils {
         Content content = new Content("", "", "", "");
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idContent);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String media = rs.getString("Media");
+                String media = rs.getString("MediaUrl");
                 String data = rs.getString("Data");
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");

@@ -55,8 +55,8 @@ public class Curatore extends Utente {
 }
     
 public void ApprovaItinerari(Itinerario itinerario) {
-    String sqlElimina = "DELETE FROM Itinerari_DaApprovare WHERE idItinerario = ?";
-    String sqlInserisci = "INSERT INTO Itinerari (idItinerario, ListaPOI) VALUES (?, ?)";
+    String sqlElimina = "DELETE FROM Itinerario_DaApprovare WHERE idItinerario = ?";
+    String sqlInserisci = "INSERT INTO Itinerario (idItinerario, ListaPOI) VALUES (?, ?)";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmtElimina = conn.prepareStatement(sqlElimina);
@@ -76,28 +76,48 @@ public void ApprovaItinerari(Itinerario itinerario) {
     }
 }
 
-public void ApprovaContent(Content content) {
+public void ApprovaContent(Content content, int idContent) {
     String sqlElimina = "DELETE FROM Content_DaApprovare WHERE idContent = ?";
-    String sqlInserisci = "INSERT INTO Content (idContent, Media, Data, Autore, Descrizione) VALUES (?, ?, ?, ?, ?)";
+    String sqlInserisci = "INSERT INTO Content ( MediaUrl, Data, Autore, Descrizione) VALUES (?, ?, ?, ?)";
 
     try (Connection conn = ConnettiDB.getConnection();        
          PreparedStatement pstmtElimina = conn.prepareStatement(sqlElimina);
          PreparedStatement pstmtInserisci = conn.prepareStatement(sqlInserisci)) {
 
-        pstmtElimina.setInt(1, content.getIdContent());
-        pstmtInserisci.setInt(1, content.getIdContent());
-        pstmtInserisci.setString(2, content.getMedia());
-        pstmtInserisci.setString(3, content.getData());
-        pstmtInserisci.setString(4, content.getAutore());
-        pstmtInserisci.setString(5, content.getDescrizione());
+        pstmtElimina.setInt(1,  idContent);
+      
+        pstmtInserisci.setString(1, content.getMedia());
+        pstmtInserisci.setString(2, content.getData());
+        pstmtInserisci.setString(3, content.getAutore());
+        pstmtInserisci.setString(4, content.getDescrizione());
         
         pstmtElimina.executeUpdate();
         pstmtInserisci.executeUpdate();
         conn.close();
+       int idNuovo = ContentUtils.getIdContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
+        AggiornaId(idNuovo, idContent);    
     } catch (SQLException e) {
         System.err.println("Errore durante l'approvazione del contenuto: " + e.getMessage());
     }
 }
+public void AggiornaId(int _idNuovo, int _idVecchio)
+{
+    String  sqlAggiornaId = "UPDATE POI SET idContent = ? WHERE idContent = ?";
+    try (Connection conn = ConnettiDB.getConnection();        
+    PreparedStatement pstmtAggiorna = conn.prepareStatement(sqlAggiornaId))
+ {
+
+    pstmtAggiorna.setInt(1,  _idNuovo);
+    pstmtAggiorna.setInt(2,  _idVecchio);
+  
+    pstmtAggiorna.executeUpdate();
+   conn.close();
+   
+} catch (SQLException e) {
+   System.err.println("Errore durante l'aggiornamento dell'id: " + e.getMessage());
+}
+}
+
 public void EditaPOI(POI base, POI editato) {
     EditaUtils.EditaPOI(base, editato);
 }
