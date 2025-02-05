@@ -11,6 +11,12 @@ import com.ids.progettoids.models.Itinerario;
 import com.ids.progettoids.models.POI;
 
 public class ItinerarioUtils {
+    /**
+     * Metodo che recupera uno o piu' itinerari.
+     * Se id == -1, restituisce tutti gli itinerari.
+     * @param id l'id dell'itinerario da recuperare, -1 per tutti
+     * @return una lista di Itinerario
+     */
      public static ArrayList<Itinerario> getItinerario(int id) {
         ArrayList<Itinerario> listaItinerari = new ArrayList<>();
 
@@ -43,6 +49,13 @@ public class ItinerarioUtils {
     }
 
    
+    /**
+     * Metodo che, dato una stringa contenente i nomi dei POI,
+     * restituisce una lista di POI contenenti i POI corrispondenti.
+     * Se la stringa e' vuota, restituisce una lista vuota.
+     * @param listaPOIStr la stringa contenente i nomi dei POI
+     * @return una lista di POI
+     */
     public static ArrayList<POI> parsePOIList(String listaPOIStr) {
         ArrayList<POI> listaPOI = new ArrayList<>();
 
@@ -56,6 +69,14 @@ public class ItinerarioUtils {
         return listaPOI;
     }
 
+
+
+    /**
+     * Metodo che crea un itinerario con i POI nella listaPOI.
+     * Se daApprovare == true, l'itinerario viene creato nella tabella Itinerario_DaApprovare, altrimenti nella tabella Itinerario.
+     * @param listaPOI la lista di POI da inserire nell'itinerario
+     * @param daApprovare true se l'itinerario deve essere creato nella tabella Itinerario_DaApprovare, false altrimenti
+     */
     public static void creaItinerario(ArrayList<POI> listaPOI, boolean daApprovare) {
          String sql = "";
         if(!daApprovare)
@@ -93,6 +114,13 @@ public class ItinerarioUtils {
     }
    
 
+
+/**
+ * Metodo per eliminare un itinerario dal database.
+ * 
+ * @param idItinerario l'identificativo dell'itinerario da eliminare
+ */
+
     public static void EliminaItinerario(int idItinerario) {
         String sql = "DELETE FROM Itinerario WHERE idItinerario = ?";
 
@@ -107,6 +135,10 @@ public class ItinerarioUtils {
         }
     }
 
+    /**
+     * Metodo che recupera tutti gli itinerari da approvare
+     * @return lista di Itinerario
+     */
     public static ArrayList<Itinerario> getAllItineraridaApprovare() {
         ArrayList<Itinerario> listaItinerario = new ArrayList<>();
         String sql = "SELECT * FROM Itinerario_DaApprovare";
@@ -129,6 +161,11 @@ public class ItinerarioUtils {
         return listaItinerario;
     }
 
+    /**
+     * Metodo che recupera un itinerario da approvare.
+     * @param idItinerario l'id dell'itinerario da recuperare.
+     * @return l'itinerario con l'id specificato, oppure null se non esiste.
+     */
     public static Itinerario getItinerariodaApprovare(int idItinerario) {
         String sql = "SELECT * FROM Itinerario_DaApprovare WHERE idItinerario = ?";
         ArrayList<POI> listaPOI=new ArrayList<>();

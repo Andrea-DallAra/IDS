@@ -5,6 +5,9 @@ import java.util.List;
 
 
 public class Contest{
+    /**
+     * Classe che rappresenta un contest
+     */
     private String nome;
     private String descrizione;
     private List<Content> contents;

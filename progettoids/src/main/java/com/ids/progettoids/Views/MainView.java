@@ -84,9 +84,11 @@ public class MainView extends VerticalLayout {
           
                 Button contenuto = new Button("Vai alla pagina Crea Contenuto", e -> {
                     getUI().ifPresent(ui -> ui.navigate("/CreaContenuto"));});
-                add(inserisciPoi,itinerario, contenuto);
+               
 
-
+                Button partecipaContest = new Button("Vai alla pagina per partecipare a un contest", e -> {
+                    getUI().ifPresent(ui-> ui.navigate("/PartecipaContest"));});
+                    add(inserisciPoi,itinerario, contenuto, partecipaContest);
                 bottoneInseritoContributore = true;
         }
     }
@@ -141,14 +143,9 @@ public class MainView extends VerticalLayout {
                 getUI().ifPresent(ui -> ui.navigate("/Report"));});
                 Button richiediRuolo = new Button("Vai alla pagina per la richiesta di nuovo ruolo", e -> {
                     getUI().ifPresent(ui-> ui.navigate("/NewRuoloView"));});
-              /*  Button visPOI = new Button("Visualizza POI", e -> {
-                    getUI().ifPresent(ui -> ui.navigate("/poiList"));});
-                Button visItinerario = new Button("Visualizza Itinierari", e -> {
-                    getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
-                add(report, visPOI, visItinerario); */
-                Button partecipaContest = new Button("Vai alla pagina per partecipare a un contest", e -> {
-                    getUI().ifPresent(ui-> ui.navigate("/PartecipaContest"));});
-                add(report,richiediRuolo,partecipaContest);
+           
+             
+                add(report,richiediRuolo);
                 bottoneInseritoTurista=true;
         }
     

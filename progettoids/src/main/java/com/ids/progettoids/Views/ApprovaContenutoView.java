@@ -43,7 +43,7 @@ public class ApprovaContenutoView extends VerticalLayout {
         contentGrid.asSingleSelect().addValueChangeListener(event -> {
             ContentWithId selectedContent = event.getValue();
             if (selectedContent != null) {
-                selectedContentField.setValue(String.valueOf(selectedContent.getId())); // Display ID
+                selectedContentField.setValue(String.valueOf(selectedContent.getId())); 
             } else {
                 selectedContentField.clear();
             }

@@ -18,6 +18,15 @@ import com.ids.progettoids.models.POI;
 public class POIutils {
 
    
+    /**
+     * Recupera un elenco di POI.
+     *
+     * Se {@code nome} == null, restituisce tutti i POI presenti nel database.
+     * Altrimenti, restituisce il POI con {@code nome} (se presente).
+     *
+     * @param nome il nome del POI da cercare
+     * @return un elenco di POI
+     */
     public static ArrayList<POI> getPOI(String nome) {
         ArrayList<POI> listaPOI = new ArrayList<>();
         String sql = (nome == null) ? "SELECT * FROM POI" : "SELECT * FROM POI WHERE Nome = ?";
@@ -61,6 +70,12 @@ public class POIutils {
 
         return listaPOI;
     }
+
+/**
+ * Metodo per parsare una stringa di interi separati da virgole
+ * @param stringList la stringa da parsare
+ * @return un elenco di interi
+ */
    private static List<Integer> parseStringList(String stringList) {
     if (stringList == null || stringList.trim().isEmpty()) {
         return new ArrayList<>(); 
@@ -74,6 +89,10 @@ public class POIutils {
 
     }
 
+    /**
+     * Recupera un elenco di POI da approvare.
+     * @return un elenco di POI
+     */
     public static ArrayList<POI> getAllPOIdaApprovare() {
         ArrayList<POI> listaPOI = new ArrayList<>();
         String sql = "SELECT * FROM POI_DaApprovare";
@@ -116,6 +135,11 @@ public class POIutils {
         return listaPOI;
     }
 
+    /**
+     * Recupera un POI da approvare dal database.
+     * @param nome il nome del POI da cercare
+     * @return il POI con il nome specificato, null se non esiste
+     */ 
     public static POI getPOIdaApprovare(String nome) {
         String sql = "SELECT * FROM POI_DaApprovare WHERE Nome =?";
         POI poi = new POI(nome, null, null,new ArrayList<>());
@@ -150,6 +174,11 @@ public class POIutils {
 
   
 
+    /**
+     * Recupera un Content dal database.
+     * @param idContent l'id del Content da cercare
+     * @return il Content con l'id specificato, null se non esiste
+     */
     public static Content getContent(int idContent) {
         Content content = null;
         String sql = "SELECT * FROM Content WHERE idContent = ?";
@@ -177,6 +206,14 @@ public class POIutils {
         return content;
     }
 
+    /**
+     * Crea un POI nel database.
+     * @param nome il nome del POI
+     * @param coordinate le coordinate del POI
+     * @param descrizione la descrizione del POI
+     * @param media l'elenco dei contenuti del POI
+     * @param daApprovare true se il POI deve essere creato nella tabella POI_DaApprovare, false altrimenti
+     */
    public static void creaPOI(String nome, Coordinate coordinate, String descrizione, List<Content> media, boolean daApprovare) {
     String sql;
     if (!daApprovare) {
@@ -201,6 +238,10 @@ public class POIutils {
 }
 
 
+    /**
+     * Elimina un POI dal database.
+     * @param poi il nome del POI da eliminare
+     */
     public static void EliminaPOI(String poi) {
      
         String sql = "DELETE FROM POI WHERE Nome = ?";
@@ -217,6 +258,14 @@ public class POIutils {
         }
     }
 
+    /**
+     * Collega un POI ad un contenuto.
+     * Se il contenuto non   da approvare, utilizza l'id del contenuto esistente,
+     * altrimenti utilizza l'id del contenuto da approvare.
+     * @param content il contenuto da collegare
+     * @param poi il nome del POI da collegare
+     * @param daApprovare se il contenuto   da approvare
+     */
     public static void collegaContent(Content content , String poi, boolean daApprovare) {
       int idContent = 0;
         if(!daApprovare){

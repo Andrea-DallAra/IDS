@@ -12,15 +12,17 @@ import com.ids.progettoids.models.POI;
 
 public class EditaUtils {
     
+    /**
+     * Modifica un POI esistente con i nuovi valori di editato.
+     * @param base il POI da modificare
+     * @param editato il POI con i nuovi valori
+     */
   public static void EditaPOI(POI base, POI editato) {
     String sql = "UPDATE POI SET Nome = ?, Coordinate = ?, Descrizione = ? WHERE Nome = ? AND Coordinate = ? AND Descrizione = ?";
 
     try (Connection conn = ConnettiDB.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        
-      
-      
         pstmt.setString(1, editato.getNome());
         pstmt.setString(2, editato.getCoordinate().toString());
         pstmt.setString(3, editato.getDescrizione());
@@ -40,6 +42,11 @@ public class EditaUtils {
 
 
 
+    /**
+     * Modifica un Content esistente con i nuovi valori di editato.
+     * @param base il Content da modificare
+     * @param editato il Content con i nuovi valori
+     */
 public static void EditaContent(Content base, Content editato) {
     String sql = "UPDATE Content SET MediaUrl = ?, data = ?, autore = ?, descrizione = ? WHERE idContent = ?";
 
@@ -60,6 +67,11 @@ public static void EditaContent(Content base, Content editato) {
     }
 }
 
+    /**
+     * Modifica un itinerario esistente con i nuovi valori di editato.
+     * @param base l'itinerario da modificare
+     * @param editato l'itinerario con i nuovi valori
+     */
 public static void EditaItinerario(Itinerario base, Itinerario editato) {
     String sql = "UPDATE Itinerario SET listaPOI = ? where idItinerario = ?";
 

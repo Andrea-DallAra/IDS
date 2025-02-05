@@ -11,6 +11,10 @@ import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.utils.ContentUtils;
 public class Animatore extends Utente {
     
+    /**
+     * Classe che rappresenta un animatore
+     * Gestisce le azioni dell'animatore
+     */
     
     @Override
     public void AggiungiRuolo() 
@@ -27,6 +31,10 @@ public class Animatore extends Utente {
        AggiungiRuolo();
     }
 
+    /**
+     * Metodo per creare un contest
+     * @param contest il contest da creare
+     */
     public void creaContest(Contest contest){
         String sql = "INSERT INTO contest (nome, descrizione, listaContent) VALUES (?, ?, ?)";
         
@@ -42,7 +50,11 @@ public class Animatore extends Utente {
         }
     }
 
-
+ /**
+  * Metodo per gestire un contest
+  * @param contest il contest da gestire
+  * @return la lista dei contenuti
+  */
     public List<Content> gestisciContest(Contest contest){
         List<Content> contents = new ArrayList<>();
         String sql = "SELECT * FROM Contest where nome=?";
@@ -66,7 +78,12 @@ public class Animatore extends Utente {
         return contents;
     }
 
-    
+    /**
+     * Metodo per dichiarare il vincitore
+     * @param usernameVincitore 
+     * @param contestNome
+     * @return la stringa di dichiarazione
+     */
     public String dichiaraVincitore(String usernameVincitore , String contestNome){
         
         return "Il vincitore del contest "+contestNome+"  e' "+ usernameVincitore;

@@ -6,18 +6,21 @@ import com.ids.progettoids.utils.POIutils;
 
 public class POI {
 
+    /**
+     * Classe che rappresenta un Poi
+     */
     private String nome;
     private Coordinate coordinate;
     private String descrizione;
     private  List<Content> mediaList;
 
- 
-   /* public POI(String _nome, Coordinate _coordinate, String _descrizione, Content _media) {
-        setNome(_nome);
-        setCoordinate(_coordinate);
-        setDescrizione(_descrizione);
-        setMedia(_media);
-    } */
+ /**
+  * @param nome il nome del POI
+  * @param coordinate la coordinate del POI
+  * @param descrizione la descrizione del POI
+  * @param _mediaList la lista dei contenuti del POI
+  */
+
     public POI(String nome, Coordinate coordinate, String descrizione, List<Content> _mediaList) {
         this.nome = nome;
         this.coordinate = coordinate;
@@ -30,14 +33,13 @@ public class POI {
         setMediaList(_mediaList);
     }
 
- /*   public void setMedia(Content content) {
-        if (this.mediaList == null) {
-            this.mediaList = new ArrayList<>(); 
-        }
-        this.mediaList.add(content);
-    } */
-   public void setMediaList(List<Content> _mediaList)
+    /**
+     * Metodo che aggiunge i contenuti alla la lista dei contenuti
+     * @param _mediaList
+     */
+   private void setMediaList(List<Content> _mediaList)
    {
+
        for (Content contenuto : _mediaList) {
             if(!mediaList.contains(contenuto)){
                 mediaList.add(contenuto);

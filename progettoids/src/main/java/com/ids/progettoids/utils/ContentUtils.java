@@ -13,6 +13,14 @@ import com.ids.progettoids.models.Content;
 
 public class ContentUtils {
     
+    /**
+     * Recupera l'idContent dal database
+     * @param media 
+     * @param data
+     * @param autore
+     * @param descrizione
+     * @return idContent
+     */
     public static int getIdContent(String media, String data, String autore, String descrizione) {
     { int idContent = -1;
     String sql = "SELECT idContent FROM Content WHERE mediaUrl = ? AND data = ? AND autore = ? AND descrizione = ?";
@@ -37,6 +45,14 @@ public class ContentUtils {
 
     return idContent;}
     }
+    /**
+     * Recupera l'idContent di un Content da approvare dal database
+     * @param media
+     * @param data
+     * @param autore
+     * @param descrizione
+     * @return idContent
+     */
     public static int getIdContentDaApprovare(String media, String data, String autore, String descrizione) {
         { int idContent = -1;
         String sql = "SELECT idContent FROM Content_DaApprovare WHERE mediaUrl = ? AND data = ? AND autore = ? AND descrizione = ?";
@@ -61,6 +77,14 @@ public class ContentUtils {
     
         return idContent;}
         }
+        /**
+         * Metodo per creare un content
+         * @param media
+         * @param data
+         * @param autore
+         * @param descrizione
+         * @param daApprovare 
+         */
     public static void creaContent(String media, String data, String autore, String descrizione, boolean daApprovare) {
         String sql = "";
         if(!daApprovare){
@@ -86,6 +110,11 @@ public class ContentUtils {
     }
     }
 
+    /**
+     * Recupera un Content dal database dato l'id
+     * @param idContent
+     * @return il content con l'id passato
+     */
     public static Content getContent(int idContent) {
         Content content = null;
         String sql = "SELECT * FROM Content WHERE idContent = ?";
@@ -112,6 +141,10 @@ public class ContentUtils {
         return content;
     }
 
+    /**
+     * Elimina un Content dal database
+     * @param idContent
+    */
     public static void EliminaContent(int idContent) {
         String sql = "DELETE FROM Content WHERE idContent = ?";
 
@@ -127,6 +160,10 @@ public class ContentUtils {
         }
     }
 
+    /**
+     * Recupera tutti i Content dal database
+     * @return i content con gli id ArrayList<HashMap<Integer,Content>>
+     */
     public static ArrayList<HashMap<Integer,Content>> getAllContent() {
         ArrayList<HashMap<Integer,Content>> listaContent = new ArrayList<>();
         String sql = "SELECT * FROM Content";
@@ -154,6 +191,10 @@ public class ContentUtils {
         return listaContent;
     }
 
+    /**
+     * Recupera tutti i Content da approvare dal database
+     * @return i content con gli id ArrayList<HashMap<Integer,Content>>
+     */
     public static ArrayList<HashMap<Integer,Content>> getAllContentdaApprovare() {
         ArrayList<HashMap<Integer,Content>> listaContent = new ArrayList<>();
         String sql = "SELECT * FROM Content_DaApprovare";
@@ -182,6 +223,11 @@ public class ContentUtils {
         return listaContent;
     }
 
+    /**
+     * Recupera un Content da approvare dal database
+     * @param idContent
+     * @return il content da approvare con l'id passato
+     */
     public static Content getContentdaApprovare(int idContent) {
         String sql = "SELECT * FROM Content_DaApprovare WHERE idContent = ?";
         Content content = new Content("", "", "", "");
@@ -204,6 +250,11 @@ public class ContentUtils {
         }
         return content;
     }
+    /**
+     * Recupera tutti i Content di un utente
+     * @param username
+     * @return i content di un utente
+     */
     public static List<Content> getUserContents(String username) {
         List<Content> contents = new ArrayList<>();
         String sql = "SELECT * FROM Content WHERE Autore = ?";

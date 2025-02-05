@@ -11,12 +11,14 @@ import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
 public class Gestore extends Utente {
 
+    /**
+     * Classe che rappresenta un gestore
+     * Gestisce le azioni del gestore
+     */
     @Override
     public void AggiungiRuolo() 
-    {
-       
-        ruoli.add(Ruolo.Gestore);
-        
+    {    
+        ruoli.add(Ruolo.Gestore);     
     }
     public Gestore() 
     {
@@ -28,22 +30,25 @@ public class Gestore extends Utente {
        AggiungiRuolo();
     }
 
-
+/**
+ * Metodo per ottenere le richieste di cambio di ruolo dal database.
+ * @return le richieste di cambio di ruolo come un Map<String, String> 
+ */
       public Map<String, String> getRichiesteCambioRuolo() {
-        // Query per recuperare username e ruolo dalla tabella RichiediRuolo
+        
         String sql = "SELECT username, ruolo FROM RichiediRuolo";
         
-        // Creazione della HashMap per memorizzare i dati
+       
         Map<String, String> richiesteRuoli = new HashMap<>();
 
-        // Connessione al database e recupero dati
+        
         try (Connection conn =ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
-            // Itero sui risultati e li inserisco nella HashMap
+            
             while (rs.next()) {
-                String username = rs.getString("username").trim();  // Elimino eventuali spazi
+                String username = rs.getString("username").trim();  
                 String ruolo = rs.getString("ruolo");
                 richiesteRuoli.put(username, ruolo);
             }
@@ -56,7 +61,11 @@ public class Gestore extends Utente {
 
         return richiesteRuoli;
     }
-    //da collegare con l'hud
+    /**
+     * Metodo per modificare il ruolo di un utente nel database.
+     * @param username l'utente da modificare
+     * @param _ruolo il ruolo da aggiungere
+     */
     public void EditaRuolo(String username, String _ruolo) 
     {
         Utente nuovoUtente = new Utente();
@@ -64,7 +73,10 @@ public class Gestore extends Utente {
         nuovoUtente.AggiungiRuolo(Ruolo.valueOf(_ruolo));
         nuovoUtente.SalvaRuoliDB(username);
     }
-
+/**
+ * Metodo per eliminare un ruolo dall'utente dal database.
+ * @param username l'utente a cui rimuovere un ruolo
+ */
     public void removeRuoloFromDatabase(String username) {
         String sql = "DELETE FROM RichiediRuolo WHERE username = ?";
         try (Connection conn = ConnettiDB.getConnection();

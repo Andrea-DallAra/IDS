@@ -15,6 +15,10 @@ import com.ids.progettoids.utils.ItinerarioUtils;
 import com.ids.progettoids.utils.POIutils;
 public class Curatore extends Utente {
 
+    /**
+     * Classe che rappresenta un curatore
+     * Gestisce le azioni del curatore
+     */
     @Override
     public void AggiungiRuolo() 
     {
@@ -29,6 +33,10 @@ public class Curatore extends Utente {
        AggiungiRuolo();
     }
 
+    /**
+     * Metodo per approvare un POI
+     * @param poi il POI da approvare
+     */
  public void ApprovaPOI(POI poi) {
     String sqlElimina = "DELETE FROM POI_DaApprovare WHERE Nome = ?";
     String sqlInserisci = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";
@@ -37,12 +45,6 @@ public class Curatore extends Utente {
          PreparedStatement pstmtElimina = conn.prepareStatement(sqlElimina);
          PreparedStatement pstmtInserisci = conn.prepareStatement(sqlInserisci)) {
 
-
-    
-       
-   
-
-       
         pstmtInserisci.setString(1, poi.getNome());
         pstmtInserisci.setString(2, poi.getCoordinate().toString());
         pstmtInserisci.setString(3, poi.getDescrizione());
@@ -60,7 +62,10 @@ public class Curatore extends Utente {
     }
 }
 
-    
+    /**
+     * Metodo per approvare un itinerario
+     * @param itinerario l'itinerario da approvare
+     */
 public void ApprovaItinerari(Itinerario itinerario) {
     String sqlElimina = "DELETE FROM Itinerario_DaApprovare WHERE idItinerario = ?";
     String sqlInserisci = "INSERT INTO Itinerario (ListaPOI) VALUES (?)";
@@ -84,6 +89,11 @@ public void ApprovaItinerari(Itinerario itinerario) {
     }
 }
 
+/**
+ * Metodo per approvare un content
+ * @param content il content da approvare
+ * @param idContent l'id del content
+ */
 public void ApprovaContent(Content content, int idContent) {
     String sqlElimina = "DELETE FROM Content_DaApprovare WHERE idContent = ?";
     String sqlInserisci = "INSERT INTO Content ( MediaUrl, Data, Autore, Descrizione) VALUES (?, ?, ?, ?)";

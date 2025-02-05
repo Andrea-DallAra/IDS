@@ -13,6 +13,10 @@ import com.ids.progettoids.utils.ContentUtils;
 
 public class Turista extends Utente {
 
+    /**
+     * Classe che rappresenta un turista
+     * Gestisce le azioni del turista.
+     */
     private boolean autenticato;
 
     public boolean isAutenticato() {
@@ -36,6 +40,10 @@ public class Turista extends Utente {
         AggiungiRuolo();
     }
 
+    /**
+     * Metodo per salvare un itinerario nel database
+     * @param idItinerario
+     */
     public void salvaItinerario(int idItinerario) {
         if (this.isAutenticato()) {
             String selectSql = "SELECT idItinerari FROM ItinerariSalvati WHERE username = ?";
@@ -53,7 +61,7 @@ public class Turista extends Utente {
                 List<Integer> idItinerariList = new ArrayList<>();
     
                 if (rs.next()) {
-                    // Se esiste già un record, recuperiamo gli itinerari salvati
+                   
                     String existingIds = rs.getString("idItinerari");
                     if (existingIds != null && !existingIds.isEmpty()) {
                         String[] idArray = existingIds.replace("[", "").replace("]", "").split(",");
@@ -62,7 +70,7 @@ public class Turista extends Utente {
                         }
                     }
     
-                    // Aggiungiamo il nuovo itinerario solo se non esiste già
+                   
                     if (!idItinerariList.contains(idItinerario)) {
                         idItinerariList.add(idItinerario);
                         String newIdList = idItinerariList.toString();
@@ -73,7 +81,7 @@ public class Turista extends Utente {
                         System.out.println("Rows updated: " + rowsUpdated);
                     }
                 } else {
-                    // Se non c'è un record per l'utente, inseriamo un nuovo itinerario
+                 
                     insertStmt.setString(1, this.username);
                     insertStmt.setString(2, "[" + idItinerario + "]");
                     int rowsInserted = insertStmt.executeUpdate();

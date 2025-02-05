@@ -13,6 +13,12 @@ import com.ids.progettoids.models.Contest;
 
 public class ContestUtils {
     
+    /**
+     * Aggiunge il contenuto specificato al contest selezionato
+     * @param contest il contest in cui si vuole partecipare
+     * @param content il contenuto da caricare
+     * @param username il nome utente dell'utente che sta partecipando
+     */
     public static void participateInContest(Contest contest, Content content, String username) {
         String sql1 = "SELECT listaContent FROM Contest WHERE nome = ?;";
         String sql2 = "UPDATE Contest SET listaContent = ? WHERE nome = ?;";
@@ -38,6 +44,10 @@ public class ContestUtils {
             System.err.println("Errore durante l'inserimento nel contest: " + e.getMessage());
         }
     }
+    /**
+     * Recupera tutti i contest presenti nel database.
+     * @return lista di tutti i contest.
+     */
     public static List<Contest> getAllContests() {
         List<Contest> contests = new ArrayList<>();
         String sql = "SELECT * FROM Contest;";

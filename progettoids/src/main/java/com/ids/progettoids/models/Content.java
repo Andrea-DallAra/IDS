@@ -4,6 +4,9 @@ package com.ids.progettoids.models;
 import com.ids.progettoids.utils.ContentUtils;
 
 public class Content {
+    /**
+     * Classe che rappresenta un content
+     */
     private String media;
     private String data;
     private String autore;
@@ -18,6 +21,7 @@ public class Content {
         setData(data);
         setDescrizione(descrizione);
         }
+        public Content() {}
     public void setAutore(String autore) {
         this.autore = autore;
     }

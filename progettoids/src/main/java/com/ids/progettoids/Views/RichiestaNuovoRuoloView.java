@@ -21,6 +21,7 @@ public class RichiestaNuovoRuoloView extends VerticalLayout{
         utente.CaricaRuoli(utente.getUsername());
         List<Ruolo> ruoliUtente= utente.getRuolo();
         List<Ruolo> ruoliMancanti = getNotRuoli(ruoliUtente);
+        ruoliMancanti.remove(Ruolo.Gestore);
         if (ruoloSelect != null) {
             remove(ruoloSelect);
         }

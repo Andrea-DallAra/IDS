@@ -12,6 +12,10 @@ import com.ids.progettoids.Ruolo;
 
 public class Contributore extends Utente {
 
+    /**
+     * Classe che rappresenta un contributore
+     * Gestisce le azioni del contributore
+     */
     private boolean autenticato;
     public boolean isAutenticato() {
         return autenticato;
@@ -33,7 +37,11 @@ public class Contributore extends Utente {
        super(_nome, _cognome, _email, _password, _username);
        AggiungiRuolo();
     }
-    
+    /**
+     * Metodo per partecipare ad un contest
+     * @param contest il contest a cui si vuole partecipare
+     * @param content il contenuto da caricare
+     */
     public void partecipaContest(Contest contest, Content content){
         String sql1 = "SELECT listaContent FROM Contest WHERE nome = ?";
         String sql2 = "UPDATE Contest SET listaContent = ? WHERE nome = ?";

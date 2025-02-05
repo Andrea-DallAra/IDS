@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 public class Itinerario {
 
+    /**
+     * classe che rappresenta un itinerario
+     */
     private int idItinerario;
     private ArrayList<POI> listaPOI;
 
@@ -23,7 +26,7 @@ public class Itinerario {
     }
 
     /**
-     * Recupera uno o più itinerari.
+     * Metodo che recupera uno o più itinerari.
      * Se id == -1, restituisce tutti gli itinerari.
      */
    public static ArrayList<Itinerario> getItinerari(int id) {

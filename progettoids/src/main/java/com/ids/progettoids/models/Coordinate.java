@@ -2,6 +2,9 @@ package com.ids.progettoids.models;
 
 public class Coordinate {
     
+    /**
+     * Classe che rappresenta le coordinate di un POI
+     */
     private double latitudine;
     private double longitudine;
 

@@ -11,11 +11,13 @@ import java.util.Base64;
 import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
-import com.ids.progettoids.Interfacce.UtenteInterfaccia;
 import com.ids.progettoids.Ruolo;
 
-
-public class Utente implements UtenteInterfaccia {
+/**
+ * Classe che rappresenta un utente
+ * Gestisce la registrazione, autenticazione e gestione dei ruoli degli utenti.
+ */
+public class Utente  {
     String username = "";
     String password = "";
     String email = "";
@@ -23,17 +25,45 @@ public class Utente implements UtenteInterfaccia {
     String cognome = "";
     List<Ruolo> ruoli = new ArrayList<>();
 
+
+  
+
+ /**  
+     * @param _username Nome utente
+     * @param _nome Nome dell'utente
+     * @param _cognome Cognome dell'utente
+     * @param _email Email dell'utente
+     * @param _password Password dell'utente
+     */
     public Utente( String _username,String _nome, String _cognome , String _email, String _password) 
     {
-       email = _email;
-       password = _password;
-       nome = _nome;
-       cognome = _cognome;
-       username = _username;
+       setEmail(_email);
+       setPassword(_password);
+       setNome(_nome);
+       setcognome(_cognome);
+       SetUsername(_username);
        
     }
     public Utente() {}
-    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public void setcognome(String cognome) {
+        this.cognome = cognome;
+    }
+    
+   /**
+     * Metodo per cambiare il ruolo di un utente e salvarlo nel database.
+     * 
+     * @param username Nome utente
+     * @param _ruolo Nuovo ruolo da assegnare
+     */
     public void CambiaRuolo(String username, String _ruolo) {
         String sql = "INSERT INTO RichiediRuolo (username, ruolo) VALUES (?, ?)";
 
@@ -57,7 +87,12 @@ public class Utente implements UtenteInterfaccia {
             System.err.println("Errore durante l'inserimento: " + e.getMessage());
         }
     }
-
+    /**
+     * Salva i ruoli dell'utente nel database.
+     * Se i ruoli esistono già, li aggiorna, altrimenti li inserisce.
+     * 
+     * @param username Nome utente
+     */
     public void SalvaRuoliDB(String username) {
         Connection con = ConnettiDB.getConnection();
     
@@ -73,7 +108,7 @@ public class Utente implements UtenteInterfaccia {
                        "Turista = ?, ContributoreAutenticato = ?, TuristaAutenticato = ? WHERE idUtente = ?";
     
         try (PreparedStatement stmt = con.prepareStatement(query)) {
-            // Imposta 1 se il ruolo e' presente, 0 se non lo e'
+            
             stmt.setInt(1, ruoliUtente.contains(Ruolo.Gestore) ? 1 : 0);
             stmt.setInt(2, ruoliUtente.contains(Ruolo.Contributore) ? 1 : 0);
             stmt.setInt(3, ruoliUtente.contains(Ruolo.Curatore) ? 1 : 0);
@@ -95,6 +130,11 @@ public class Utente implements UtenteInterfaccia {
             System.out.println("Errore durante il salvataggio dei ruoli: " + e.getMessage());
         }
     }
+    /**
+     * Inserisce i ruoli dell'utente nel database.
+     * @param username
+     * @param ruoliUtente
+     */
     public void insertRuoli(String username, List<Ruolo> ruoliUtente) {
         String query = "INSERT INTO Ruoli (idUtente, Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato, TuristaAutenticato) " +
                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -111,7 +151,10 @@ public class Utente implements UtenteInterfaccia {
             System.out.println("Errore durante l'inserimento dei ruoli: " + e.getMessage());
         }
     }
-    
+    /**
+     * Carica i ruoli dell'utente dal database.
+     * @param username
+     */
     public void CaricaRuoli(String username) {
         Connection con = ConnettiDB.getConnection();
         String query = "SELECT Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato FROM Ruoli WHERE idUtente = ?";
@@ -143,7 +186,7 @@ public class Utente implements UtenteInterfaccia {
                 }
                 
                     ruoli.add(Ruolo.Turista);
-                    //fatto il login e' sempre autenticato
+                    
                     ruoli.add(Ruolo.TuristaAutenticato);
              
                 System.out.println("Ruoli caricati correttamente per l'utente: " + username);
@@ -156,7 +199,13 @@ public class Utente implements UtenteInterfaccia {
             System.out.println("Errore durante il caricamento dei ruoli: " + e.getMessage());
         }
     }
-    
+     /**
+     * Metodo per autenticare un utente confrontando la password con l'hash salvato.
+     * 
+     * @param username Nome utente
+     * @param password Password dell'utente
+     * @return true se il login ha successo, false altrimenti
+     */
     public  boolean Login(String username, String password) {
         Connection con = ConnettiDB.getConnection();
       
@@ -172,8 +221,8 @@ public class Utente implements UtenteInterfaccia {
                 String storedHash = rs.getString("password");
                 
                 
-               // String inputHash = hashPassword(password, "chiave");
-               String inputHash = password;
+                String inputHash = hashPassword(password, "chiave");
+             
                 con.close();
                 if (inputHash.equals(storedHash)) {
                     System.out.println("Login riuscito."); 
@@ -196,20 +245,28 @@ public class Utente implements UtenteInterfaccia {
         }
        
     }
-
+/**
+ * Metodo per registrare un nuovo utente nel database.
+ * @param nome
+ * @param cognome
+ * @param email
+ * @param password
+ * @param username
+ * @return
+ */
     public boolean Registrazione(String nome, String cognome, String email, String password, String username) {
 
         if (utenteEsiste(username, email)) {
             System.out.println("L'utente con username: " + username + " o email: " + email + " è già registrato.");
             return false;
         }
-        // Hash della password
-      //  password = hashPassword(password, "chiave");
+      
+        password = hashPassword(password, "chiave");
 
-        // Query di inserimento
+       
         String sql = "INSERT INTO Utenti (username, email, nome, cognome, password) VALUES (?, ?, ?, ?, ?)";
         
-        // Connessione e inserimento
+        
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -234,6 +291,12 @@ public class Utente implements UtenteInterfaccia {
 
         return false;
     }
+    /**
+     * Metodo per controllare se un utente esiste nel database.
+     * @param username
+     * @param email
+     * @return
+     */
     private boolean utenteEsiste(String username, String email) {
         String checkQuery = "SELECT COUNT(*) FROM Utenti WHERE username = ? OR email = ?";
     
@@ -245,16 +308,20 @@ public class Utente implements UtenteInterfaccia {
             ResultSet rs = checkStmt.executeQuery();
     
             if (rs.next() && rs.getInt(1) > 0) {
-                return true;  // L'utente esiste già
+                return true; 
             }
     
         } catch (SQLException e) {
             System.err.println("Errore nel controllo esistenza utente: " + e.getMessage());
         }
     
-        return false; // L'utente non esiste
+        return false; 
     }
-    
+    /**
+     * Metodo che aggiunge turista come ruolo di default 
+     * ad un utente quando viene registrato
+     * @param username
+     */
     public void AggiungiTurista(String username) {
         Connection con = ConnettiDB.getConnection();
     
@@ -263,7 +330,7 @@ public class Utente implements UtenteInterfaccia {
             return;
         }
     
-        // Prima verifica se l'utente esiste già nella tabella Ruoli
+        
         String checkQuery = "SELECT COUNT(*) FROM Ruoli WHERE idUtente = ?";
         String insertQuery = "INSERT INTO Ruoli (idUtente, Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -301,7 +368,13 @@ public class Utente implements UtenteInterfaccia {
     }
     
 
-    // SHA-256
+   /**
+     * Genera un hash della password utilizzando SHA-256.
+     * 
+     * @param password Password in chiaro
+     * @param chiave Chiave di sicurezza aggiuntiva
+     * @return Stringa hash della password
+     */
     public static String hashPassword(String password, String chiave) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -314,16 +387,28 @@ public class Utente implements UtenteInterfaccia {
             throw new RuntimeException("Qualcosa e' andato storto", e);
         }
     }
-    @Override
+    
+    /**
+     * metodo da sovrascrivere nelle classi figlie
+     */
     public void AggiungiRuolo() {
        
     }
+    /**
+     * Metodo che aggiunge un ruolo all'utente
+     */
     public void AggiungiRuolo(Ruolo _ruolo) {
        ruoli.add(_ruolo);
     }
     public List<Ruolo> getRuolo() {
         return ruoli;
     }
+    /**
+     * Metodo che aggiunge un report al database
+     * @param chiave
+     * @param tipo
+     * @param descrizione
+     */
     public void Report(String chiave, String tipo, String descrizione) {
         String sql = "INSERT INTO Report (Chiave, Tipo, Descrizione) VALUES (?, ?, ?)";
     

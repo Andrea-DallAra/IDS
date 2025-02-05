@@ -47,7 +47,7 @@ public class POIDetaggliView extends VerticalLayout implements HasUrlParameter<S
 
         if(SessioneUtente.utente != null)
          {
-            //ha fatto il login quindi è un turista autenticato
+          
             Button aggiungiContenutoButton = new Button("Aggiungi Contenuto", event2 ->
             getUI().ifPresent(ui -> ui.navigate("CreaContenuto/" + poi.getNome())));
              add(aggiungiContenutoButton);
