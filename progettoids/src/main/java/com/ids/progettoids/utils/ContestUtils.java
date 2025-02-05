@@ -30,10 +30,14 @@ public class ContestUtils {
             List<Integer> contentsIdList = new ArrayList<>();
             if (rs.next()) {
                 String stringaContentId = rs.getString("listaContent");
+                if(stringaContentId != null && !stringaContentId.isEmpty())
+                {         
                 String[] contentSplit = stringaContentId.split(",");
                 for (String s : contentSplit) {
                     contentsIdList.add(Integer.valueOf(s));
                 }
+                }
+                else contentsIdList.add(0);
             }
             contentsIdList.add(content.getIdContent());
             pstmt2.setString(1, contentsIdList.toString());

@@ -258,39 +258,70 @@ public class POIutils {
         }
     }
 
-    /**
-     * Collega un POI ad un contenuto.
-     * Se il contenuto non   da approvare, utilizza l'id del contenuto esistente,
-     * altrimenti utilizza l'id del contenuto da approvare.
-     * @param content il contenuto da collegare
-     * @param poi il nome del POI da collegare
-     * @param daApprovare se il contenuto   da approvare
-     */
-    public static void collegaContent(Content content , String poi, boolean daApprovare) {
-      int idContent = 0;
-        if(!daApprovare){
-         idContent = ContentUtils.getIdContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
-          }
-          else
-          {
-            idContent =-ContentUtils.getIdContentDaApprovare(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
-
-          }
-        String  sqlPOI = "UPDATE POI SET idContent = ? WHERE Nome = ?";
-      
+    public static void collegaContent(Content content, String poi, boolean daApprovare) {
+        int idContent = 0;
+    
+        if (!daApprovare) {
+            idContent = ContentUtils.getIdContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
+        } else {
+            idContent = -ContentUtils.getIdContentDaApprovare(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione());
+        }
+    
+        String sqlPOI = "UPDATE POI SET idContent = ? WHERE Nome = ?";
         
         try (Connection conn = ConnettiDB.getConnection();
-             PreparedStatement pstmtPOI = conn.prepareStatement(sqlPOI))
-              {
+             PreparedStatement pstmtPOI = conn.prepareStatement(sqlPOI)) {
+    
             
-            pstmtPOI.setInt(1, idContent);
+            String idContents = UnisciId(poi);
+    
+          
+            if (!idContents.isEmpty()) {
+                List<String> idList = new ArrayList<>(Arrays.asList(idContents.split(",")));
+                if (!idList.contains(String.valueOf(idContent))) {
+                    idList.add(String.valueOf(idContent));
+                }
+                idContents = String.join(",", idList);
+            } else {
+                idContents = String.valueOf(idContent); 
+            }
+    
+            pstmtPOI.setString(1, idContents);
             pstmtPOI.setString(2, poi);
             pstmtPOI.executeUpdate();
-            
-            
+    
             conn.close();
         } catch (SQLException e) {
             System.err.println("Errore durante l'aggiornamento dell'idContent nei POI: " + e.getMessage());
         }
     }
+    
+    /**
+     * Metodo per ottenere l'idContent attuale di un POI specifico.
+     * @param poi il nome del POI
+     * @return la stringa contenente gli id separati da virgole
+     */
+    private static String UnisciId(String poi) {
+        String query = "SELECT idContent FROM POI WHERE Nome = ?";
+        String idContent = "";
+    
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+    
+            stmt.setString(1, poi);
+            ResultSet rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                idContent = rs.getString("idContent");
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return (idContent == null || idContent.trim().isEmpty()) ? "" : idContent;
+    }
+    
+
+  
 }

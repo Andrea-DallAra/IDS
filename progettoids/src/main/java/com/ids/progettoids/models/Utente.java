@@ -181,8 +181,7 @@ public class Utente  {
                     if (!ruoli.contains(Ruolo.Contributore)) {
                         ruoli.add(Ruolo.Contributore);
                     }
-                    Contributore contributore = new Contributore(this.nome, this.cognome, this.email, this.password, this.username);
-                    contributore.setAutenticato(true);
+                    ruoli.add(Ruolo.ContributoreAutenticato);
                 }
                 
                     ruoli.add(Ruolo.Turista);

@@ -18,6 +18,7 @@ public class Contributore extends Utente {
      */
     private boolean autenticato;
     public boolean isAutenticato() {
+        if(ruoli.contains(Ruolo.ContributoreAutenticato)) autenticato = true;
         return autenticato;
     }
     public void setAutenticato(boolean autenticato) {
