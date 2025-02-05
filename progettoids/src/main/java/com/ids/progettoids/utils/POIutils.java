@@ -318,7 +318,10 @@ public class POIutils {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    
+        if (idContent != null && idContent.startsWith("0")) {
+            idContent = idContent.substring(2);
+        }
+        
         return (idContent == null || idContent.trim().isEmpty()) ? "" : idContent;
     }
     

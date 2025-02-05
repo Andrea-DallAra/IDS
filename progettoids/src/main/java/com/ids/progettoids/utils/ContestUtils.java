@@ -31,10 +31,11 @@ public class ContestUtils {
             if (rs.next()) {
                 String stringaContentId = rs.getString("listaContent");
                 if(stringaContentId != null && !stringaContentId.isEmpty())
-                {         
+                {       
+                stringaContentId = stringaContentId.replaceAll("[\\[\\]]", "").trim();  
                 String[] contentSplit = stringaContentId.split(",");
                 for (String s : contentSplit) {
-                    contentsIdList.add(Integer.valueOf(s));
+                    contentsIdList.add(Integer.valueOf(s.trim()));
                 }
                 }
                 else contentsIdList.add(0);
