@@ -31,29 +31,35 @@ public class POIutils {
         ArrayList<POI> listaPOI = new ArrayList<>();
         String sql = (nome == null) ? "SELECT * FROM POI" : "SELECT * FROM POI WHERE Nome = ?";
     
+    
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    
     
             if (nome != null) {
                 pstmt.setString(1, nome);
             }
     
+    
             ResultSet rs = pstmt.executeQuery();
+    
     
             while (rs.next()) {
                 String nomePOI = rs.getString("Nome");
                 String coordinateStr = rs.getString("Coordinate");
                 String descrizione = rs.getString("Descrizione");
-                String comune = rs.getString("Comune"); // Aggiunto il recupero del valore "Comune"
+                String comune = rs.getString("Comune"); 
                 String idContent = rs.getString("idContent");
                 List<Integer> idContentList = new ArrayList<>();
                 List<Content> media = new ArrayList<>();
                 idContentList = parseStringList(idContent);
                 if (!idContentList.isEmpty()) {
+                if (!idContentList.isEmpty()) {
                     for (Integer idInteger : idContentList) {
                         media.add(getContent(idInteger));
                     }
                 }
+    
     
                 String[] coordinateSplit = coordinateStr.split(",");
                 Coordinate coordinate = new Coordinate(
@@ -62,15 +68,18 @@ public class POIutils {
                 );
     
                 POI poi = new POI(nomePOI, coordinate, descrizione,  media, comune); 
+    
                 listaPOI.add(poi);
             }
             conn.close();
-        } catch (SQLException e) {
+        }} catch (SQLException e) {
             System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
         }
     
+    
         return listaPOI;
     }
+    
     
 
 /**
@@ -99,9 +108,11 @@ public class POIutils {
         ArrayList<POI> listaPOI = new ArrayList<>();
         String sql = "SELECT * FROM POI_DaApprovare";
     
+    
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery();
+    
     
             while (rs.next()) {
                 String nomePOI = rs.getString("Nome");
@@ -113,10 +124,12 @@ public class POIutils {
                 List<Content> media = new ArrayList<>();
                 idContentList = parseStringList(idContent);
                 if (!idContentList.isEmpty()) {
+                if (!idContentList.isEmpty()) {
                     for (Integer idInteger : idContentList) {
                         media.add(getContent(idInteger));
                     }
                 }
+    
     
                 String[] coordinateSplit = coordinateStr.split(",");
                 Coordinate coordinate = new Coordinate(
@@ -125,15 +138,22 @@ public class POIutils {
                 );
     
                 POI poi = new POI(nomePOI, coordinate, descrizione, media, comune);
+    
+
                 listaPOI.add(poi);
             }
             conn.close();
-        } catch (SQLException e) {
+        }} catch (SQLException e) {
             System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
         }
     
+    
         return listaPOI;
     }
+    
+
+   
+    
     
 
    
@@ -146,17 +166,21 @@ public class POIutils {
             pstmt.setString(1, nome);
             ResultSet rs = pstmt.executeQuery();
     
+    
             while (rs.next()) {
                 String nomePOI = rs.getString("Nome");
                 String coordinateStr = rs.getString("Coordinate");
                 String descrizione = rs.getString("Descrizione");
                 String comune = rs.getString("Comune");
+
                 
                 String[] coordinateSplit = coordinateStr.split(",");
                 Coordinate coordinate = new Coordinate(
                         Double.parseDouble(coordinateSplit[0].trim()),
                         Double.parseDouble(coordinateSplit[1].trim())
                 );
+                
+                poi = new POI(nomePOI, coordinate, descrizione, new ArrayList<>(), comune);
                 
                 poi = new POI(nomePOI, coordinate, descrizione, new ArrayList<>(), comune);
             }
@@ -166,6 +190,7 @@ public class POIutils {
         }
         return poi;
     }
+    
     
 
   
@@ -214,7 +239,9 @@ public class POIutils {
     String sql;
     if (!daApprovare) {
         sql = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent, Comune) VALUES (?, ?, ?, ?, ?)";
+        sql = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent, Comune) VALUES (?, ?, ?, ?, ?)";
     } else {
+        sql = "INSERT INTO POI_DaApprovare (Nome, Coordinate, Descrizione, idContent, Comune) VALUES (?, ?, ?, ?, ?)";
         sql = "INSERT INTO POI_DaApprovare (Nome, Coordinate, Descrizione, idContent, Comune) VALUES (?, ?, ?, ?, ?)";
     }
 
@@ -225,6 +252,7 @@ public class POIutils {
         pstmt.setString(2, coordinate.toString());
         pstmt.setString(3, descrizione);
         pstmt.setString(4, "0");  
+        pstmt.setString(5,  comune);
         pstmt.setString(5,  comune);
 
         pstmt.executeUpdate();
@@ -344,5 +372,6 @@ public class POIutils {
         }
         return nomiPOI;
     }
+   
   
 }

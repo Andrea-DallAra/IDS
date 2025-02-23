@@ -69,36 +69,7 @@ public class ItinerarioUtils {
 
         return listaPOI;
     }
-    public static List<Integer> getIdItinerariSalvati(String username) {
-        String sql = "SELECT idItinerari FROM ItinerariSalvati WHERE username = ?";
-        List<Integer> listaId = new ArrayList<>();
-        try (Connection conn = ConnettiDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String idString = rs.getString("idItinerari");
-                if (idString != null){
-                    if(idString.startsWith("[") && idString.endsWith("]")){
-                        idString = idString.substring(1, idString.length() - 1);
-                    }
-                    idString=idString.replaceAll("\\s", "");
-                    String[] idArray = idString.split(",");
-                    for (String id : idArray) {
-                        try {
-                            listaId.add(Integer.valueOf(id));
-                        } catch (NumberFormatException e) {
-                            System.err.println("Errore nella conversione dell'ID: " + id);
-                        }
-                    }
-                }
-            }
-            conn.close();
-        } catch (SQLException e) {
-            System.err.println("Errore durante il recupero dell'Itinerario: " + e.getMessage());
-        }
-        return listaId;
-    }
+  
 
 
 
@@ -215,4 +186,41 @@ public class ItinerarioUtils {
         }
         return itinerario;
     }
+
+    /**
+     * Metodo che recupera la lista degli ID degli itinerari salvati per l'utente specificato.
+     * @param username l'username dell'utente
+     * @return la lista degli ID degli itinerari
+     */
+    public static List<Integer> getIdItinerariSalvati(String username) {
+        String sql = "SELECT idItinerari FROM ItinerariSalvati WHERE username = ?";
+        List<Integer> listaId = new ArrayList<>();
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String idString = rs.getString("idItinerari");
+                if (idString != null){
+                    if(idString.startsWith("[") && idString.endsWith("]")){
+                        idString = idString.substring(1, idString.length() - 1);
+                    }
+                    idString=idString.replaceAll("\\s", "");
+                    String[] idArray = idString.split(",");
+                    for (String id : idArray) {
+                        try {
+                            listaId.add(Integer.valueOf(id));
+                        } catch (NumberFormatException e) {
+                            System.err.println("Errore nella conversione dell'ID: " + id);
+                        }
+                    }
+                }
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero dell'Itinerario: " + e.getMessage());
+        }
+        return listaId;
+    }
+
 }
