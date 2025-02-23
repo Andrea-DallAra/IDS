@@ -13,19 +13,20 @@ public class POI {
     private Coordinate coordinate;
     private String descrizione;
     private  List<Content> mediaList;
-
+    private String comune;
  /**
   * @param nome il nome del POI
   * @param coordinate la coordinate del POI
   * @param descrizione la descrizione del POI
   * @param _mediaList la lista dei contenuti del POI
+  * @param comune il comune del POI
   */
 
-    public POI(String nome, Coordinate coordinate, String descrizione, List<Content> _mediaList) {
+    public POI(String nome, Coordinate coordinate, String descrizione, List<Content> _mediaList, String _comune) {
         this.nome = nome;
         this.coordinate = coordinate;
         this.descrizione = descrizione;
-         
+        this.comune = _comune;
         if(this.mediaList == null)
         {
           this.mediaList = new ArrayList<>();
@@ -82,9 +83,11 @@ public class POI {
 
 
     public static void CreaPOI(POI poi, boolean daApprovare) {
-        POIutils.creaPOI(poi.nome, poi.coordinate, poi.descrizione, poi.mediaList, daApprovare);
+        POIutils.creaPOI(poi.nome, poi.coordinate, poi.descrizione, poi.mediaList, poi.getComune(), daApprovare);
     }
-
+    public String getComune() {
+        return comune;
+    }
     @Override
     public String toString() {
         return "POI{" +
@@ -92,8 +95,10 @@ public class POI {
                 ", coordinate=" + coordinate +
                 ", descrizione='" + descrizione + '\'' +
                 ", media=" + mediaList.toString() +
+                ", comune='" + comune + '\'' +
                 '}';
     }
+    
 
   
     

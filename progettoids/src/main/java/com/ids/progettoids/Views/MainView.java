@@ -44,7 +44,7 @@ public class MainView extends VerticalLayout {
             {
                 BottoniAnimatore();
             }
-            if(SessioneUtente.utente.getRuolo().contains(Ruolo.Turista) || SessioneUtente.utente.getRuolo().contains(Ruolo.TuristaAutenticato))
+            if(SessioneUtente.utente.getRuolo().contains(Ruolo.TuristaAutenticato))
             {
                 BottoniTurista();
             }
@@ -135,19 +135,24 @@ public class MainView extends VerticalLayout {
                 bottoneInseritoCuratore = true;
         }
     }
-    public void BottoniTurista()
-    {
-        if(!bottoneInseritoTurista) 
-        {
+    public void BottoniTurista() {
+        if (!bottoneInseritoTurista) {
             Button report = new Button("Vai alla pagina Report", e -> {
-                getUI().ifPresent(ui -> ui.navigate("/Report"));});
-                Button richiediRuolo = new Button("Vai alla pagina per la richiesta di nuovo ruolo", e -> {
-                    getUI().ifPresent(ui-> ui.navigate("/NewRuoloView"));});
-           
-             
-                add(report,richiediRuolo);
-                bottoneInseritoTurista=true;
-        }
+                getUI().ifPresent(ui -> ui.navigate("/Report"));
+            });
+            Button richiediRuolo = new Button("Vai alla pagina per la richiesta di nuovo ruolo", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/NewRuoloView"));
+            });
+            Button poiSalvati = new Button("Vai alla pagina POI Salvati", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/PoiSalvati"));
+            });
+            Button itinerariSalvati = new Button("Vai alla pagina Itinerari Salvati", e -> {
+                getUI().ifPresent(ui -> ui.navigate("/ItinerariSalvati"));
+            });
     
+            add(report, richiediRuolo, poiSalvati, itinerariSalvati);
+            bottoneInseritoTurista = true;
+        }
     }
+    
 }

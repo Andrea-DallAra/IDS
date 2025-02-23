@@ -37,26 +37,23 @@ public class POIDetaggliView extends VerticalLayout implements HasUrlParameter<S
 
         add(new Paragraph("Nome: " + poi.getNome()));
         add(new Paragraph("Descrizione: " + poi.getDescrizione()));
+        add(new Paragraph("Comune: " + poi.getComune())); 
         add(new Paragraph("Coordinate: " + poi.getCoordinate()));
 
-       
         Button backButton = new Button("Torna alla lista", event2 ->
             getUI().ifPresent(ui -> ui.navigate("poiList"))
         );
         add(backButton);
 
-        if(SessioneUtente.utente != null)
-         {
-          
+        if (SessioneUtente.utente != null) {
             Button aggiungiContenutoButton = new Button("Aggiungi Contenuto", event2 ->
-            getUI().ifPresent(ui -> ui.navigate("CreaContenuto/" + poi.getNome())));
-             add(aggiungiContenutoButton);
-    
-                Button salvaPOIButton = new Button("Salva POI", event2 -> salvaPOI(poi.getNome()));
-                add(salvaPOIButton);
+                getUI().ifPresent(ui -> ui.navigate("CreaContenuto/" + poi.getNome()))
+            );
+            add(aggiungiContenutoButton);
+
+            Button salvaPOIButton = new Button("Salva POI", event2 -> salvaPOI(poi.getNome()));
+            add(salvaPOIButton);
         }
-      
-        
     }
 
     private void salvaPOI(String poiName) {

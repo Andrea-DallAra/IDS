@@ -8,33 +8,37 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Route("poiList")
 public class POIListView extends VerticalLayout {
 
     private Grid<POI> poiGrid = new Grid<>(POI.class);
     private TextField searchField = new TextField("Cerca POI per nome");
+    private TextField comuneSearchField = new TextField("Cerca POI per comune");
 
     public POIListView() {
         setSizeFull();
         setAlignItems(Alignment.CENTER);
 
        
-        poiGrid.setColumns("nome");
+        poiGrid.setColumns("nome", "comune"); 
 
       
         List<POI> listaPOI = POIutils.getPOI(null);
         poiGrid.setItems(listaPOI);
 
-       
+      
         searchField.setPlaceholder("Inserisci nome...");
-        searchField.addValueChangeListener(event -> {
-            String searchTerm = event.getValue();
-            List<POI> filteredList = POIutils.getPOI(searchTerm);
-            poiGrid.setItems(filteredList);
-        });
+        
+      
+        comuneSearchField.setPlaceholder("Inserisci comune...");
 
       
+        searchField.addValueChangeListener(event -> filterPOI());
+        comuneSearchField.addValueChangeListener(event -> filterPOI());
+
+        
         poiGrid.asSingleSelect().addValueChangeListener(event -> {
             POI selectedPOI = event.getValue();
             if (selectedPOI != null) {
@@ -42,6 +46,18 @@ public class POIListView extends VerticalLayout {
             }
         });
 
-        add(searchField, poiGrid);
+        add(searchField, comuneSearchField, poiGrid);
+    }
+
+    private void filterPOI() {
+        String searchTerm = searchField.getValue().toLowerCase();
+        String comuneTerm = comuneSearchField.getValue().toLowerCase();
+
+        List<POI> filteredList = POIutils.getPOI(null).stream()
+                .filter(poi -> (searchTerm.isEmpty() || poi.getNome().toLowerCase().contains(searchTerm)) &&
+                               (comuneTerm.isEmpty() || poi.getComune().toLowerCase().contains(comuneTerm)))
+                .collect(Collectors.toList());
+
+        poiGrid.setItems(filteredList);
     }
 }

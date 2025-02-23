@@ -64,7 +64,8 @@ public class EditaPOIView extends VerticalLayout {
                     poiNameFieldEditato.getValue(),
                     new Coordinate(latitude, longitude),
                     poiDescrizioneEditato.getValue(),
-                    selectedPOI.getMediaList()
+                    selectedPOI.getMediaList(),
+                    selectedPOI.getComune() 
                 );
 
                 EditaUtils.EditaPOI(selectedPOI, nuovoPOI);
