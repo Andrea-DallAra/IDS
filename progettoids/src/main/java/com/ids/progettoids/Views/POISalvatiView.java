@@ -18,8 +18,8 @@ public class POISalvatiView extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
         List<String> listaNomiPOISalvati=POIutils.getNomiPOISalvati(SessioneUtente.utente.getUsername());
         List<POI> listaPOI=new ArrayList<>();
-        for (String s : listaNomiPOISalvati) {
-            listaPOI.add(POIutils.getPOI(s).get(0));
+        for(int i=0;i<listaNomiPOISalvati.size();i++){
+            listaPOI.add(POIutils.getPOI(listaNomiPOISalvati.get(i)).get(0));
         }
         poiGrid.setItems(listaPOI);
         poiGrid.asSingleSelect().addValueChangeListener(event -> {

@@ -18,7 +18,7 @@ public class MainView extends VerticalLayout {
             add(loginButton);
         Button visPOI = new Button("Visualizza POI", e -> {
             getUI().ifPresent(ui -> ui.navigate("/poiList"));});
-        Button visItinerario = new Button("Visualizza Itinierari", e -> {
+        Button visItinerario = new Button("Visualizza Itinerari", e -> {
             getUI().ifPresent(ui -> ui.navigate("/itinerarioList"));});
         add(visPOI, visItinerario);
 

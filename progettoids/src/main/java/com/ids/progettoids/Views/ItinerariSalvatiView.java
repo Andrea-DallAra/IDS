@@ -20,7 +20,7 @@ public class ItinerariSalvatiView extends VerticalLayout {
         List<Integer> listaIdItinerariSalvati = ItinerarioUtils.getIdItinerariSalvati(SessioneUtente.utente.getUsername());
         List<Itinerario> listaItinerari = new ArrayList<>();
         for(int i=0;i<listaIdItinerariSalvati.size();i++){
-            listaItinerari.add(ItinerarioUtils.getItinerario(listaIdItinerariSalvati.get(i)).get(0));
+        listaItinerari.add(ItinerarioUtils.getItinerario(listaIdItinerariSalvati.get(i)).get(0));
         }
         itinerarioGrid.setItems(listaItinerari);
         itinerarioGrid.asSingleSelect().addValueChangeListener(event -> {
