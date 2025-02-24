@@ -3,8 +3,10 @@ package com.ids.progettoids.Views;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Curatore;
 import com.ids.progettoids.models.Report;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,8 +20,12 @@ public class GestisciReportView extends VerticalLayout{
 
     private Curatore curatore;
     public GestisciReportView() {
-        curatore= new Curatore();
-        curatore.SetUsername(SessioneUtente.utente.getUsername());
+        curatore= (Curatore) new Utente.Builder()
+        .setUsername(SessioneUtente.utente.getUsername())
+        .setRuoli(SessioneUtente.utente.getRuolo())
+        .setTipo(Ruolo.Curatore)
+        .build();
+     
         List<Report> reports=curatore.GetReports();
         Grid<Report> grid= new Grid<>(Report.class);
         grid.setItems(reports);

@@ -33,11 +33,10 @@ public class Contributore extends Utente implements ContributoreInterface{
         
     }
 
-    public Contributore() {}
-    public Contributore(String _nome, String _cognome , String _email, String _password, String _username) 
-    {
-       super(_nome, _cognome, _email, _password, _username);
-       AggiungiRuolo();
+    protected Contributore(Utente.Builder builder) {
+        super(builder);
+        
+        AggiungiRuolo();
     }
     /**
      * Metodo per partecipare ad un contest

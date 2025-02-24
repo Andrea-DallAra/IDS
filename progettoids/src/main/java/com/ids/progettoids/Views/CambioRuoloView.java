@@ -17,13 +17,17 @@ import com.vaadin.flow.router.Route;
 @Route("CambioRuoloView")
 public class CambioRuoloView extends VerticalLayout {
 
-    private Gestore gestore;
+
     private Select<Ruolo> ruoloSelect;
     private Button aggiungiRuoloButton;
 
     public CambioRuoloView(){
-        gestore=new Gestore();
-        gestore.SetUsername(SessioneUtente.utente.getUsername());
+        Gestore gestore = (Gestore) new Utente.Builder()
+            .setUsername(SessioneUtente.utente.getUsername())
+            .setRuoli(SessioneUtente.utente.getRuolo())
+            .setTipo(Ruolo.Curatore)
+            .build();
+    
         TextField usernameField = new TextField("Username dell'utente a cui vuoi cambiare il ruolo");
         Button submitButton = new Button("Cerca Username", e -> {
             if (usernameField.isEmpty()) {
@@ -31,7 +35,9 @@ public class CambioRuoloView extends VerticalLayout {
                 return;
             }
             
-            Utente utente= new Utente(usernameField.getValue(), "", "", "", "");
+            Utente utente= new Utente.Builder()
+                .setUsername(usernameField.getValue())
+                .build();
             utente.CaricaRuoli(utente.getUsername());
             List<Ruolo> ruoliUtente= utente.getRuolo();
             List<Ruolo> ruoliMancanti = getNotRuoli(ruoliUtente);

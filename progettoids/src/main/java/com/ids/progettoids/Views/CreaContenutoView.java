@@ -8,6 +8,7 @@ import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Content;
 import com.ids.progettoids.models.Contributore;
 import com.ids.progettoids.models.POI;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.ContentUtils;
 import com.ids.progettoids.utils.POIutils;
 import com.ids.progettoids.utils.SessioneUtente;
@@ -34,9 +35,13 @@ public class CreaContenutoView extends VerticalLayout implements HasUrlParameter
        
         if (SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) &&
             !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore)) {
-            Contributore contributorePass = new Contributore();
-            contributorePass.SetUsername(SessioneUtente.utente.getUsername());
-            contributorePass.CaricaRuoli(SessioneUtente.utente.getUsername());
+             Contributore contributorePass = (Contributore) new Utente.Builder()
+            .setUsername(SessioneUtente.utente.getUsername())
+            .setRuoli(SessioneUtente.utente.getRuolo())
+            .setTipo(Ruolo.Curatore)
+            .build(); 
+      
+           // contributorePass.CaricaRuoli(SessioneUtente.utente.getUsername());
             if (!contributorePass.isAutenticato()) {
                 daApprovare = true;
             }

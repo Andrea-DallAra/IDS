@@ -2,8 +2,10 @@ package com.ids.progettoids.Views;
 
 import java.util.List;
 
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.models.Turista;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.POIutils;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
@@ -61,8 +63,12 @@ public class POIDettagliView extends VerticalLayout implements HasUrlParameter<S
     }
 
     private void salvaPOI(String poiName) {
-        Turista pass = new Turista();
-        pass.SetUsername(SessioneUtente.utente.getUsername());
+        Turista pass = (Turista) new Utente.Builder()
+        .setUsername(SessioneUtente.utente.getUsername())
+        .setRuoli(SessioneUtente.utente.getRuolo())
+        .setTipo(Ruolo.Turista)
+        .build();
+      
         pass.setAutenticato(true);
         pass.salvaPOI(poiName);
         Notification.show("POI salvato", 3000, Notification.Position.MIDDLE);
