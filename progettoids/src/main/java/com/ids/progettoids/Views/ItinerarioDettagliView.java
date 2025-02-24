@@ -1,8 +1,10 @@
 package com.ids.progettoids.Views;
 
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Itinerario;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.models.Turista;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.ItinerarioUtils;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
@@ -67,8 +69,11 @@ public class ItinerarioDettagliView extends VerticalLayout implements HasUrlPara
    
     private void addItinerariDaSalvare(int itinerario) {
         
-        Turista pass = new Turista();
-        pass.SetUsername(SessioneUtente.utente.getUsername());
+        Turista pass = (Turista) new Utente.Builder()
+                .setUsername(SessioneUtente.utente.getUsername())
+                .setRuoli(SessioneUtente.utente.getRuolo())
+                .setTipo(Ruolo.Turista)
+                .build();
         pass.setAutenticato(true);
         pass.salvaItinerario(itinerario);
         Notification.show("Itinerario salvato", 3000, Notification.Position.MIDDLE);

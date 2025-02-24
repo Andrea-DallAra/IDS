@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.ids.progettoids.ConnettiDB;
@@ -21,14 +22,9 @@ public class Gestore extends Utente implements GestoreInterface{
     {    
         ruoli.add(Ruolo.Gestore);     
     }
-    public Gestore() 
-    {
-
-    }
-    public Gestore(String _nome, String _cognome , String _email, String _password, String _username) 
-    {
-       super(_nome, _cognome, _email, _password, _username);
-       AggiungiRuolo();
+    protected Gestore(Utente.Builder builder) {
+        super(builder);
+        AggiungiRuolo();
     }
 
 /**
@@ -71,9 +67,11 @@ public class Gestore extends Utente implements GestoreInterface{
     @Override
     public void EditaRuolo(String username, String _ruolo) 
     {
-        Utente nuovoUtente = new Utente();
-        nuovoUtente.SetUsername(username);
-        nuovoUtente.AggiungiRuolo(Ruolo.valueOf(_ruolo));
+        Utente nuovoUtente = new Utente.Builder()
+        .setUsername(username)
+        .setRuoli(List.of(Ruolo.valueOf(_ruolo)))
+        .build();
+
         nuovoUtente.SalvaRuoliDB(username);
     }
 /**

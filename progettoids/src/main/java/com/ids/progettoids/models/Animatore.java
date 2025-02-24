@@ -24,12 +24,9 @@ public class Animatore extends Utente implements AnimatoreInterface{
         ruoli.add(Ruolo.Animatore);
         
     }
-    public Animatore() {}
-
-    public Animatore(String _nome, String _cognome , String _email, String _password, String _username) 
-    {
-       super(_nome, _cognome, _email, _password, _username);
-       AggiungiRuolo();
+    protected Animatore(Utente.Builder builder) {
+        super(builder);
+        AggiungiRuolo();
     }
 
     /**

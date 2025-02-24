@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Animatore;
 import com.ids.progettoids.models.Content;
 import com.ids.progettoids.models.Contest;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -22,7 +24,11 @@ public class GestisciContestView extends VerticalLayout{
     private List<String> autori = new ArrayList<>();
 
    public GestisciContestView() {
-        animatore=new Animatore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(),SessioneUtente.utente.getEmail(),SessioneUtente.utente.getPassword(),SessioneUtente.utente.getUsername());
+        animatore= (Animatore) new Utente.Builder()
+        .setUsername(SessioneUtente.utente.getUsername())
+        .setRuoli(SessioneUtente.utente.getRuolo())
+        .setTipo(Ruolo.Animatore)
+        .build();
         TextField contestNome = new TextField("Nome del Contest");
         contestNome.setPlaceholder("Inserisci il nome del Contest");
         Grid<Content> grid= new Grid<>(Content.class);

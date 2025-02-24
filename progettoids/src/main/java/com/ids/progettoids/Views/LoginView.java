@@ -26,12 +26,17 @@ public class LoginView extends VerticalLayout {
     }
 
     private void login(String username, String password) {
-         Utente pass = new Utente();
+         Utente pass = new Utente.Builder()
+         .setUsername(username)
+         .build();
        if( pass.Login(username, password))
        {
-          SessioneUtente.utente = pass;
-          SessioneUtente.utente.SetUsername(username); 
+          SessioneUtente.utente = new Utente.Builder()
+          .setUsername(pass.getUsername())
+          .setRuoli(pass.getRuolo())
+          .build();
           getUI().ifPresent(ui -> ui.navigate(""));
+         System.out.println(SessioneUtente.utente.getUsername());
        }
     }
 }

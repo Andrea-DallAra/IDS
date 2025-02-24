@@ -2,7 +2,9 @@ package com.ids.progettoids.Views;
 
 import java.util.Map;
 
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Gestore;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -17,7 +19,11 @@ public class RichiesteCambioRuoloView extends VerticalLayout {
     private Gestore gestore;
 
     public RichiesteCambioRuoloView(){
-        gestore=new Gestore(SessioneUtente.utente.getNome(), SessioneUtente.utente.getCognome(),SessioneUtente.utente.getEmail(),SessioneUtente.utente.getPassword(),SessioneUtente.utente.getUsername());
+        gestore= (Gestore) new Utente.Builder()
+        .setUsername(SessioneUtente.utente.getUsername())
+        .setRuoli(SessioneUtente.utente.getRuolo())
+        .setTipo(Ruolo.Gestore)
+        .build();
         Map<String,String> richieste=gestore.getRichiesteCambioRuolo();
         Grid<String> richiesteGrid = new Grid<>();
         richiesteGrid.addColumn(new ComponentRenderer<>(

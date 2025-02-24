@@ -26,11 +26,9 @@ public class Curatore extends Utente implements CuratoreInterface{
         ruoli.add(Ruolo.Curatore);
         
     }
-    public Curatore() {}
-    public Curatore(String _nome, String _cognome , String _email, String _password, String _username) 
-    {
-       super(_nome, _cognome, _email, _password, _username);
-       AggiungiRuolo();
+    protected Curatore(Utente.Builder builder) {
+        super(builder);
+        AggiungiRuolo();
     }
 
     /**

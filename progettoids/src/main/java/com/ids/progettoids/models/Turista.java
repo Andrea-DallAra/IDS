@@ -34,10 +34,8 @@ public class Turista extends Utente implements TuristaInteface{
         ruoli.add(Ruolo.Turista);
 
     }
-
-    public Turista() {}
-    public Turista(String _nome, String _cognome, String _email, String _password, String _username) {
-        super(_nome, _cognome, _email, _password, _username);
+  protected Turista(Utente.Builder builder) {
+        super(builder);
         AggiungiRuolo();
     }
 

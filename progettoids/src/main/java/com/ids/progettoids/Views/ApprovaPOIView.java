@@ -1,8 +1,11 @@
 package com.ids.progettoids.Views;
 
 import java.util.List;
+
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Curatore;
 import com.ids.progettoids.models.POI;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.POIutils;
 import com.ids.progettoids.utils.SessioneUtente;
 import com.vaadin.flow.component.button.Button;
@@ -49,8 +52,11 @@ public class ApprovaPOIView extends VerticalLayout {
                 return;
             }
 
-            Curatore curatore = new Curatore();
-            curatore.SetUsername(SessioneUtente.utente.getUsername());
+            Curatore curatore = (Curatore) new Utente.Builder()
+            .setUsername(SessioneUtente.utente.getUsername())
+            .setRuoli(SessioneUtente.utente.getRuolo())
+            .setTipo(Ruolo.Curatore)
+            .build();
             curatore.ApprovaPOI(poiDaApprovare);
 
             Notification.show("POI approvato con successo", 3000, Notification.Position.MIDDLE);

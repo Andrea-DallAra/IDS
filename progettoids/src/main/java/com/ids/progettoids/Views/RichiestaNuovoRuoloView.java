@@ -17,7 +17,10 @@ public class RichiestaNuovoRuoloView extends VerticalLayout{
     private Button aggiungiRuoloButton;
 
     public RichiestaNuovoRuoloView(){
-        Utente utente= new Utente(SessioneUtente.utente.getUsername(), SessioneUtente.utente.getNome(),SessioneUtente.utente.getCognome(),SessioneUtente.utente.getEmail(),SessioneUtente.utente.getPassword());
+        Utente utente= new Utente.Builder()
+        .setUsername(SessioneUtente.utente.getUsername())
+        .setRuoli(SessioneUtente.utente.getRuolo())
+        .build();
         utente.CaricaRuoli(utente.getUsername());
         List<Ruolo> ruoliUtente= utente.getRuolo();
         List<Ruolo> ruoliMancanti = getNotRuoli(ruoliUtente);

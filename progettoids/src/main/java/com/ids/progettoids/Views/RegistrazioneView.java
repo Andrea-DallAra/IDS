@@ -27,10 +27,13 @@ public class RegistrazioneView extends VerticalLayout {
     }
 
     private void SignIn(String nome, String cognome, String email,  String username ,String password) {
-         Utente pass = new Utente();
+         Utente pass = new Utente.Builder().build();
        if( pass.Registrazione(nome, cognome, email, password, username))
        {
-          SessioneUtente.utente = pass;
+          SessioneUtente.utente = new Utente.Builder()
+          .setUsername(pass.getUsername())
+          .setRuoli(pass.getRuolo())
+          .build();
           getUI().ifPresent(ui -> ui.navigate(""));
        }
     }

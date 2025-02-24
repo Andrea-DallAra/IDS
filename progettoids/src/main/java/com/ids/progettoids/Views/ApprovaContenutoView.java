@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.models.Content;
 import com.ids.progettoids.models.Curatore;
+import com.ids.progettoids.models.Utente;
 import com.ids.progettoids.utils.ContentUtils;
 import com.ids.progettoids.utils.ContentWithId;
 import com.ids.progettoids.utils.SessioneUtente;
@@ -65,11 +67,17 @@ public class ApprovaContenutoView extends VerticalLayout {
                     return;
                 }
 
-                Curatore curatore = new Curatore(SessioneUtente.utente.getNome(), 
-                                                 SessioneUtente.utente.getCognome(), 
-                                                 SessioneUtente.utente.getEmail(), 
-                                                 SessioneUtente.utente.getPassword(), 
-                                                 SessioneUtente.utente.getUsername());
+                Curatore curatore = (Curatore) new Utente.Builder()
+              //  .setNome(SessioneUtente.utente.getNome())
+              //  .setCognome(SessioneUtente.utente.getCognome())
+              //  .setEmail(SessioneUtente.utente.getEmail())
+               // .setPassword(SessioneUtente.utente.getPassword())
+                .setUsername(SessioneUtente.utente.getUsername())
+                .setRuoli(SessioneUtente.utente.getRuolo())
+                .setTipo(Ruolo.Curatore)
+                .build();
+        
+                                              
                 
                 curatore.ApprovaContent(contentApprovato, id);
 
