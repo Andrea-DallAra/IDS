@@ -2,7 +2,7 @@ package com.ids.progettoids.modelsInterface;
 
 import com.ids.progettoids.models.Content;
 
-public interface TuristaInteface {
+public interface TuristaInterface {
     /**
      * Metodo per salvare un itinerario nel database
      * @param idItinerario

@@ -318,27 +318,56 @@ public class POIutils {
              PreparedStatement pstmtPOI = conn.prepareStatement(sqlPOI)) {
     
             
-            String idContents = UnisciId(poi);
+            String idContentsString = UnisciId(poi);
     
           
-            if (!idContents.isEmpty()) {
-                List<String> idList = new ArrayList<>(Arrays.asList(idContents.split(",")));
+            if (!idContentsString.isEmpty()) {
+                List<String> idList = new ArrayList<>(Arrays.asList(idContentsString.split(",")));
                 if (!idList.contains(String.valueOf(idContent))) {
                     idList.add(String.valueOf(idContent));
                 }
-                idContents = String.join(",", idList);
+                idContentsString = String.join(",", idList);
             } else {
-                idContents = String.valueOf(idContent); 
+                idContentsString = String.valueOf(idContent); 
             }
     
-            pstmtPOI.setString(1, idContents);
+            pstmtPOI.setString(1, idContentsString);
             pstmtPOI.setString(2, poi);
             pstmtPOI.executeUpdate();
     
             conn.close();
+
+            removeIfPresentZero(poi);
         } catch (SQLException e) {
             System.err.println("Errore durante l'aggiornamento dell'idContent nei POI: " + e.getMessage());
         }
+    }
+
+    private static void removeIfPresentZero(String poi){
+        String query1 = "SELECT idContent FROM POI WHERE Nome = ?";
+        String query2 = "UPDATE POI SET idContent = ? WHERE Nome = ?";
+        String idContent = "";
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query1);
+             PreparedStatement stmt2 = conn.prepareStatement(query2)) {
+    
+            stmt.setString(1, poi);
+            ResultSet rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                idContent = rs.getString("idContent");
+            }
+            if (idContent.startsWith("0") && !idContent.equals("0")) {
+                idContent = idContent.substring(2);
+            }
+            stmt2.setString(1, idContent);
+            stmt2.setString(2, poi);
+            stmt2.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
     }
     
     /**
@@ -359,11 +388,11 @@ public class POIutils {
             if (rs.next()) {
                 idContent = rs.getString("idContent");
             }
-    
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (idContent != null && idContent.startsWith("0")) {
+        if (idContent != null && idContent.startsWith("0") && !idContent.equals("0")) {
             idContent = idContent.substring(2);
         }
         

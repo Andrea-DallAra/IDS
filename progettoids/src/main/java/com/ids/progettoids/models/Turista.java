@@ -9,10 +9,10 @@ import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
-import com.ids.progettoids.modelsInterface.TuristaInteface;
+import com.ids.progettoids.modelsInterface.TuristaInterface;
 import com.ids.progettoids.utils.ContentUtils;
 
-public class Turista extends Utente implements TuristaInteface{
+public class Turista extends Utente implements TuristaInterface{
 
     /**
      * Classe che rappresenta un turista

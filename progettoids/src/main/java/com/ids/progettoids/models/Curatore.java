@@ -15,6 +15,10 @@ import com.ids.progettoids.utils.ItinerarioUtils;
 import com.ids.progettoids.utils.POIutils;
 public class Curatore extends Utente implements CuratoreInterface{
 
+    ArrayList<POI> reportPOI = new ArrayList<>();
+    ArrayList<Content> reportContent = new ArrayList<>();
+    ArrayList<Itinerario> reportItinerario = new ArrayList<>();
+    ArrayList<Report> reports = new ArrayList<>();
     /**
      * Classe che rappresenta un curatore
      * Gestisce le azioni del curatore
@@ -153,10 +157,7 @@ public class Curatore extends Utente implements CuratoreInterface{
     EditaUtils.EditaItinerario(base, editato);
 }
 
-ArrayList<POI> reportPOI = new ArrayList<>();
-ArrayList<Content> reportContent = new ArrayList<>();
-ArrayList<Itinerario> reportItinerario = new ArrayList<>();
-ArrayList<Report> reports = new ArrayList<>();
+
     @Override
     public void VisualizzaReport()
 {
