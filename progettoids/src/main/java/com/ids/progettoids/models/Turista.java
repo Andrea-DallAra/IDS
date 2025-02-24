@@ -9,9 +9,10 @@ import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
+import com.ids.progettoids.modelsInterface.TuristaInteface;
 import com.ids.progettoids.utils.ContentUtils;
 
-public class Turista extends Utente {
+public class Turista extends Utente implements TuristaInteface{
 
     /**
      * Classe che rappresenta un turista
@@ -44,6 +45,7 @@ public class Turista extends Utente {
      * Metodo per salvare un itinerario nel database
      * @param idItinerario
      */
+    @Override
     public void salvaItinerario(int idItinerario) {
         if (this.isAutenticato()) {
             String selectSql = "SELECT idItinerari FROM ItinerariSalvati WHERE username = ?";
@@ -97,9 +99,11 @@ public class Turista extends Utente {
     
 
 
+    @Override
     public void aggiungiContenuto(Content content) {
         ContentUtils.creaContent(content.getMedia(), content.getData(), content.getAutore(), content.getDescrizione(), this.autenticato);
     }
+    @Override
     public void salvaPOI( String poiName) {
         String selectSql = "SELECT listaPOI FROM poi_salvati WHERE username = ?";
         String updateSql = "UPDATE poi_salvati SET listaPOI = ? WHERE username = ?";

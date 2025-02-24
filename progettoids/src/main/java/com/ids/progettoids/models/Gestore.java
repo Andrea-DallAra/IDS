@@ -9,7 +9,8 @@ import java.util.Map;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
-public class Gestore extends Utente {
+import com.ids.progettoids.modelsInterface.GestoreInterface;
+public class Gestore extends Utente implements GestoreInterface{
 
     /**
      * Classe che rappresenta un gestore
@@ -34,6 +35,7 @@ public class Gestore extends Utente {
  * Metodo per ottenere le richieste di cambio di ruolo dal database.
  * @return le richieste di cambio di ruolo come un Map<String, String> 
  */
+    @Override
       public Map<String, String> getRichiesteCambioRuolo() {
         
         String sql = "SELECT username, ruolo FROM RichiediRuolo";
@@ -66,6 +68,7 @@ public class Gestore extends Utente {
      * @param username l'utente da modificare
      * @param _ruolo il ruolo da aggiungere
      */
+    @Override
     public void EditaRuolo(String username, String _ruolo) 
     {
         Utente nuovoUtente = new Utente();
@@ -77,6 +80,7 @@ public class Gestore extends Utente {
  * Metodo per eliminare un ruolo dall'utente dal database.
  * @param username l'utente a cui rimuovere un ruolo
  */
+    @Override
     public void removeRuoloFromDatabase(String username) {
         String sql = "DELETE FROM RichiediRuolo WHERE username = ?";
         try (Connection conn = ConnettiDB.getConnection();

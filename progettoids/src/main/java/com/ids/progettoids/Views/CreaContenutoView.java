@@ -17,7 +17,10 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.Route;
 
 @Route("CreaContenuto")
 public class CreaContenutoView extends VerticalLayout implements HasUrlParameter<String> {
@@ -67,7 +70,12 @@ public class CreaContenutoView extends VerticalLayout implements HasUrlParameter
 
            
             ContentUtils.creaContent(postText, todayDate, SessioneUtente.utente.getUsername(), descriptionText, daApprovare);
-            POIutils.collegaContent(new Content(postText, todayDate, SessioneUtente.utente.getUsername(), descriptionText), poiName, daApprovare);
+            Content content= new Content.Builder()
+                    .setMedia(postText)
+                    .setData(todayDate)
+                    .setAutore(SessioneUtente.utente.getUsername())
+                    .setDescrizione(descriptionText).build();
+            POIutils.collegaContent(content, poiName, daApprovare);
 
             Notification.show("Post creato con successo!", 3000, Notification.Position.MIDDLE);
         });

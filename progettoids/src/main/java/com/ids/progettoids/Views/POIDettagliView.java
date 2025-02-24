@@ -1,5 +1,7 @@
 package com.ids.progettoids.Views;
 
+import java.util.List;
+
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.models.Turista;
 import com.ids.progettoids.utils.POIutils;
@@ -8,15 +10,17 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.*;
-
-import java.util.List;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 
 @Route("poiDettagli")
 @PageTitle("Dettagli POI")
-public class POIDetaggliView extends VerticalLayout implements HasUrlParameter<String> {
+public class POIDettagliView extends VerticalLayout implements HasUrlParameter<String> {
 
-    public POIDetaggliView() {
+    public POIDettagliView() {
         setAlignItems(Alignment.CENTER);
     }
 

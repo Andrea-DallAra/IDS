@@ -69,13 +69,12 @@ public class EditaContentView extends VerticalLayout {
             }
 
             try {
-                Content newContent = new Content(
-                    mediaFieldEditato.getValue(),
-                    datePickerEditato.getValue().toString(),
-                    autoreFieldEditato.getValue(),
-                    contentDescrizioneEditato.getValue()
-                );
 
+                Content newContent= new Content.Builder()
+                    .setMedia(mediaFieldEditato.getValue())
+                    .setData(datePickerEditato.getValue().toString())
+                    .setAutore(autoreFieldEditato.getValue())
+                    .setDescrizione(contentDescrizioneEditato.getValue()).build();
                 EditaUtils.EditaContent(selectedContent, newContent);
                 Notification.show("Content editato con successo", 3000, Notification.Position.MIDDLE);
             } catch (NumberFormatException err) {

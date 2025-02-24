@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
+import com.ids.progettoids.modelsInterface.CuratoreInterface;
 import com.ids.progettoids.utils.ContentUtils;
 import com.ids.progettoids.utils.EditaUtils;
 import com.ids.progettoids.utils.ItinerarioUtils;
 import com.ids.progettoids.utils.POIutils;
-public class Curatore extends Utente {
+public class Curatore extends Utente implements CuratoreInterface{
 
     /**
      * Classe che rappresenta un curatore
@@ -37,6 +37,7 @@ public class Curatore extends Utente {
      * Metodo per approvare un POI
      * @param poi il POI da approvare
      */
+    @Override
  public void ApprovaPOI(POI poi) {
     String sqlElimina = "DELETE FROM POI_DaApprovare WHERE Nome = ?";
     String sqlInserisci = "INSERT INTO POI (Nome, Coordinate, Descrizione, idContent) VALUES (?, ?, ?, ?)";
@@ -66,7 +67,8 @@ public class Curatore extends Utente {
      * Metodo per approvare un itinerario
      * @param itinerario l'itinerario da approvare
      */
-public void ApprovaItinerari(Itinerario itinerario) {
+    @Override
+    public void ApprovaItinerari(Itinerario itinerario) {
     String sqlElimina = "DELETE FROM Itinerario_DaApprovare WHERE idItinerario = ?";
     String sqlInserisci = "INSERT INTO Itinerario (ListaPOI) VALUES (?)";
 
@@ -94,7 +96,8 @@ public void ApprovaItinerari(Itinerario itinerario) {
  * @param content il content da approvare
  * @param idContent l'id del content
  */
-public void ApprovaContent(Content content, int idContent) {
+    @Override
+    public void ApprovaContent(Content content, int idContent) {
     String sqlElimina = "DELETE FROM Content_DaApprovare WHERE idContent = ?";
     String sqlInserisci = "INSERT INTO Content ( MediaUrl, Data, Autore, Descrizione) VALUES (?, ?, ?, ?)";
 
@@ -118,7 +121,8 @@ public void ApprovaContent(Content content, int idContent) {
         System.err.println("Errore durante l'approvazione del contenuto: " + e.getMessage());
     }
 }
-public void AggiornaId(int _idNuovo, int _idVecchio)
+    @Override
+    public void AggiornaId(int _idNuovo, int _idVecchio)
 {
     String  sqlAggiornaId = "UPDATE POI SET idContent = ? WHERE idContent = ?";
     try (Connection conn = ConnettiDB.getConnection();        
@@ -136,13 +140,16 @@ public void AggiornaId(int _idNuovo, int _idVecchio)
 }
 }
 
-public void EditaPOI(POI base, POI editato) {
+    @Override
+    public void EditaPOI(POI base, POI editato) {
     EditaUtils.EditaPOI(base, editato);
 }
-public void EditaContent(Content base, Content editato) {
+    @Override
+    public void EditaContent(Content base, Content editato) {
     EditaUtils.EditaContent(base, editato);
 }
-public void EditaItinerario(Itinerario base, Itinerario editato) {
+    @Override
+    public void EditaItinerario(Itinerario base, Itinerario editato) {
     EditaUtils.EditaItinerario(base, editato);
 }
 
@@ -150,7 +157,8 @@ ArrayList<POI> reportPOI = new ArrayList<>();
 ArrayList<Content> reportContent = new ArrayList<>();
 ArrayList<Itinerario> reportItinerario = new ArrayList<>();
 ArrayList<Report> reports = new ArrayList<>();
-public void VisualizzaReport()
+    @Override
+    public void VisualizzaReport()
 {
     reportPOI.clear();
     reportContent.clear();
@@ -185,7 +193,8 @@ public void VisualizzaReport()
     }
 }
 
-public Report getReportFromChiave(String chiave) {
+    @Override
+    public Report getReportFromChiave(String chiave) {
     String sql = "SELECT * FROM Report WHERE chiave = ?";
     Report report = new Report(chiave, "", "");
 
@@ -209,7 +218,8 @@ public Report getReportFromChiave(String chiave) {
     return report;
 }
 
-public void EliminaReport(Report r)
+    @Override
+    public void EliminaReport(Report r)
 {
     switch (r.getTipo()) {
         case "POI":
@@ -232,7 +242,8 @@ public void EliminaReport(Report r)
             break;
     }
 }
-public void EliminaSegnalazione(String chiave)
+    @Override
+    public void EliminaSegnalazione(String chiave)
 {
     String sql = "DELETE FROM Report WHERE chiave = ?";
 
@@ -247,7 +258,8 @@ public void EliminaSegnalazione(String chiave)
         System.err.println("Errore durante l'eliminazione della segnalazione: " + e.getMessage());
     }
 }
-public ArrayList<Report> GetReports()
+    @Override
+    public ArrayList<Report> GetReports()
 {
   String sql = "SELECT * FROM Report";
   ArrayList<Report> reports = new ArrayList<>();

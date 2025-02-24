@@ -67,12 +67,18 @@ public class POIutils {
                         Double.parseDouble(coordinateSplit[1].trim())
                 );
     
-                POI poi = new POI(nomePOI, coordinate, descrizione,  media, comune); 
-    
+                POI poi = new POI.Builder()
+                    .setNome(nomePOI)
+                    .setCoordinate(coordinate)
+                    .setDescrizione(descrizione)
+                    .setMediaList(media)
+                    .setComune(comune)
+                    .build(); 
                 listaPOI.add(poi);
             }
-            conn.close();
-        }} catch (SQLException e) {
+        }
+        conn.close(); 
+    } catch (SQLException e) {
             System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
         }
     
@@ -137,13 +143,21 @@ public class POIutils {
                         Double.parseDouble(coordinateSplit[1].trim())
                 );
     
-                POI poi = new POI(nomePOI, coordinate, descrizione, media, comune);
+                POI poi = new POI.Builder()
+                    .setNome(nomePOI)
+                    .setCoordinate(coordinate)
+                    .setDescrizione(descrizione)
+                    .setMediaList(media)
+                    .setComune(comune)
+                    .build(); 
     
 
                 listaPOI.add(poi);
             }
-            conn.close();
-        }} catch (SQLException e) {
+            
+        }
+        conn.close();
+    } catch (SQLException e) {
             System.err.println("Errore durante il recupero dei POI: " + e.getMessage());
         }
     
@@ -160,7 +174,9 @@ public class POIutils {
     
     public static POI getPOIdaApprovare(String nome) {
         String sql = "SELECT * FROM POI_DaApprovare WHERE Nome =?";
-        POI poi = new POI(nome, null, null,  new ArrayList<>(), null);
+        POI poi= new POI.Builder()
+            .setNome(nome)
+            .build();
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, nome);
@@ -179,10 +195,13 @@ public class POIutils {
                         Double.parseDouble(coordinateSplit[0].trim()),
                         Double.parseDouble(coordinateSplit[1].trim())
                 );
-                
-                poi = new POI(nomePOI, coordinate, descrizione, new ArrayList<>(), comune);
-                
-                poi = new POI(nomePOI, coordinate, descrizione, new ArrayList<>(), comune);
+                poi = new POI.Builder()
+                    .setNome(nomePOI)
+                    .setCoordinate(coordinate)
+                    .setDescrizione(descrizione)
+                    .setMediaList(new ArrayList<>())
+                    .setComune(comune)
+                    .build();
             }
             conn.close();
         } catch (SQLException e) {
@@ -215,9 +234,11 @@ public class POIutils {
                 String data = rs.getString("Data");
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
-                
-
-                content = new Content(mediaUrl, data, autore, descrizione);
+                content = new Content.Builder()
+                    .setMedia(mediaUrl)
+                    .setData(data)
+                    .setAutore(autore)
+                    .setDescrizione(descrizione).build();
             }
             conn.close();
         } catch (SQLException e) {

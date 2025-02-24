@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.models.Content;
 import com.ids.progettoids.models.Itinerario;
@@ -35,6 +34,7 @@ public class EditaUtils {
      
 
         pstmt.executeUpdate();
+        conn.close();
     } catch (SQLException e) {
         System.err.println("Errore durante la modifica del POI: " + e.getMessage());
     }

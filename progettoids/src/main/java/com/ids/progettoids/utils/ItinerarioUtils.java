@@ -41,7 +41,7 @@ public class ItinerarioUtils {
                 Itinerario itinerario = new Itinerario(idItinerario, listaPOI);
                 listaItinerari.add(itinerario);
             }
-
+            conn.close();
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero degli itinerari: " + e.getMessage());
         }

@@ -1,6 +1,7 @@
 package com.ids.progettoids.Views;
 
 import java.util.List;
+
 import com.ids.progettoids.models.Coordinate;
 import com.ids.progettoids.models.POI;
 import com.ids.progettoids.utils.EditaUtils;
@@ -60,13 +61,13 @@ public class EditaPOIView extends VerticalLayout {
                 double latitude = Double.parseDouble(latitudeFieldEditato.getValue());
                 double longitude = Double.parseDouble(longitudeFieldEditato.getValue());
 
-                POI nuovoPOI = new POI(
-                    poiNameFieldEditato.getValue(),
-                    new Coordinate(latitude, longitude),
-                    poiDescrizioneEditato.getValue(),
-                    selectedPOI.getMediaList(),
-                    selectedPOI.getComune() 
-                );
+                POI nuovoPOI = new POI.Builder()
+                    .setNome(poiNameFieldEditato.getValue())
+                    .setCoordinate(new Coordinate(latitude, longitude))
+                    .setDescrizione(poiDescrizioneEditato.getValue())
+                    .setMediaList(selectedPOI.getMediaList())
+                    .setComune(selectedPOI.getComune())
+                    .build(); 
 
                 EditaUtils.EditaPOI(selectedPOI, nuovoPOI);
 

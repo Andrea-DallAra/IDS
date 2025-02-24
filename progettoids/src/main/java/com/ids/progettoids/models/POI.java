@@ -12,7 +12,7 @@ public class POI {
     private String nome;
     private Coordinate coordinate;
     private String descrizione;
-    private  List<Content> mediaList;
+    private List<Content> mediaList;
     private String comune;
  /**
   * @param nome il nome del POI
@@ -22,42 +22,55 @@ public class POI {
   * @param comune il comune del POI
   */
 
-    public POI(String nome, Coordinate coordinate, String descrizione, List<Content> _mediaList, String _comune) {
-        this.nome = nome;
-        this.coordinate = coordinate;
-        this.descrizione = descrizione;
-        this.comune = _comune;
-        if(this.mediaList == null)
-        {
-          this.mediaList = new ArrayList<>();
+    private POI(Builder builder) {
+            this.nome = builder.nome;
+            this.coordinate = builder.coordinate;
+            this.descrizione = builder.descrizione;
+            this.mediaList = builder.mediaList != null ? builder.mediaList : new ArrayList<>();
+            this.comune = builder.comune;
         }
-        setMediaList(_mediaList);
-    }
+    
+    public static class Builder {
+        private String nome;
+        private Coordinate coordinate;
+        private String descrizione;
+        private List<Content> mediaList;
+        private String comune;
 
-    /**
-     * Metodo che aggiunge i contenuti alla la lista dei contenuti
-     * @param _mediaList
-     */
-   private void setMediaList(List<Content> _mediaList)
-   {
+        public Builder setNome(String nome) {
+            this.nome = nome;
+            return this;
+        }
 
-       for (Content contenuto : _mediaList) {
-            if(!mediaList.contains(contenuto)){
-                mediaList.add(contenuto);
-            }
-       }
-   }
-    void setNome(String nome) {
-        this.nome = nome;
-    }
+        public Builder setCoordinate(Coordinate coordinate) {
+            this.coordinate = coordinate;
+            return this;
+        }
 
-    void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
-    }
+        public Builder setDescrizione(String descrizione) {
+            this.descrizione = descrizione;
+            return this;
+        }
 
-    void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+        public Builder setMediaList(List<Content> mediaList) {
+            for (Content contenuto : mediaList) {
+                if(!mediaList.contains(contenuto)){
+                    mediaList.add(contenuto);
+                }
+           }
+           return this;
+        }
+
+        public Builder setComune(String comune) {
+            this.comune = comune;
+            return this;
+        }
+
+        public POI build() {
+            return new POI(this);
+        }
     }
+    
 
 
   
@@ -80,14 +93,14 @@ public class POI {
         
     }
    
-
+    public String getComune() {
+        return comune;
+    }
 
     public static void CreaPOI(POI poi, boolean daApprovare) {
         POIutils.creaPOI(poi.nome, poi.coordinate, poi.descrizione, poi.mediaList, poi.getComune(), daApprovare);
     }
-    public String getComune() {
-        return comune;
-    }
+    
     @Override
     public String toString() {
         return "POI{" +

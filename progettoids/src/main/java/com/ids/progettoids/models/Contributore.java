@@ -9,8 +9,9 @@ import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
+import com.ids.progettoids.modelsInterface.ContributoreInterface;
 
-public class Contributore extends Utente {
+public class Contributore extends Utente implements ContributoreInterface{
 
     /**
      * Classe che rappresenta un contributore
@@ -43,6 +44,7 @@ public class Contributore extends Utente {
      * @param contest il contest a cui si vuole partecipare
      * @param content il contenuto da caricare
      */
+    @Override
     public void partecipaContest(Contest contest, Content content){
         String sql1 = "SELECT listaContent FROM Contest WHERE nome = ?";
         String sql2 = "UPDATE Contest SET listaContent = ? WHERE nome = ?";

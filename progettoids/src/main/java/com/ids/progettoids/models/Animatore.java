@@ -8,8 +8,9 @@ import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
+import com.ids.progettoids.modelsInterface.AnimatoreInterface;
 import com.ids.progettoids.utils.ContentUtils;
-public class Animatore extends Utente {
+public class Animatore extends Utente implements AnimatoreInterface{
     
     /**
      * Classe che rappresenta un animatore
@@ -35,6 +36,7 @@ public class Animatore extends Utente {
      * Metodo per creare un contest
      * @param contest il contest da creare
      */
+    @Override
     public void creaContest(Contest contest){
         String sql = "INSERT INTO contest (nome, descrizione, listaContent) VALUES (?, ?, ?)";
         
@@ -55,6 +57,7 @@ public class Animatore extends Utente {
   * @param contest il contest da gestire
   * @return la lista dei contenuti
   */
+    @Override
     public List<Content> gestisciContest(Contest contest){
         List<Content> contents = new ArrayList<>();
         String sql = "SELECT * FROM Contest where nome=?";
@@ -84,6 +87,7 @@ public class Animatore extends Utente {
      * @param contestNome
      * @return la stringa di dichiarazione
      */
+    @Override
     public String dichiaraVincitore(String usernameVincitore , String contestNome){
         
         return "Il vincitore del contest "+contestNome+"  e' "+ usernameVincitore;

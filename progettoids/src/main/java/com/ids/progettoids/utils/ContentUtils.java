@@ -127,11 +127,11 @@ public class ContentUtils {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                content = new Content(null,null,null,null);                
-                content.setMedia(rs.getString("MediaUrl"));
-                content.setData(rs.getString("Data"));
-                content.setAutore(rs.getString("Autore"));
-                content.setDescrizione(rs.getString("Descrizione"));
+                content = new Content.Builder()
+                .setMedia(rs.getString("MediaUrl"))
+                .setData(rs.getString("Data"))
+                .setAutore(rs.getString("Autore"))
+                .setDescrizione(rs.getString("Descrizione")).build();
             }
             conn.close();
         } catch (SQLException e) {
@@ -179,7 +179,11 @@ public class ContentUtils {
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
                 int idContent = rs.getInt("idContent");
-                Content content = new Content(media, data, autore, descrizione);
+                Content content = new Content.Builder()
+                    .setMedia(media)
+                    .setData(data)
+                    .setAutore(autore)
+                    .setDescrizione(descrizione).build();
                 HashMap<Integer, Content> map = new HashMap<>();
                 map.put(idContent, content);
                 listaContent.add(map);
@@ -211,7 +215,11 @@ public class ContentUtils {
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
                 int idContent = rs.getInt("idContent");
-                Content content = new Content(media, data, autore, descrizione);
+                Content content = new Content.Builder()
+                    .setMedia(media)
+                    .setData(data)
+                    .setAutore(autore)
+                    .setDescrizione(descrizione).build();
                 HashMap<Integer, Content> map = new HashMap<>();
                 map.put(idContent, content);
                 listaContent.add(map);
@@ -230,7 +238,7 @@ public class ContentUtils {
      */
     public static Content getContentdaApprovare(int idContent) {
         String sql = "SELECT * FROM Content_DaApprovare WHERE idContent = ?";
-        Content content = new Content("", "", "", "");
+        Content content = new Content.Builder().build();
         try (Connection conn = ConnettiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -242,7 +250,11 @@ public class ContentUtils {
                 String data = rs.getString("Data");
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
-                content = new Content(media, data, autore, descrizione);
+                content = new Content.Builder()
+                    .setMedia(media)
+                    .setData(data)
+                    .setAutore(autore)
+                    .setDescrizione(descrizione).build();
             }
             conn.close();
         } catch (SQLException e) {
@@ -269,7 +281,11 @@ public class ContentUtils {
                 String data = rs.getString("Data");
                 String autore = rs.getString("Autore");
                 String descrizione = rs.getString("Descrizione");
-                Content content = new Content(media, data, autore, descrizione);
+                Content content = new Content.Builder()
+                    .setMedia(media)
+                    .setData(data)
+                    .setAutore(autore)
+                    .setDescrizione(descrizione).build();
                 contents.add(content);
             }
             conn.close();

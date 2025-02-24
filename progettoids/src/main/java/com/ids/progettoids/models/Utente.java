@@ -12,12 +12,13 @@ import java.util.List;
 
 import com.ids.progettoids.ConnettiDB;
 import com.ids.progettoids.Ruolo;
+import com.ids.progettoids.modelsInterface.UtenteInterface;
 
 /**
  * Classe che rappresenta un utente
  * Gestisce la registrazione, autenticazione e gestione dei ruoli degli utenti.
  */
-public class Utente  {
+public class Utente  implements UtenteInterface {
     String username = "";
     String password = "";
     String email = "";
@@ -64,6 +65,7 @@ public class Utente  {
      * @param username Nome utente
      * @param _ruolo Nuovo ruolo da assegnare
      */
+    @Override
     public void CambiaRuolo(String username, String _ruolo) {
         String sql = "INSERT INTO RichiediRuolo (username, ruolo) VALUES (?, ?)";
 
@@ -93,6 +95,7 @@ public class Utente  {
      * 
      * @param username Nome utente
      */
+    @Override
     public void SalvaRuoliDB(String username) {
         Connection con = ConnettiDB.getConnection();
     
@@ -135,6 +138,7 @@ public class Utente  {
      * @param username
      * @param ruoliUtente
      */
+    @Override
     public void insertRuoli(String username, List<Ruolo> ruoliUtente) {
         String query = "INSERT INTO Ruoli (idUtente, Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato, TuristaAutenticato) " +
                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -155,6 +159,7 @@ public class Utente  {
      * Carica i ruoli dell'utente dal database.
      * @param username
      */
+    @Override
     public void CaricaRuoli(String username) {
         Connection con = ConnettiDB.getConnection();
         String query = "SELECT Gestore, Contributore, Curatore, Animatore, Turista, ContributoreAutenticato FROM Ruoli WHERE idUtente = ?";
@@ -205,6 +210,7 @@ public class Utente  {
      * @param password Password dell'utente
      * @return true se il login ha successo, false altrimenti
      */
+    @Override
     public  boolean Login(String username, String password) {
         Connection con = ConnettiDB.getConnection();
       
@@ -253,6 +259,7 @@ public class Utente  {
  * @param username
  * @return
  */
+    @Override
     public boolean Registrazione(String nome, String cognome, String email, String password, String username) {
 
         if (utenteEsiste(username, email)) {
@@ -321,6 +328,7 @@ public class Utente  {
      * ad un utente quando viene registrato
      * @param username
      */
+    @Override
     public void AggiungiTurista(String username) {
         Connection con = ConnettiDB.getConnection();
     
@@ -396,9 +404,11 @@ public class Utente  {
     /**
      * Metodo che aggiunge un ruolo all'utente
      */
+    @Override
     public void AggiungiRuolo(Ruolo _ruolo) {
        ruoli.add(_ruolo);
     }
+    @Override
     public List<Ruolo> getRuolo() {
         return ruoli;
     }
@@ -408,6 +418,7 @@ public class Utente  {
      * @param tipo
      * @param descrizione
      */
+    @Override
     public void Report(String chiave, String tipo, String descrizione) {
         String sql = "INSERT INTO Report (Chiave, Tipo, Descrizione) VALUES (?, ?, ?)";
     

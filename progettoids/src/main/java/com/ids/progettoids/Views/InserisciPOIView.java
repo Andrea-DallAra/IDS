@@ -44,7 +44,13 @@ public class InserisciPOIView extends VerticalLayout {
             String description = poiDescrizione.getValue();
             String comune = comuneField.getValue();
 
-            POI poi = new POI(name, new Coordinate(latitude, longitude), description, new ArrayList<>(), comune);
+            POI poi = new POI.Builder()
+                    .setNome(name)
+                    .setCoordinate(new Coordinate(latitude, longitude))
+                    .setDescrizione(description)
+                    .setMediaList(new ArrayList<>())
+                    .setComune(comune)
+                    .build();
             boolean daApprovare = false;
             
             if (SessioneUtente.utente.getRuolo().contains(Ruolo.Contributore) && !SessioneUtente.utente.getRuolo().contains(Ruolo.Curatore)) {
