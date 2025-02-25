@@ -51,6 +51,12 @@ public class ApprovaContenutoView extends VerticalLayout {
             }
         });
 
+        Curatore curatore = (Curatore) new Utente.Builder()
+                .setUsername(SessioneUtente.utente.getUsername())
+                .setRuoli(SessioneUtente.utente.getRuolo())
+                .setTipo(Ruolo.Curatore)
+                .build();
+
        
         Button submitButton = new Button("Approva Content", e -> {
             if (selectedContentField.isEmpty()) {
@@ -66,18 +72,6 @@ public class ApprovaContenutoView extends VerticalLayout {
                     Notification.show("Errore: Contenuto non trovato", 3000, Notification.Position.MIDDLE);
                     return;
                 }
-
-                Curatore curatore = (Curatore) new Utente.Builder()
-              //  .setNome(SessioneUtente.utente.getNome())
-              //  .setCognome(SessioneUtente.utente.getCognome())
-              //  .setEmail(SessioneUtente.utente.getEmail())
-               // .setPassword(SessioneUtente.utente.getPassword())
-                .setUsername(SessioneUtente.utente.getUsername())
-                .setRuoli(SessioneUtente.utente.getRuolo())
-                .setTipo(Ruolo.Curatore)
-                .build();
-        
-                                              
                 
                 curatore.ApprovaContent(contentApprovato, id);
 
@@ -89,6 +83,31 @@ public class ApprovaContenutoView extends VerticalLayout {
             }
         });
 
-        add(contentGrid, selectedContentField, submitButton);
+        Button submitButtonRifiuta = new Button("Rifiuta Content", e -> {
+            if (selectedContentField.isEmpty()) {
+                Notification.show("Seleziona un contenuto dalla lista", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            try {
+                int id = Integer.parseInt(selectedContentField.getValue());
+                Content contentRifiutato = ContentUtils.getContentdaApprovare(id);
+
+                if (contentRifiutato == null) {
+                    Notification.show("Errore: Contenuto non trovato", 3000, Notification.Position.MIDDLE);
+                    return;
+                }
+                
+                curatore.deleteContentDaApprovare(id);
+
+                Notification.show("Content rifiutato con successo", 3000, Notification.Position.MIDDLE);
+            } catch (NumberFormatException err) {
+                Notification.show("Errore di formato", 3000, Notification.Position.MIDDLE);
+            } catch (Exception error) {
+                Notification.show("Errore generico", 3000, Notification.Position.MIDDLE);
+            }
+        });
+
+        add(contentGrid, selectedContentField, submitButton,submitButtonRifiuta);
     }
 }

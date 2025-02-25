@@ -123,6 +123,51 @@ public class Curatore extends Utente implements CuratoreInterface{
         System.err.println("Errore durante l'approvazione del contenuto: " + e.getMessage());
     }
 }
+
+        public void deletePOIDaApprovare(String nome){
+            String sql = "DELETE FROM POI_DaApprovare WHERE Nome = ?";
+
+            try (Connection conn = ConnettiDB.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, nome);
+
+                pstmt.executeUpdate();
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Errore durante l'eliminazione del POI da approvare: " + e.getMessage());
+            }
+        }
+
+        public void deleteItinerarioDaApprovare(int idItinerario){
+            String sql = "DELETE FROM Itinerario_DaApprovare WHERE idItinerario = ?";
+            try (Connection conn = ConnettiDB.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, idItinerario);
+
+                pstmt.executeUpdate();
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Errore durante l'eliminazione dell'itinerario da approvare: " + e.getMessage());
+            }
+        }
+
+
+        public void deleteContentDaApprovare(int idContent){
+            String sql = "DELETE FROM Content_DaApprovare WHERE idContent = ?";
+            try (Connection conn = ConnettiDB.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, idContent);
+
+                pstmt.executeUpdate();
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Errore durante l'eliminazione del POI da approvare: " + e.getMessage());
+            }
+        }
+
     @Override
     public void AggiornaId(int _idNuovo, int _idVecchio)
 {

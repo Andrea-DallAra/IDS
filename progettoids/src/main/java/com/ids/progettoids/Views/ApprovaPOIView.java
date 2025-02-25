@@ -39,6 +39,12 @@ public class ApprovaPOIView extends VerticalLayout {
             }
         });
 
+        Curatore curatore = (Curatore) new Utente.Builder()
+            .setUsername(SessioneUtente.utente.getUsername())
+            .setRuoli(SessioneUtente.utente.getRuolo())
+            .setTipo(Ruolo.Curatore)
+            .build();
+
       
         Button submitButton = new Button("Approva POI", e -> {
             if (selectedPOIField.isEmpty()) {
@@ -51,17 +57,27 @@ public class ApprovaPOIView extends VerticalLayout {
                 Notification.show("Errore: POI non trovato", 3000, Notification.Position.MIDDLE);
                 return;
             }
-
-            Curatore curatore = (Curatore) new Utente.Builder()
-            .setUsername(SessioneUtente.utente.getUsername())
-            .setRuoli(SessioneUtente.utente.getRuolo())
-            .setTipo(Ruolo.Curatore)
-            .build();
             curatore.ApprovaPOI(poiDaApprovare);
 
             Notification.show("POI approvato con successo", 3000, Notification.Position.MIDDLE);
         });
 
-        add(poiGrid, selectedPOIField, submitButton);
+        Button submitButtonRifiuta = new Button("Rifiuta POI", e -> {
+            if (selectedPOIField.isEmpty()) {
+                Notification.show("Seleziona un POI dalla lista", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            POI poiDaEliminare = POIutils.getPOIdaApprovare(selectedPOIField.getValue());
+            if (poiDaEliminare == null) {
+                Notification.show("Errore: POI non trovato", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+            curatore.deletePOIDaApprovare(poiDaEliminare.getNome());
+
+            Notification.show("POI rifiutato con successo", 3000, Notification.Position.MIDDLE);
+        });
+
+        add(poiGrid, selectedPOIField, submitButton,submitButtonRifiuta);
     }
 }

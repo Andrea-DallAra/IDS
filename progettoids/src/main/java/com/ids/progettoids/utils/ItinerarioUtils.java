@@ -223,4 +223,18 @@ public class ItinerarioUtils {
         return listaId;
     }
 
+    public static void deleteContentDaApprovare(int idItinerario){
+        String sql = "DELETE FROM Itinerario_DaApprovare WHERE idItinerario = ?";
+        try (Connection conn = ConnettiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idItinerario);
+
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'eliminazione dell' da approvare: " + e.getMessage());
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
 import com.ids.progettoids.Ruolo;
 import com.ids.progettoids.modelsInterface.UtenteInterface;
 import com.ids.progettoids.utils.UtenteUtils;
@@ -20,11 +21,8 @@ public class Utente  implements UtenteInterface {
     String nome = "";
     String cognome = "";
     List<Ruolo> ruoli = new ArrayList<>();
-
-
-  
-
- /**  
+    
+    /**  
      * @param _username Nome utente
      * @param _nome Nome dell'utente
      * @param _cognome Cognome dell'utente
@@ -92,7 +90,6 @@ public class Utente  implements UtenteInterface {
             switch (tipo) {
                 case Gestore:
                     return new Gestore(this);
-             
                 case Curatore:
                     return new Curatore(this);
                 case Animatore: 
@@ -101,7 +98,6 @@ public class Utente  implements UtenteInterface {
                     return new Turista(this);
                 case Contributore:
                     return new Contributore(this);
-                   
                 default:
                     return new Utente(this);
             }

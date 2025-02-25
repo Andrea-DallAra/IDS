@@ -39,6 +39,12 @@ public class ApprovaItinerarioView extends VerticalLayout {
             }
         });
 
+        Curatore curatore = (Curatore) new Utente.Builder()
+            .setUsername(SessioneUtente.utente.getUsername())
+            .setRuoli(SessioneUtente.utente.getRuolo())
+            .setTipo(Ruolo.Curatore)
+            .build();
+
        
         Button submitButton = new Button("Approva Itinerario", e -> {
             if (selectedItinerarioField.isEmpty()) {
@@ -53,17 +59,29 @@ public class ApprovaItinerarioView extends VerticalLayout {
                 return;
             }
 
-            Curatore curatore = (Curatore) new Utente.Builder()
-            .setUsername(SessioneUtente.utente.getUsername())
-            .setRuoli(SessioneUtente.utente.getRuolo())
-            .setTipo(Ruolo.Curatore)
-            .build();
-            
             curatore.ApprovaItinerari(itinerarioDaApprovare);
 
             Notification.show("Itinerario approvato con successo", 3000, Notification.Position.MIDDLE);
         });
 
-        add(itinerarioGrid, selectedItinerarioField, submitButton);
+        Button submitButtonRifiuta = new Button("Rifiuta Itinerario", e -> {
+            if (selectedItinerarioField.isEmpty()) {
+                Notification.show("Seleziona un Itinerario dalla lista", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            int itinerarioId = Integer.parseInt(selectedItinerarioField.getValue());
+            Itinerario itinerarioDaRifiutare = ItinerarioUtils.getItinerariodaApprovare(itinerarioId);
+            if (itinerarioDaRifiutare == null) {
+                Notification.show("Errore: Itinerario non trovato", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            curatore.deleteItinerarioDaApprovare(itinerarioId);
+
+            Notification.show("Itinerario rifiutato con successo", 3000, Notification.Position.MIDDLE);
+        });
+
+        add(itinerarioGrid, selectedItinerarioField, submitButton,submitButtonRifiuta);
     }
 }
